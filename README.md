@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ageing Mobility Lab — research lab website
 
-## Getting Started
+Prototype website for Prof Li's lab (age-friendly planning & transportation
+equity, NUS). Built as a static Next.js site designed to be handed over to a
+non-technical owner: all content will live in Sanity, all design lives in code.
 
-First, run the development server:
+**All names, papers, grants, and people in the current content are placeholders**
+pending discovery with the prof. Replace via `lib/content/data.ts` for now.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+- Next.js (App Router) + TypeScript + Tailwind v4 — fully static output
+- Content: local typed data (`lib/content/`) now → Sanity free tier later
+- Planned hosting: Vercel Hobby + Sanity publish webhook for revalidation
+
+## Design system — "Wayfinding"
+
+Transit signage is the one design discipline that has always served older
+adults, and it is the lab's subject. Tokens in `app/globals.css`:
+
+| Token | Value | Use |
+|---|---|---|
+| `paper` | `#FAFAF7` | background |
+| `ink` | `#1B211D` | text, footer |
+| `stone` | `#545B54` | secondary text (AA on paper) |
+| `moss` | `#2D5D4B` | links (AA on paper) |
+| `accent` | `#F2C230` | tactile-paving yellow: route line stops, focus rings, CTA band, footer platform edge — graphic use or under ink text only (never yellow text) |
+
+Type: Bricolage Grotesque (display) · Public Sans (body) · IBM Plex Mono
+(dates, codes, meta). Base font size is 18px (`html { font-size: 112.5% }`)
+so the whole rem scale sits one notch larger — an accessibility decision, not
+a style one. Signature element: the route line with stops on the homepage
+(horizontal on desktop, vertical on mobile), drawn in once on load,
+`prefers-reduced-motion` respected.
+
+## Structure
+
+- `lib/content/types.ts` — content model; mirrors the planned Sanity schemas 1:1
+- `lib/content/data.ts` — placeholder content (the only file to edit for content)
+- `lib/content/index.ts` — accessors; pages import only from here. **Sanity
+  migration = replace these functions with GROQ queries; no page changes.**
+- `components/` — header, footer, shared primitives
+- `app/` — 7 routes: home, research (+ project detail), publications, people,
+  news, teaching, join
+
+## Run
+
+```
+npm run dev    # http://localhost:3000
+npm run build  # static export check — all routes prerender
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Handover roadmap (from the project plan)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Discovery with the prof: real content, lab name, domain, NUS branding
+2. Sanity project + schemas (one per type in `lib/content/types.ts`),
+   swap accessors to GROQ
+3. Deploy to Vercel, publish webhook → `revalidate`
+4. Illustrated "how to update your site" guide + training session;
+   transfer Sanity/Vercel/domain ownership
