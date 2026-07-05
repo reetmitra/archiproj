@@ -7,6 +7,10 @@ transportation equity, NUS). Full project plan and decisions:
 `~/.claude/plans/i-have-to-work-zippy-summit.md`. Meeting checklist:
 `docs/prof-meeting-checklist.md`.
 
+**Session start: read `HANDOFF.md`** for current state, session log, and next
+steps. **Session end: update it** (current state + dated log entry + prune
+next-up) — it is how context survives between sessions.
+
 ## The one constraint that outranks everything
 
 The site will be handed to a **non-technical professor** who maintains it
