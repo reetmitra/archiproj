@@ -11,6 +11,8 @@ import {
   PublicationItem,
   formatDate,
 } from "@/components/primitives";
+import { HomeMotion } from "@/components/motion/home-motion";
+import { SplitFlap } from "@/components/motion/split-flap";
 
 export default function HomePage() {
   const site = getSiteSettings();
@@ -20,22 +22,59 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Set data-motion pre-paint so [data-anim] elements hide before the
+          first frame. No-JS/crawlers never run this, so nothing hides. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            "document.documentElement.setAttribute('data-motion','')",
+        }}
+      />
+      <HomeMotion />
+
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-20 sm:pt-28 pb-4">
         <Eyebrow>
           <span className="hidden sm:inline">{site.department} · </span>
-          {site.institution}
+          <SplitFlap
+            phrases={[site.institution, ...themes.map((t) => t.title)]}
+            loop
+            holdMs={7000}
+          />
         </Eyebrow>
         <h1 className="mt-5 font-display font-extrabold tracking-tight text-5xl sm:text-7xl lg:text-[5.25rem] leading-[1.02] max-w-4xl">
-          Cities that work at{" "}
+          <span className="hero-word">
+            <span data-anim="hero-word">Cities</span>
+          </span>{" "}
+          <span className="hero-word">
+            <span data-anim="hero-word">that</span>
+          </span>{" "}
+          <span className="hero-word">
+            <span data-anim="hero-word">work</span>
+          </span>{" "}
+          <span className="hero-word">
+            <span data-anim="hero-word">at</span>
+          </span>{" "}
           <span className="whitespace-nowrap">
-            every age
-            <span aria-hidden className="text-accent">
+            <span className="hero-word">
+              <span data-anim="hero-word">every</span>
+            </span>{" "}
+            <span className="hero-word">
+              <span data-anim="hero-word">age</span>
+            </span>
+            <span
+              aria-hidden
+              data-anim="hero-dot"
+              className="inline-block text-accent"
+            >
               .
             </span>
           </span>
         </h1>
-        <p className="mt-7 text-xl sm:text-2xl text-stone leading-relaxed max-w-2xl">
+        <p
+          data-anim="hero-mission"
+          className="mt-7 text-xl sm:text-2xl text-stone leading-relaxed max-w-2xl"
+        >
           {site.mission}
         </p>
       </section>
@@ -52,6 +91,7 @@ export default function HomePage() {
         {/* the route: one line, three stops */}
         <svg
           aria-hidden
+          data-anim="route-svg"
           viewBox="0 0 1200 24"
           preserveAspectRatio="none"
           className="hidden md:block w-full h-6 overflow-visible"
@@ -61,7 +101,6 @@ export default function HomePage() {
             y1="12"
             x2="1200"
             y2="12"
-            pathLength={1200}
             className="route-path stroke-ink"
             strokeWidth="3"
           />
@@ -82,10 +121,16 @@ export default function HomePage() {
             <div key={theme.slug} className="flex gap-4 md:block">
               {/* mobile: the route runs vertically beside the text */}
               <div aria-hidden className="md:hidden flex flex-col items-center">
-                <span className="size-4 shrink-0 rounded-full bg-accent border-[3px] border-ink" />
-                <span className="w-[3px] flex-1 bg-ink/15" />
+                <span
+                  data-anim="m-dot"
+                  className="size-4 shrink-0 rounded-full bg-accent border-[3px] border-ink"
+                />
+                <span
+                  data-anim="m-line"
+                  className="w-[3px] flex-1 bg-ink/15 origin-top"
+                />
               </div>
-              <div className="pb-2">
+              <div data-anim="theme-card" className="pb-2">
                 <p className="font-mono text-sm text-stone">{theme.code}</p>
                 <h3 className="mt-2 font-display font-bold text-2xl tracking-tight">
                   <Link
@@ -104,7 +149,10 @@ export default function HomePage() {
 
       {/* Latest news — timetable rows */}
       <section aria-labelledby="news-heading" className="border-t border-line">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16">
+        <div
+          data-motion-section="news"
+          className="mx-auto max-w-6xl px-5 sm:px-8 py-16"
+        >
           <div className="flex items-baseline justify-between gap-4">
             <h2
               id="news-heading"
@@ -114,19 +162,26 @@ export default function HomePage() {
             </h2>
             <Link
               href="/news"
-              className="font-mono text-sm text-moss underline underline-offset-4 decoration-line hover:decoration-moss shrink-0"
+              className="link-draw font-mono text-sm text-moss shrink-0"
             >
               All news
             </Link>
           </div>
+          <span
+            aria-hidden
+            data-anim="section-rule"
+            className="mt-4 block h-px bg-line origin-left"
+          />
           <div className="mt-8">
             {news.map((post) => (
               <article
                 key={post.id}
+                data-anim="row"
                 className="grid gap-2 sm:grid-cols-[9rem_1fr_auto] sm:gap-6 py-5 border-b border-line items-baseline"
               >
                 <time
                   dateTime={post.date}
+                  data-anim="row-date"
                   className="font-mono text-sm text-stone"
                 >
                   {formatDate(post.date)}
@@ -146,7 +201,10 @@ export default function HomePage() {
 
       {/* Featured publications */}
       <section aria-labelledby="pubs-heading" className="border-t border-line">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16">
+        <div
+          data-motion-section="pubs"
+          className="mx-auto max-w-6xl px-5 sm:px-8 py-16"
+        >
           <div className="flex items-baseline justify-between gap-4">
             <h2
               id="pubs-heading"
@@ -156,23 +214,34 @@ export default function HomePage() {
             </h2>
             <Link
               href="/publications"
-              className="font-mono text-sm text-moss underline underline-offset-4 decoration-line hover:decoration-moss shrink-0"
+              className="link-draw font-mono text-sm text-moss shrink-0"
             >
               All publications
             </Link>
           </div>
+          <span
+            aria-hidden
+            data-anim="section-rule"
+            className="mt-4 block h-px bg-line origin-left"
+          />
           <div className="mt-4">
             {featured.map((pub) => (
-              <PublicationItem key={pub.id} pub={pub} />
+              <div key={pub.id} data-anim="row">
+                <PublicationItem pub={pub} />
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Join CTA — signage band */}
+      {/* Join CTA — signage band. The yellow band is never hidden; empty
+          signage before the text arrives is intended. */}
       <section aria-labelledby="join-heading" className="bg-accent">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-20 flex flex-col sm:flex-row sm:items-center gap-8 justify-between">
-          <div>
+        <div
+          data-motion-section="cta"
+          className="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-20 flex flex-col sm:flex-row sm:items-center gap-8 justify-between"
+        >
+          <div data-anim="cta-copy">
             <h2
               id="join-heading"
               className="font-display font-extrabold tracking-tight text-4xl sm:text-5xl"
@@ -186,6 +255,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/join"
+            data-anim="cta-btn"
             className="inline-block shrink-0 bg-ink text-paper font-display font-bold text-lg px-8 py-4 rounded-sm hover:bg-ink/85 transition-colors"
           >
             Join the lab

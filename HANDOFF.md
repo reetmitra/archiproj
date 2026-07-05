@@ -16,14 +16,22 @@ entry to the **Session log** (what changed, why, anything surprising), and
 prune **Next up**. Keep entries short — this file is read at the start of
 every session and must stay cheap.
 
-## Current state (2026-07-05)
+## Current state (2026-07-06)
 
-**Phase:** prototype complete, pre-discovery. Waiting on the meeting with
-Prof Li before any real content or infrastructure work.
+**Phase:** prototype complete + landing-page motion layer, pre-discovery.
+Waiting on the meeting with Prof Li before any real content or
+infrastructure work.
 
 - Working static prototype, all placeholder content: 7 routes — `/`,
   `/research` (+ 4 project detail pages), `/publications` (client-side type
   filter), `/people`, `/news`, `/teaching`, `/join`
+- Landing page has an anime.js (4.5.0) motion layer — "the site arrives
+  like a train": hero timeline (headline word rise, route line draws with
+  stops popping as the drawhead passes), split-flap eyebrow cycling
+  content-layer phrases, scroll-triggered timetable-board section reveals.
+  All in `components/motion/` + `data-anim` attributes in `app/page.tsx`;
+  reduced-motion → zero motion; no-JS → full content (pre-hide is gated on
+  a JS-set `data-motion` attr with a 4s CSS safety net)
 - `npx next build` passes, every route static — keep it that way
 - No Sanity, no Vercel, no domain yet (deliberately: all accounts must be
   created under the prof's email, decided at the meeting)
@@ -31,6 +39,33 @@ Prof Li before any real content or infrastructure work.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-06 — anime.js landing-page motion ("the site arrives like a train")
+- Added animejs@4.5.0; motion design planned by Fable, code written by an
+  Opus subagent, verified/tuned in preview. New: `components/motion/
+  home-motion.tsx` (one client orchestrator, createScope + timelines + IO)
+  and `split-flap.tsx` (rAF, no anime dep). Modified: `app/page.tsx`
+  (data-anim attrs, headline word wrappers, inline pre-paint script),
+  `app/globals.css` (pre-hide gate, .hero-word, .link-draw; old route-line
+  keyframes removed — anime owns it now), `app/layout.tsx`
+  (suppressHydrationWarning on <html> for the pre-paint attr)
+- anime v4.5 gotchas fixed during verification: `ease: "cubicBezier(...)"`
+  / `"steps(4)"` string syntax is REMOVED — import the functions; stop-pop
+  sync needed real inverse-bezier math (752/876/1058ms), the agent's
+  eyeballed values lagged the drawhead; 4s CSS safety net must disarm once
+  JS is live (`data-motion-live`) or it force-reveals below-fold sections
+  before their scroll trigger; `createDrawable` must not run on the
+  display:none mobile SVG
+- Tooling gotchas: anime's engine pauses while the preview tab is hidden —
+  animations "not running" in evals is the engine correctly waiting, not a
+  bug; preview screenshots at scrolled positions capture blank (verify via
+  computed styles); running `npm run build` after `cd node_modules/animejs`
+  executes THAT package's build script and `rm -rf`s its dist (reinstall
+  fixes it)
+- Bundle: `/` client JS +~19 kB gz (anime chunk, code-split, under the
+  25 kB budget → root imports kept). Build fully static, a11y tree clean
+  (h1 one phrase, flap reads as one phrase via aria-label). NOT committed —
+  awaiting Reet's review
 
 ### 2026-07-05 — ideation, plan, prototype
 - Analyzed the prof's 5 example sites (all self-serve platforms: Google

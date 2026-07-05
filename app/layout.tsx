@@ -39,6 +39,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // the pre-paint inline script adds data-motion before hydration
+      suppressHydrationWarning
       className={`${bricolage.variable} ${publicSans.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
