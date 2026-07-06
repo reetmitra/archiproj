@@ -18,9 +18,16 @@ every session and must stay cheap.
 
 ## Current state (2026-07-06)
 
-**Phase:** prototype complete + landing-page motion layer, pre-discovery.
+**Phase:** prototype complete + site-wide motion, pre-discovery.
 Waiting on the meeting with Prof Li before any real content or
 infrastructure work.
+
+- Site-wide "signage has depth" scroll layer (subtle 3D): attribute-driven
+  `components/motion/scroll-depth.tsx` mounted in `app/layout.tsx`
+  (`data-anim="intro"` page-arrival reveal, `data-depth`/`data-depth-group`
+  entrance tilts, `data-parallax` anchored drift, `data-tilt` pointer tilt
+  on bordered panels). Homepage keeps home-motion ownership; scroll-depth
+  only runs parallax there and never touches the gate flags on `/`
 
 - Working static prototype, all placeholder content: 7 routes — `/`,
   `/research` (+ 4 project detail pages), `/publications` (client-side type
@@ -39,6 +46,37 @@ infrastructure work.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-06 (later) — site-wide 3D scroll depth ("signage has depth")
+- Brainstormed with Reet (21st.dev inspiration → quieted to fit Wayfinding):
+  perspective transforms + parallax across all pages, subtle-depth intensity
+  chosen deliberately for the older audience. New `components/motion/
+  scroll-depth.tsx` mounted in layout; pages opt in via data attributes only
+  and stay server components
+- Vocabulary: intro reveal (reuses the existing `[data-anim]` CSS pre-hide
+  gate — the inline pre-paint script MOVED from `app/page.tsx` to
+  `app/layout.tsx` so it fires on every route); `data-depth` entrances with
+  NO pre-hide (JS sets initial state post-mount for below-fold elements
+  only — no-JS/crawlers/reduced-motion always see everything); anchored
+  `data-parallax` (keyframes offset by p0 so rest position = designed
+  position, verified ≈0.1px); `data-tilt` ≤2° via `createAnimatable`,
+  pointer-fine only, no focus listeners (keyboard never tilts)
+- Deviations from plan, on purpose: no tilt on people cards (borderless text
+  blocks aren't panels — shadow under nothing looks broken); no parallax on
+  the route-line svg (it must stay visually attached to its theme cards);
+  footer content drifts, the accent strip stays put (the platform edge is
+  the floor — you move, it doesn't); on `/` only home-motion sets
+  data-motion-live so a home-motion failure still trips the 4s safety net
+- Verified: build fully static; entrance/parallax/tilt via computed styles
+  at 1280px and 375px; reduced-motion via matchMedia initScript patch (all
+  targets untouched); publications filter re-renders stay visible; SSR HTML
+  carries no data-motion attr and no inline styles; focus() on tilt cards
+  leaves transform unchanged; console clean
+- Tooling gotcha (new): preview_resize emulation changes what JS reports
+  (innerWidth 1280) but preview_screenshot still captures the physical
+  ~670px panel — screenshots after resize are misleading; verify layout via
+  computed styles, screenshot only at native size. Committed at Reet's
+  request after review
 
 ### 2026-07-06 — anime.js landing-page motion ("the site arrives like a train")
 - Added animejs@4.5.0; motion design planned by Fable, code written by an

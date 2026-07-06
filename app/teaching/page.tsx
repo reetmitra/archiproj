@@ -20,6 +20,8 @@ export default function TeachingPage() {
         {courses.map((course) => (
           <article
             key={course.code}
+            data-depth
+            data-tilt
             className="border border-line rounded-sm p-6 sm:p-8 sm:grid sm:grid-cols-[8rem_1fr] sm:gap-8"
           >
             {/* course code as a signage plate */}

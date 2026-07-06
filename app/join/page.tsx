@@ -28,6 +28,8 @@ export default function JoinPage() {
               {openings.map((opening) => (
                 <article
                   key={opening.title}
+                  data-depth
+                  data-tilt
                   className="border border-line rounded-sm p-6 sm:p-8"
                 >
                   <div className="flex flex-wrap items-center gap-3">
@@ -52,7 +54,7 @@ export default function JoinPage() {
           )}
         </section>
 
-        <section aria-labelledby="apply-heading" className="mt-16">
+        <section data-depth aria-labelledby="apply-heading" className="mt-16">
           <h2
             id="apply-heading"
             className="font-mono text-sm uppercase tracking-[0.2em] text-stone pb-4 border-b-[3px] border-ink"

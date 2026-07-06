@@ -20,6 +20,7 @@ export default function NewsPage() {
         {posts.map((post) => (
           <article
             key={post.id}
+            data-depth
             className="grid gap-2 sm:grid-cols-[9rem_1fr] sm:gap-8 py-8 border-b border-line"
           >
             <div className="flex sm:flex-col gap-3 items-baseline sm:items-start">

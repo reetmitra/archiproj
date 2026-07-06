@@ -62,7 +62,9 @@ export function PublicationList({
             {visible
               .filter((p) => p.year === year)
               .map((pub) => (
-                <PublicationItem key={pub.id} pub={pub} />
+                <div key={pub.id} data-depth>
+                  <PublicationItem pub={pub} />
+                </div>
               ))}
           </section>
         ))}

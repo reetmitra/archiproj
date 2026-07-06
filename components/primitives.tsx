@@ -19,13 +19,26 @@ export function PageIntro({
   lede?: string;
 }) {
   return (
-    <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-16 sm:pt-24 pb-12">
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h1 className="mt-4 font-display font-bold tracking-tight text-4xl sm:text-6xl max-w-3xl">
+    <div
+      data-parallax="0.1"
+      className="mx-auto max-w-6xl px-5 sm:px-8 pt-16 sm:pt-24 pb-12"
+    >
+      <div data-anim="intro">
+        <Eyebrow>{eyebrow}</Eyebrow>
+      </div>
+      <h1
+        data-anim="intro"
+        className="mt-4 font-display font-bold tracking-tight text-4xl sm:text-6xl max-w-3xl"
+      >
         {title}
       </h1>
       {lede && (
-        <p className="mt-6 text-xl text-stone leading-relaxed max-w-2xl">{lede}</p>
+        <p
+          data-anim="intro"
+          className="mt-6 text-xl text-stone leading-relaxed max-w-2xl"
+        >
+          {lede}
+        </p>
       )}
     </div>
   );

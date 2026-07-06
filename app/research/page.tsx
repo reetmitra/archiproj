@@ -28,9 +28,13 @@ export default function ResearchPage() {
               aria-labelledby={`${theme.slug}-heading`}
               className="scroll-mt-24"
             >
-              <div className="flex items-center gap-4 pb-6 border-b-[3px] border-ink">
+              <div
+                data-depth
+                className="flex items-center gap-4 pb-6 border-b-[3px] border-ink"
+              >
                 <span
                   aria-hidden
+                  data-depth="pop"
                   className="size-4 rounded-full bg-accent border-[3px] border-ink"
                 />
                 <p className="font-mono text-sm text-stone">{theme.code}</p>
@@ -41,15 +45,16 @@ export default function ResearchPage() {
                   {theme.title}
                 </h2>
               </div>
-              <p className="mt-5 text-lg text-stone leading-relaxed max-w-2xl">
+              <p data-depth className="mt-5 text-lg text-stone leading-relaxed max-w-2xl">
                 {theme.summary}
               </p>
 
-              <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              <div data-depth-group className="mt-8 grid gap-6 sm:grid-cols-2">
                 {projects.map((project) => (
                   <Link
                     key={project.slug}
                     href={`/research/${project.slug}`}
+                    data-tilt
                     className="group block border border-line rounded-sm p-6 hover:border-ink transition-colors"
                   >
                     <p className="font-mono text-sm text-stone flex items-center gap-3">

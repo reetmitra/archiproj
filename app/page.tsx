@@ -22,14 +22,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Set data-motion pre-paint so [data-anim] elements hide before the
-          first frame. No-JS/crawlers never run this, so nothing hides. */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html:
-            "document.documentElement.setAttribute('data-motion','')",
-        }}
-      />
+      {/* data-motion is set pre-paint by the layout's inline script */}
       <HomeMotion />
 
       {/* Hero */}
@@ -42,7 +35,10 @@ export default function HomePage() {
             holdMs={7000}
           />
         </Eyebrow>
-        <h1 className="mt-5 font-display font-extrabold tracking-tight text-5xl sm:text-7xl lg:text-[5.25rem] leading-[1.02] max-w-4xl">
+        <h1
+          data-parallax="0.14"
+          className="mt-5 font-display font-extrabold tracking-tight text-5xl sm:text-7xl lg:text-[5.25rem] leading-[1.02] max-w-4xl"
+        >
           <span className="hero-word">
             <span data-anim="hero-word">Cities</span>
           </span>{" "}
@@ -239,6 +235,7 @@ export default function HomePage() {
       <section aria-labelledby="join-heading" className="bg-accent">
         <div
           data-motion-section="cta"
+          data-parallax="0.08"
           className="mx-auto max-w-6xl px-5 sm:px-8 py-16 sm:py-20 flex flex-col sm:flex-row sm:items-center gap-8 justify-between"
         >
           <div data-anim="cta-copy">

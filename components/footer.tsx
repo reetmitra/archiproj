@@ -9,7 +9,12 @@ export function Footer() {
       {/* platform edge */}
       <div aria-hidden className="h-2 bg-accent" />
       <div className="bg-ink text-paper">
-        <div className="mx-auto max-w-6xl px-5 sm:px-8 py-14 grid gap-10 sm:grid-cols-3">
+        {/* content drifts inside the ink block; the platform-edge strip
+            above stays put — the floor doesn't move, you do */}
+        <div
+          data-parallax="0.08"
+          className="mx-auto max-w-6xl px-5 sm:px-8 py-14 grid gap-10 sm:grid-cols-3"
+        >
           <div>
             <p className="font-display font-bold text-xl">{site.labName}</p>
             <p className="mt-3 text-paper/70 leading-relaxed max-w-xs">

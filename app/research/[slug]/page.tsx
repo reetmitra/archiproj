@@ -34,23 +34,34 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-6xl px-5 sm:px-8 pt-16 sm:pt-24 pb-8">
-      <p className="font-mono text-sm text-stone">
-        <Link
-          href={`/research#${theme?.slug}`}
-          className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
+      <header data-parallax="0.1">
+        <p data-anim="intro" className="font-mono text-sm text-stone">
+          <Link
+            href={`/research#${theme?.slug}`}
+            className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
+          >
+            {theme?.code} {theme?.title}
+          </Link>
+        </p>
+        <h1
+          data-anim="intro"
+          className="mt-4 font-display font-bold tracking-tight text-4xl sm:text-6xl max-w-3xl"
         >
-          {theme?.code} {theme?.title}
-        </Link>
-      </p>
-      <h1 className="mt-4 font-display font-bold tracking-tight text-4xl sm:text-6xl max-w-3xl">
-        {project.title}
-      </h1>
-      <p className="mt-6 text-xl text-stone leading-relaxed max-w-2xl">
-        {project.summary}
-      </p>
+          {project.title}
+        </h1>
+        <p
+          data-anim="intro"
+          className="mt-6 text-xl text-stone leading-relaxed max-w-2xl"
+        >
+          {project.summary}
+        </p>
+      </header>
 
       {/* Timetable-style meta */}
-      <dl className="mt-10 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-4 border-y border-line py-6 font-mono text-sm">
+      <dl
+        data-depth
+        className="mt-10 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-4 border-y border-line py-6 font-mono text-sm"
+      >
         <div>
           <dt className="uppercase tracking-widest text-stone">Years</dt>
           <dd className="mt-1">{project.years}</dd>
@@ -73,14 +84,14 @@ export default async function ProjectPage({ params }: Props) {
         )}
       </dl>
 
-      <div className="mt-10 max-w-2xl space-y-6 text-lg leading-relaxed">
+      <div data-depth className="mt-10 max-w-2xl space-y-6 text-lg leading-relaxed">
         {project.body.map((paragraph, i) => (
           <p key={i}>{paragraph}</p>
         ))}
       </div>
 
       {pubs.length > 0 && (
-        <section aria-labelledby="project-pubs" className="mt-16">
+        <section data-depth aria-labelledby="project-pubs" className="mt-16">
           <h2
             id="project-pubs"
             className="font-display font-bold text-2xl tracking-tight"

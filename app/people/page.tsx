@@ -61,10 +61,13 @@ function Group({ heading, members }: { heading: string; members: Person[] }) {
   if (members.length === 0) return null;
   return (
     <section aria-label={heading}>
-      <h2 className="font-mono text-sm uppercase tracking-[0.2em] text-stone pb-4 border-b-[3px] border-ink">
+      <h2
+        data-depth
+        className="font-mono text-sm uppercase tracking-[0.2em] text-stone pb-4 border-b-[3px] border-ink"
+      >
         {heading}
       </h2>
-      <div className="mt-8 grid gap-10 sm:grid-cols-2">
+      <div data-depth-group className="mt-8 grid gap-10 sm:grid-cols-2">
         {members.map((person) => (
           <PersonCard key={person.slug} person={person} />
         ))}

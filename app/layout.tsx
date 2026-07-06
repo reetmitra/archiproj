@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Public_Sans, IBM_Plex_Mono } from "next/font/googl
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { ScrollDepth } from "@/components/motion/scroll-depth";
 import { getSiteSettings } from "@/lib/content";
 
 const bricolage = Bricolage_Grotesque({
@@ -44,6 +45,15 @@ export default function RootLayout({
       className={`${bricolage.variable} ${publicSans.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Set data-motion pre-paint so [data-anim] elements hide before
+            the first frame, on every route. No-JS/crawlers never run this,
+            so nothing hides for them. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.setAttribute('data-motion','')",
+          }}
+        />
+        <ScrollDepth />
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:bg-accent focus:text-ink focus:px-4 focus:py-2 focus:font-medium"
