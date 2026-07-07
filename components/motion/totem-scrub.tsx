@@ -20,8 +20,8 @@ import { useEffect, useRef } from "react";
 const FRAME_COUNT = 64;
 // Native size of the extracted frames — keep in sync with the assets in
 // public/totem/ (see HANDOFF.md for the regeneration pipeline).
-const FRAME_W = 674;
-const FRAME_H = 900;
+const FRAME_W = 766;
+const FRAME_H = 1022;
 /** Flip if the shipped sequence is a trimmed <360° arc: scroll then runs
     the frames forward to the end and back, instead of assuming a loop. */
 const PING_PONG = false;

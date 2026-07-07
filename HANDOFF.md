@@ -23,7 +23,7 @@ pre-discovery. Waiting on the meeting with Prof Li before any real
 content or infrastructure work.
 
 - Homepage "Field object" section: scroll-scrubbed 3D totem turntable
-  (64 WebP frames in `public/totem/`, 468 KB) pinned between
+  (64 WebP frames in `public/totem/`, 512 KB) pinned between
   publications and the CTA. `components/motion/totem-scrub.tsx` owns
   progressive enhancement: server `<img>` baseline for no-JS /
   reduced-motion / mobile (mobile never fetches the sequence), canvas
@@ -71,9 +71,15 @@ content or infrastructure work.
   smears lettering) → seedance_2_0 fast 720p 8s orbit (28cr) with
   **start_image = end_image = same job_id**, which pins the orbit
   closed — no loop seam, no ping-pong needed → ffmpeg fps=64/dur +
-  8% edge-crop → cwebp q58 → 64 frames 674×900, 468 KB. 30cr spent,
-  ~10 left. Script: session scratchpad `extract-frames.sh` (rewrite
-  from this log if needed)
+  8% edge-crop → cwebp q58 → 64 frames. 30cr spent, ~10 left. Script:
+  session scratchpad `extract-frames.sh` (rewrite from this log if
+  needed). Frames were later re-extracted at the video's NATIVE
+  766×1022 (512 KB) — the first pass needlessly downscaled to 674×900;
+  don't add a scale step below source size, retina target is 720px
+  wide at the 360px display width. Reet asked for Gemini/ChatGPT for
+  a higher-res redo — not connected here, and chat image models can't
+  hold 64-frame consistency anyway (frames must come from video);
+  native re-extraction of the paid orbit covered the gap for free
 - Component: plain rAF + IO (no anime dep; frame index is app state,
   anime onScroll would fight the hover offset + nearest-loaded
   fallback). Sticky pin via CSS only (`html[data-motion]` media query
