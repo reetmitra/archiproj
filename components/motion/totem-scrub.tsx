@@ -3,18 +3,19 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Scroll-scrubbed turntable: pre-rendered frames of the lab's wayfinding
- * totem, scrubbed by scroll position while the section is pinned and
- * nudged by pointer hover. The server HTML is a plain <img> of the first
- * frame — that IS the whole experience for no-JS, reduced-motion, and
- * small-screen visitors; the canvas takes over only when JS mounts on a
- * motion-allowed desktop (the section only pins in that same condition,
- * via the html[data-motion] media query in globals.css).
+ * Scroll-scrubbed turntable in the hero: pre-rendered frames of the
+ * lab's wayfinding totem, rotated by plain page scroll and nudged by
+ * pointer hover. No pinning — the page never hijacks scroll.
+ *
+ * The server HTML is a plain <img> of the first frame — that IS the
+ * whole experience for no-JS, reduced-motion, and sub-desktop widths
+ * (which never fetch the frame sequence); the aria-hidden canvas takes
+ * over only when JS mounts on a motion-allowed desktop.
  *
  * Deliberately plain rAF, no anime.js (precedent: split-flap.tsx): the
  * frame index is app state layered from scroll progress + hover offset +
- * nearest-loaded-frame fallback, which anime's onScroll abstraction would
- * fight rather than help.
+ * nearest-loaded-frame fallback, which anime's onScroll abstraction
+ * would fight rather than help.
  */
 
 const FRAME_COUNT = 64;
@@ -25,14 +26,13 @@ const FRAME_H = 1022;
 /** Flip if the shipped sequence is a trimmed <360° arc: scroll then runs
     the frames forward to the end and back, instead of assuming a loop. */
 const PING_PONG = false;
-const HOVER_SPREAD = 8; // frames of nudge at full deflection ≈ ±45°
-const SMOOTHING = 0.18;
-
-/** Hero mode: scroll distance (in viewports) that maps to one full pass
-    through the frames. 0.8 ≈ the distance at which the hero leaves the
+/** Scroll distance (in viewports) that maps to one full pass through
+    the frames. 0.8 ≈ the distance at which the hero leaves the
     viewport, so the whole 360° plays while the totem is still visible
     and it exits facing forward (first and last frames match). */
-const HERO_SCROLL_VH = 0.8;
+const SCROLL_VH = 0.8;
+const HOVER_SPREAD = 8; // frames of nudge at full deflection ≈ ±45°
+const SMOOTHING = 0.18;
 
 const frameSrc = (i: number) =>
   `/totem/frame-${String(i).padStart(3, "0")}.webp`;
@@ -40,21 +40,7 @@ const frameSrc = (i: number) =>
 const clamp = (v: number, min: number, max: number) =>
   Math.min(Math.max(v, min), max);
 
-type TotemScrubProps = {
-  /** "pin": progress comes from the surrounding .totem-stage/.totem-pin
-      sticky section. "hero": progress is plain page scroll over the
-      first HERO_SCROLL_VH viewports — no pinning, no stage needed. */
-  mode?: "pin" | "hero";
-  /** Decorative instances (the hero) carry no alt text and hide from
-      the accessibility tree — the Field object section already
-      describes this exact object. */
-  decorative?: boolean;
-};
-
-export function TotemScrub({
-  mode = "pin",
-  decorative = false,
-}: TotemScrubProps) {
+export function TotemScrub() {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -62,21 +48,13 @@ export function TotemScrub({
     const root = rootRef.current;
     const canvas = canvasRef.current;
     if (!root || !canvas) return;
-    const stage =
-      mode === "pin" ? root.closest<HTMLElement>(".totem-stage") : root;
-    const pin =
-      mode === "pin" ? root.closest<HTMLElement>(".totem-pin") : root;
     const ctx = canvas.getContext("2d");
-    if (!stage || !pin || !ctx) return;
+    if (!ctx) return;
 
-    // Small screens keep the static poster and never fetch the sequence
-    // (~0.5 MB saved). The hero instance is CSS-hidden below lg, so it
-    // also bails below 1024 rather than doing invisible work. Decided
-    // once at mount; a mid-session breakpoint crossing keeps the
-    // mounted mode.
-    const bailQuery =
-      mode === "hero" ? "(max-width: 1023px)" : "(max-width: 767px)";
-    if (window.matchMedia(bailQuery).matches) return;
+    // Below desktop the static poster is the whole treatment and the
+    // sequence is never fetched (~0.5 MB saved). Decided once at mount;
+    // a mid-session breakpoint crossing keeps the mounted mode.
+    if (window.matchMedia("(max-width: 1023px)").matches) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const pointerFine = window.matchMedia("(pointer: fine)");
@@ -131,22 +109,8 @@ export function TotemScrub({
         root.dataset.frame = String(use);
       };
 
-      // pin: progress of the pin through the tall stage — 0 when the
-      // stage top hits the viewport top, 1 when the pin un-sticks.
-      // hero: plain page scroll over the first HERO_SCROLL_VH viewports.
-      const progress = () => {
-        if (mode === "hero") {
-          return clamp(
-            window.scrollY / (window.innerHeight * HERO_SCROLL_VH),
-            0,
-            1
-          );
-        }
-        const sRect = stage.getBoundingClientRect();
-        const denom = sRect.height - pin.getBoundingClientRect().height;
-        if (denom <= 0) return 0; // not pinned (stage height auto)
-        return clamp(-sRect.top / denom, 0, 1);
-      };
+      const progress = () =>
+        clamp(window.scrollY / (window.innerHeight * SCROLL_VH), 0, 1);
 
       const frameTarget = () => {
         let p = progress();
@@ -174,7 +138,7 @@ export function TotemScrub({
           cancelAnimationFrame(raf);
         }
       });
-      loopIO.observe(stage);
+      loopIO.observe(root);
       c.push(() => {
         running = false;
         cancelAnimationFrame(raf);
@@ -232,6 +196,8 @@ export function TotemScrub({
         }
       };
 
+      // The hero is in view on load, so this fires immediately — kept
+      // as an IO for parity/cheapness rather than an eager call.
       const preloadIO = new IntersectionObserver(
         (entries) => {
           if (entries.some((e) => e.isIntersecting)) {
@@ -239,9 +205,9 @@ export function TotemScrub({
             preloadIO.disconnect();
           }
         },
-        { rootMargin: "100% 0px" } // start one viewport early
+        { rootMargin: "100% 0px" }
       );
-      preloadIO.observe(stage);
+      preloadIO.observe(root);
       c.push(() => preloadIO.disconnect());
 
       const ro = new ResizeObserver(() => {
@@ -290,25 +256,17 @@ export function TotemScrub({
       reduce.removeEventListener("change", onReduceChange);
       teardown();
     };
-  }, [mode]);
+  }, []);
 
   return (
-    <div
-      ref={rootRef}
-      aria-hidden={decorative || undefined}
-      className="totem-scrub w-full max-w-[360px] mx-auto"
-    >
+    <div ref={rootRef} className="totem-scrub w-full max-w-[360px] mx-auto">
       <div className="totem-media relative">
         {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized
             static WebP served straight from public/; next/image is unused
             site-wide and its optimizer adds nothing to a fixed sequence */}
         <img
           src={frameSrc(0)}
-          alt={
-            decorative
-              ? ""
-              : "A freestanding wayfinding totem sign: a dark pylon with a yellow tactile band and a three-stop route pictogram"
-          }
+          alt="A freestanding wayfinding totem sign: a dark pylon with a yellow tactile band and a three-stop route pictogram"
           width={FRAME_W}
           height={FRAME_H}
           loading="lazy"
@@ -321,11 +279,9 @@ export function TotemScrub({
           className="absolute inset-0 h-full w-full"
         />
       </div>
-      {mode === "pin" && (
-        <p aria-hidden className="totem-hint mt-4 text-center font-mono text-sm text-stone">
-          Scroll to walk around it
-        </p>
-      )}
+      <p aria-hidden className="totem-hint mt-4 text-center font-mono text-sm text-stone">
+        Scroll to walk around it
+      </p>
     </div>
   );
 }

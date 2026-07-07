@@ -146,18 +146,8 @@ body {
 }
 
 /* ————————————————————————————————
-   Totem turntable (homepage "Field object" section)
+   Totem turntable (homepage hero)
 ———————————————————————————————— */
-
-/* The stage only grows tall enough to pin when JS is present
-   (html[data-motion], set pre-paint by the layout script), motion is
-   allowed, and the screen is desktop-sized. Everyone else gets normal
-   flow — no dead scroll past a static image. */
-@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
-  html[data-motion] .totem-stage {
-    height: 190vh;
-  }
-}
 
 /* Frame edges melt into the paper ground — absorbs the background
    drift AI-generated turntable video always has at its borders. */
