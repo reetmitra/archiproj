@@ -26,8 +26,12 @@ export default function HomePage() {
       {/* data-motion is set pre-paint by the layout's inline script */}
       <HomeMotion />
 
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-20 sm:pt-28 pb-4">
+      {/* Hero. The right column is the same totem as the Field object
+          section, decorative here (that section owns the description);
+          it rotates with plain page scroll — no pin, no scroll-jacking.
+          lg-only: below that the hero stays text-first. */}
+      <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-20 sm:pt-28 pb-4 lg:grid lg:grid-cols-[minmax(0,1fr)_17rem] lg:items-center lg:gap-12">
+        <div>
         <Eyebrow>
           <span className="hidden sm:inline">{site.department} · </span>
           <SplitFlap
@@ -74,6 +78,10 @@ export default function HomePage() {
         >
           {site.mission}
         </p>
+        </div>
+        <div className="hidden lg:block">
+          <TotemScrub mode="hero" decorative />
+        </div>
       </section>
 
       {/* Route line + research themes */}
