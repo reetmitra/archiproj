@@ -42,6 +42,9 @@ infrastructure work.
 - `npx next build` passes, every route static — keep it that way
 - No Sanity, no Vercel, no domain yet (deliberately: all accounts must be
   created under the prof's email, decided at the meeting)
+- Code is backed up to github.com/reetmitra/archiproj (public, Reet's
+  account) as a dev-time remote — this is NOT the handover repo; step 4
+  still means creating/transferring to the prof's account post-meeting
 - Dev: `npm run dev` → localhost:3000; preview config `.claude/launch.json`
   (server name `lab-site`)
 
