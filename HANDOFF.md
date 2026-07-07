@@ -16,22 +16,21 @@ entry to the **Session log** (what changed, why, anything surprising), and
 prune **Next up**. Keep entries short — this file is read at the start of
 every session and must stay cheap.
 
-## Current state (2026-07-07)
+## Current state (2026-07-08)
 
 **Phase:** prototype complete + site-wide motion + totem showcase,
 pre-discovery. Waiting on the meeting with Prof Li before any real
 content or infrastructure work.
 
 - Scroll-scrubbed 3D totem turntable (64 WebP frames in `public/totem/`,
-  512 KB) in TWO places: the hero (lg+ only, decorative/aria-hidden,
-  rotates with plain page scroll — full 360° completes as the hero
-  exits; no pin) and the pinned "Field object" section between
-  publications and the CTA (this one carries the alt text / semantics).
-  `components/motion/totem-scrub.tsx` (mode="pin"|"hero", decorative
-  flag) owns progressive enhancement: server `<img>` baseline for
-  no-JS / reduced-motion / small screens (which never fetch the
-  sequence), canvas scrub + pointer hover-nudge on motion-allowed
-  desktops only
+  512 KB) lives in the HERO only: right column at lg+, rotating with
+  plain page scroll (full 360° completes as the hero exits; no pin);
+  static poster under the mission text below lg (sequence never
+  fetched there). `components/motion/totem-scrub.tsx` owns progressive
+  enhancement: server `<img>` baseline for no-JS / reduced-motion /
+  small screens, canvas scrub + pointer hover-nudge on motion-allowed
+  desktops only. The pinned "Field object" section was removed
+  2026-07-08 (redundant once the hero had the interactive moment)
 - Pointer vocabulary additions: `data-magnet` (≤5px pull, desktop nav +
   join CTA) and `data-tilt` now casts a pointer-tracked accent
   highlight — both in `scroll-depth.tsx`, fine-pointer only
@@ -63,6 +62,23 @@ content or infrastructure work.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-08 — Field object section removed; totem at all widths
+- Reet: "hero is enough" — the pinned section was a second telling of
+  the same idea. Removed it (markup + .totem-stage CSS + the
+  mode/decorative props on TotemScrub, now hero-only). The hero
+  instance carries the alt text again and renders at EVERY width:
+  canvas scrub ≥1024px, static poster under the mission text below
+  (zero sequence requests — verified)
+- Root cause of "I don't see anything in the hero": the totem was
+  lg-only and Reet's viewport (preview panel) was narrower than
+  1024px. Design lesson: don't gate the page's one signature object
+  behind a breakpoint with no small-screen fallback
+- Console gotcha: React "deps array changed size" errors after editing
+  a useEffect deps array are HMR artifacts (old mounted instance vs
+  hot-swapped code) — the preview console buffer also persists across
+  reloads, so check whether the entry COUNT grows on a fresh load
+  before treating them as real
 
 ### 2026-07-07 (later) — totem in the hero
 - Reet: hero needed the interactive 3D element ("that's what makes it
