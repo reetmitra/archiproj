@@ -22,12 +22,16 @@ every session and must stay cheap.
 pre-discovery. Waiting on the meeting with Prof Li before any real
 content or infrastructure work.
 
-- Homepage "Field object" section: scroll-scrubbed 3D totem turntable
-  (64 WebP frames in `public/totem/`, 512 KB) pinned between
-  publications and the CTA. `components/motion/totem-scrub.tsx` owns
-  progressive enhancement: server `<img>` baseline for no-JS /
-  reduced-motion / mobile (mobile never fetches the sequence), canvas
-  scrub + pointer hover-nudge on motion-allowed desktops only
+- Scroll-scrubbed 3D totem turntable (64 WebP frames in `public/totem/`,
+  512 KB) in TWO places: the hero (lg+ only, decorative/aria-hidden,
+  rotates with plain page scroll — full 360° completes as the hero
+  exits; no pin) and the pinned "Field object" section between
+  publications and the CTA (this one carries the alt text / semantics).
+  `components/motion/totem-scrub.tsx` (mode="pin"|"hero", decorative
+  flag) owns progressive enhancement: server `<img>` baseline for
+  no-JS / reduced-motion / small screens (which never fetch the
+  sequence), canvas scrub + pointer hover-nudge on motion-allowed
+  desktops only
 - Pointer vocabulary additions: `data-magnet` (≤5px pull, desktop nav +
   join CTA) and `data-tilt` now casts a pointer-tracked accent
   highlight — both in `scroll-depth.tsx`, fine-pointer only
@@ -59,6 +63,22 @@ content or infrastructure work.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-07 (later) — totem in the hero
+- Reet: hero needed the interactive 3D element ("that's what makes it
+  interactive"). Decisions: rotate-in-place with page scroll (no pin /
+  scroll-jacking), keep the Field object section as is, reuse the same
+  frames. TotemScrub generalized: mode="hero" maps progress to
+  scrollY/(0.8·100vh) so the full rotation is visible before the hero
+  scrolls away; decorative flag → alt="" + aria-hidden (the section
+  instance keeps the description, so AT hears the object once)
+- Hero is now a lg:grid two-column (text / 17rem totem); below lg the
+  column is display:none AND the component bails ≤1023px — zero frame
+  requests on small screens, verified. Both instances share URLs so
+  the browser cache dedupes the second load
+- Gotcha: preview_resize immediately followed by reload can hydrate at
+  the native panel width — components that matchMedia at mount silently
+  bail; settle the viewport, then reload, then judge
 
 ### 2026-07-07 — totem turntable section + magnetic/tilt hover
 - Reet asked for 3D scrolling + cursor hover effects with Higgsfield-
