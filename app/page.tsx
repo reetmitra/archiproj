@@ -281,9 +281,13 @@ export default function HomePage() {
               want research to change what gets built.
             </p>
           </div>
+          {/* data-magnet edge, accepted: the cta-btn entrance timeline also
+              animates transforms, but it fires once on scroll-in and ends
+              before a pointer can settle on the button. */}
           <Link
             href="/join"
             data-anim="cta-btn"
+            data-magnet
             className="inline-block shrink-0 bg-ink text-paper font-display font-bold text-lg px-8 py-4 rounded-sm hover:bg-ink/85 transition-colors"
           >
             Join the lab

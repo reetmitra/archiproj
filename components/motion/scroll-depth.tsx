@@ -24,6 +24,10 @@ import {
  *   data-parallax="0.15"  scroll-linked drift; value scales travel,
  *                         capped so nothing moves more than ~±24px
  *   data-tilt             pointer-following panel tilt (fine pointers only)
+ *   data-magnet           element pulls a few px toward the pointer while
+ *                         hovered (fine pointers only; never on focus —
+ *                         the focus ring must not shift under a keyboard
+ *                         user)
  *
  * Unlike the homepage hero, data-depth targets are NOT pre-hidden in CSS:
  * initial states are set here, after mount, and only for elements still
@@ -35,6 +39,8 @@ import {
 
 const ENTER_LINE = 0.88; // fraction of viewport height; matches IO margin
 const TILT_MAX_DEG = 2;
+const MAGNET_MAX_PX = 5;
+const MAGNET_PULL = 0.15; // fraction of pointer-to-center distance
 const RISE = {
   opacity: [0, 1],
   rotateX: [4, 0],
@@ -183,6 +189,10 @@ export function ScrollDepth() {
             const py = ((e.clientY - r.top) / r.height) * 2 - 1;
             tilt.rotateX(-py * TILT_MAX_DEG);
             tilt.rotateY(px * TILT_MAX_DEG);
+            // Feed the CSS highlight (::after in globals.css) from the
+            // same event — no extra listener.
+            el.style.setProperty("--mx", `${((px + 1) / 2) * 100}%`);
+            el.style.setProperty("--my", `${((py + 1) / 2) * 100}%`);
           };
           const onEnter = () => utils.set(el, { perspective: 600 });
           const onLeave = () => {
@@ -198,6 +208,40 @@ export function ScrollDepth() {
             el.removeEventListener("pointerleave", onLeave);
           });
         });
+
+        // --- Magnetic pull ---
+        // Small enough (≤5px) that the rect-follows-transform feedback
+        // converges instead of oscillating.
+        document
+          .querySelectorAll<HTMLElement>("[data-magnet]")
+          .forEach((el) => {
+            const magnet = createAnimatable(el, {
+              x: 250,
+              y: 250,
+              ease: "outQuad",
+            });
+            const onMove = (e: PointerEvent) => {
+              const r = el.getBoundingClientRect();
+              const dx = e.clientX - (r.left + r.width / 2);
+              const dy = e.clientY - (r.top + r.height / 2);
+              magnet.x(
+                utils.clamp(dx * MAGNET_PULL, -MAGNET_MAX_PX, MAGNET_MAX_PX)
+              );
+              magnet.y(
+                utils.clamp(dy * MAGNET_PULL, -MAGNET_MAX_PX, MAGNET_MAX_PX)
+              );
+            };
+            const onLeave = () => {
+              magnet.x(0);
+              magnet.y(0);
+            };
+            el.addEventListener("pointermove", onMove);
+            el.addEventListener("pointerleave", onLeave);
+            cleanups.push(() => {
+              el.removeEventListener("pointermove", onMove);
+              el.removeEventListener("pointerleave", onLeave);
+            });
+          });
       }
 
       return () => cleanups.forEach((c) => c());
