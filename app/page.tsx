@@ -13,6 +13,7 @@ import {
 } from "@/components/primitives";
 import { HomeMotion } from "@/components/motion/home-motion";
 import { SplitFlap } from "@/components/motion/split-flap";
+import { TotemScrub } from "@/components/motion/totem-scrub";
 
 export default function HomePage() {
   const site = getSiteSettings();
@@ -226,6 +227,36 @@ export default function HomePage() {
                 <PublicationItem pub={pub} />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Field object — scroll-scrubbed totem turntable. Deliberately no
+          data-anim anywhere in here: the <img> must be visible from first
+          server paint (the scrub component owns its own progressive
+          enhancement), and the pre-hide gate must never touch it. The
+          stage only grows tall enough to pin on JS+motion+desktop, via
+          the html[data-motion] media query in globals.css. */}
+      <section aria-labelledby="totem-heading" className="border-t border-line">
+        <div className="totem-stage">
+          <div className="totem-pin sticky top-16 flex items-center md:min-h-[calc(100svh-4rem)] py-16 md:py-0">
+            <div className="mx-auto max-w-6xl w-full px-5 sm:px-8 grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+              <div>
+                <Eyebrow>Field object</Eyebrow>
+                <h2
+                  id="totem-heading"
+                  className="mt-4 font-display font-bold text-3xl sm:text-4xl tracking-tight"
+                >
+                  Signage you can read at every speed.
+                </h2>
+                <p className="mt-4 text-stone leading-relaxed max-w-md">
+                  We prototype the objects our research argues for. This totem
+                  is the lab&rsquo;s test rig &mdash; high-contrast, glare-free,
+                  legible from a bus window or a bench.
+                </p>
+              </div>
+              <TotemScrub />
+            </div>
           </div>
         </div>
       </section>

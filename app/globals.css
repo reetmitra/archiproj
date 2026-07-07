@@ -122,3 +122,59 @@ body {
     transition: none;
   }
 }
+
+/* ————————————————————————————————
+   Totem turntable (homepage "Field object" section)
+———————————————————————————————— */
+
+/* The stage only grows tall enough to pin when JS is present
+   (html[data-motion], set pre-paint by the layout script), motion is
+   allowed, and the screen is desktop-sized. Everyone else gets normal
+   flow — no dead scroll past a static image. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+  html[data-motion] .totem-stage {
+    height: 190vh;
+  }
+}
+
+/* Frame edges melt into the paper ground — absorbs the background
+   drift AI-generated turntable video always has at its borders. */
+.totem-media {
+  mask-image: radial-gradient(
+    ellipse 70% 65% at 50% 48%,
+    black 60%,
+    transparent 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 65% at 50% 48%,
+    black 60%,
+    transparent 92%
+  );
+}
+
+/* img is the server-painted baseline; the aria-hidden canvas crossfades
+   in once frames are decoded (data-ready). The img keeps its layout box
+   and its place in the accessibility tree — only its paint fades. */
+.totem-media img,
+.totem-media canvas {
+  transition: opacity 400ms ease;
+}
+.totem-media canvas {
+  opacity: 0;
+}
+.totem-scrub[data-ready] .totem-media img {
+  opacity: 0;
+}
+.totem-scrub[data-ready] .totem-media canvas {
+  opacity: 1;
+}
+
+/* The scroll hint is only true while the canvas scrub is live — no-JS,
+   reduced-motion, and mobile visitors never see it. */
+.totem-hint {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.totem-scrub[data-ready] .totem-hint {
+  opacity: 1;
+}
