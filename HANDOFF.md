@@ -16,11 +16,21 @@ entry to the **Session log** (what changed, why, anything surprising), and
 prune **Next up**. Keep entries short — this file is read at the start of
 every session and must stay cheap.
 
-## Current state (2026-07-06)
+## Current state (2026-07-07)
 
-**Phase:** prototype complete + site-wide motion, pre-discovery.
-Waiting on the meeting with Prof Li before any real content or
-infrastructure work.
+**Phase:** prototype complete + site-wide motion + totem showcase,
+pre-discovery. Waiting on the meeting with Prof Li before any real
+content or infrastructure work.
+
+- Homepage "Field object" section: scroll-scrubbed 3D totem turntable
+  (64 WebP frames in `public/totem/`, 468 KB) pinned between
+  publications and the CTA. `components/motion/totem-scrub.tsx` owns
+  progressive enhancement: server `<img>` baseline for no-JS /
+  reduced-motion / mobile (mobile never fetches the sequence), canvas
+  scrub + pointer hover-nudge on motion-allowed desktops only
+- Pointer vocabulary additions: `data-magnet` (≤5px pull, desktop nav +
+  join CTA) and `data-tilt` now casts a pointer-tracked accent
+  highlight — both in `scroll-depth.tsx`, fine-pointer only
 
 - Site-wide "signage has depth" scroll layer (subtle 3D): attribute-driven
   `components/motion/scroll-depth.tsx` mounted in `app/layout.tsx`
@@ -49,6 +59,45 @@ infrastructure work.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-07 — totem turntable section + magnetic/tilt hover
+- Reet asked for 3D scrolling + cursor hover effects with Higgsfield-
+  generated frames. Brainstormed to: wayfinding totem turntable (the
+  "signage has depth" metaphor made literal), new pinned homepage
+  section, hover-scrub + magnetic nav/CTA + tilt highlight, quiet
+  intensity, NO custom cursor
+- Asset pipeline (dev-time only, committed as static assets): 
+  nano_banana_pro still 3:4 (2cr, prompt bans readable text — video
+  smears lettering) → seedance_2_0 fast 720p 8s orbit (28cr) with
+  **start_image = end_image = same job_id**, which pins the orbit
+  closed — no loop seam, no ping-pong needed → ffmpeg fps=64/dur +
+  8% edge-crop → cwebp q58 → 64 frames 674×900, 468 KB. 30cr spent,
+  ~10 left. Script: session scratchpad `extract-frames.sh` (rewrite
+  from this log if needed)
+- Component: plain rAF + IO (no anime dep; frame index is app state,
+  anime onScroll would fight the hover offset + nearest-loaded
+  fallback). Sticky pin via CSS only (`html[data-motion]` media query
+  grows the stage to 190vh on desktop+motion — everyone else gets
+  normal flow, no dead scroll). No data-anim in the section; gate
+  flags untouched on `/`
+- Gotchas (new): brew ffmpeg 8.x dropped the webp encoder AND drawtext
+  — `brew install webp` for cwebp, PNG intermediate; Chrome
+  `img.decode()` rejects under parallel-decode pressure (~48 at once)
+  even with good bytes — retry + keep-if-complete + sequential fill
+  pass fixed frames 62/63 never appearing; Seedance job metadata
+  reports 1280×720 while in_progress but the finished video followed
+  the start image's 3:4 (834×1112) — don't trust params.width/height;
+  preview_resize preset "desktop" resets to the native panel, pass
+  explicit width/height to emulate 1280
+- Verified (computed styles at 1280 emulated + 398 native, not
+  screenshots): build fully static; scrub 0→63 exact quarter mapping;
+  hover +7/ease-back; magnet clamps at 5px, identity on leave; tilt
+  --mx/--my track pointer; reduced-motion matchMedia patch → no scrub,
+  no magnet, img visible; SSR HTML carries img+alt, no data-motion;
+  1 request at page top, sequence loads one viewport out; publications
+  filter still works; console clean; zero tabbables in the section
+- `npm run lint` has ONE pre-existing error (split-flap.tsx setState-
+  in-effect) — flagged as a separate task chip, not from this work
 
 ### 2026-07-06 (later) — site-wide 3D scroll depth ("signage has depth")
 - Brainstormed with Reet (21st.dev inspiration → quieted to fit Wayfinding):
