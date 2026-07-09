@@ -4,6 +4,9 @@
 /node_modules
 /studio/node_modules
 
+# generated send-out preview (2MB of embedded screenshots)
+/demo.html
+
 # sanity studio build + generated seed + runtime
 /studio/dist
 /studio/.sanity

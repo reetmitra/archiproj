@@ -125,6 +125,16 @@ except the prof's real name.
 - Gotcha: latest sanity CLI refuses Node <22.12 — pin `npx sanity@4`
   (4.22.0 works on Node 20); undeploy/deploy must run from `studio/`
   (global npx errors when cwd is the repo root)
+- Generated `demo.html` (repo root, gitignored, 2 MB): single-file
+  send-to-prof preview — full-page captures of all 8 routes + 2 mobile,
+  placeholder disclaimer up top. Regenerate: capture via Playwright
+  against `next start -p 3005` with reducedMotion emulation, then the
+  build-demo script (session scratchpad; rewrite from this note if gone)
+- Gotcha: claude-in-chrome `resize_window` left a stale 390px viewport
+  emulation stuck on the shared browser tab — pages rendered phone-width
+  in the corner of a full-size window until resize_window was called
+  again with desktop dimensions. If the site ever "renders in a corner",
+  it's this, not CSS
 
 ### 2026-07-09 (evening) — personal-site pivot, Phase A
 - Reet: rebuild as a personal site for Prof Li, replicating a blend of
