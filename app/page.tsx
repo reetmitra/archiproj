@@ -13,6 +13,7 @@ import {
 } from "@/components/primitives";
 import { HomeMotion } from "@/components/motion/home-motion";
 import { SplitFlap } from "@/components/motion/split-flap";
+import { TotemScrub } from "@/components/motion/totem-scrub";
 
 export default function HomePage() {
   const site = getSiteSettings();
@@ -25,8 +26,13 @@ export default function HomePage() {
       {/* data-motion is set pre-paint by the layout's inline script */}
       <HomeMotion />
 
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-20 sm:pt-28 pb-4">
+      {/* Hero. The totem rotates with plain page scroll — no pin, no
+          scroll-jacking. Deliberately no data-anim on it: its <img>
+          must be visible from first server paint (the scrub component
+          owns its own progressive enhancement). Below lg it's a static
+          poster under the mission text; the sequence never loads there. */}
+      <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-20 sm:pt-28 pb-4 lg:grid lg:grid-cols-[minmax(0,1fr)_17rem] lg:items-center lg:gap-12">
+        <div>
         <Eyebrow>
           <span className="hidden sm:inline">{site.department} · </span>
           <SplitFlap
@@ -73,6 +79,10 @@ export default function HomePage() {
         >
           {site.mission}
         </p>
+        </div>
+        <div className="mt-12 lg:mt-0 w-full max-w-[240px] lg:max-w-none mx-auto">
+          <TotemScrub />
+        </div>
       </section>
 
       {/* Route line + research themes */}
@@ -250,9 +260,13 @@ export default function HomePage() {
               want research to change what gets built.
             </p>
           </div>
+          {/* data-magnet edge, accepted: the cta-btn entrance timeline also
+              animates transforms, but it fires once on scroll-in and ends
+              before a pointer can settle on the button. */}
           <Link
             href="/join"
             data-anim="cta-btn"
+            data-magnet
             className="inline-block shrink-0 bg-ink text-paper font-display font-bold text-lg px-8 py-4 rounded-sm hover:bg-ink/85 transition-colors"
           >
             Join the lab

@@ -16,11 +16,24 @@ entry to the **Session log** (what changed, why, anything surprising), and
 prune **Next up**. Keep entries short — this file is read at the start of
 every session and must stay cheap.
 
-## Current state (2026-07-06)
+## Current state (2026-07-08)
 
-**Phase:** prototype complete + site-wide motion, pre-discovery.
-Waiting on the meeting with Prof Li before any real content or
-infrastructure work.
+**Phase:** prototype complete + site-wide motion + totem showcase,
+pre-discovery. Waiting on the meeting with Prof Li before any real
+content or infrastructure work.
+
+- Scroll-scrubbed 3D totem turntable (64 WebP frames in `public/totem/`,
+  512 KB) lives in the HERO only: right column at lg+, rotating with
+  plain page scroll (full 360° completes as the hero exits; no pin);
+  static poster under the mission text below lg (sequence never
+  fetched there). `components/motion/totem-scrub.tsx` owns progressive
+  enhancement: server `<img>` baseline for no-JS / reduced-motion /
+  small screens, canvas scrub + pointer hover-nudge on motion-allowed
+  desktops only. The pinned "Field object" section was removed
+  2026-07-08 (redundant once the hero had the interactive moment)
+- Pointer vocabulary additions: `data-magnet` (≤5px pull, desktop nav +
+  join CTA) and `data-tilt` now casts a pointer-tracked accent
+  highlight — both in `scroll-depth.tsx`, fine-pointer only
 
 - Site-wide "signage has depth" scroll layer (subtle 3D): attribute-driven
   `components/motion/scroll-depth.tsx` mounted in `app/layout.tsx`
@@ -49,6 +62,84 @@ infrastructure work.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-08 — Field object section removed; totem at all widths
+- Reet: "hero is enough" — the pinned section was a second telling of
+  the same idea. Removed it (markup + .totem-stage CSS + the
+  mode/decorative props on TotemScrub, now hero-only). The hero
+  instance carries the alt text again and renders at EVERY width:
+  canvas scrub ≥1024px, static poster under the mission text below
+  (zero sequence requests — verified)
+- Root cause of "I don't see anything in the hero": the totem was
+  lg-only and Reet's viewport (preview panel) was narrower than
+  1024px. Design lesson: don't gate the page's one signature object
+  behind a breakpoint with no small-screen fallback
+- Console gotcha: React "deps array changed size" errors after editing
+  a useEffect deps array are HMR artifacts (old mounted instance vs
+  hot-swapped code) — the preview console buffer also persists across
+  reloads, so check whether the entry COUNT grows on a fresh load
+  before treating them as real
+
+### 2026-07-07 (later) — totem in the hero
+- Reet: hero needed the interactive 3D element ("that's what makes it
+  interactive"). Decisions: rotate-in-place with page scroll (no pin /
+  scroll-jacking), keep the Field object section as is, reuse the same
+  frames. TotemScrub generalized: mode="hero" maps progress to
+  scrollY/(0.8·100vh) so the full rotation is visible before the hero
+  scrolls away; decorative flag → alt="" + aria-hidden (the section
+  instance keeps the description, so AT hears the object once)
+- Hero is now a lg:grid two-column (text / 17rem totem); below lg the
+  column is display:none AND the component bails ≤1023px — zero frame
+  requests on small screens, verified. Both instances share URLs so
+  the browser cache dedupes the second load
+- Gotcha: preview_resize immediately followed by reload can hydrate at
+  the native panel width — components that matchMedia at mount silently
+  bail; settle the viewport, then reload, then judge
+
+### 2026-07-07 — totem turntable section + magnetic/tilt hover
+- Reet asked for 3D scrolling + cursor hover effects with Higgsfield-
+  generated frames. Brainstormed to: wayfinding totem turntable (the
+  "signage has depth" metaphor made literal), new pinned homepage
+  section, hover-scrub + magnetic nav/CTA + tilt highlight, quiet
+  intensity, NO custom cursor
+- Asset pipeline (dev-time only, committed as static assets): 
+  nano_banana_pro still 3:4 (2cr, prompt bans readable text — video
+  smears lettering) → seedance_2_0 fast 720p 8s orbit (28cr) with
+  **start_image = end_image = same job_id**, which pins the orbit
+  closed — no loop seam, no ping-pong needed → ffmpeg fps=64/dur +
+  8% edge-crop → cwebp q58 → 64 frames. 30cr spent, ~10 left. Script:
+  session scratchpad `extract-frames.sh` (rewrite from this log if
+  needed). Frames were later re-extracted at the video's NATIVE
+  766×1022 (512 KB) — the first pass needlessly downscaled to 674×900;
+  don't add a scale step below source size, retina target is 720px
+  wide at the 360px display width. Reet asked for Gemini/ChatGPT for
+  a higher-res redo — not connected here, and chat image models can't
+  hold 64-frame consistency anyway (frames must come from video);
+  native re-extraction of the paid orbit covered the gap for free
+- Component: plain rAF + IO (no anime dep; frame index is app state,
+  anime onScroll would fight the hover offset + nearest-loaded
+  fallback). Sticky pin via CSS only (`html[data-motion]` media query
+  grows the stage to 190vh on desktop+motion — everyone else gets
+  normal flow, no dead scroll). No data-anim in the section; gate
+  flags untouched on `/`
+- Gotchas (new): brew ffmpeg 8.x dropped the webp encoder AND drawtext
+  — `brew install webp` for cwebp, PNG intermediate; Chrome
+  `img.decode()` rejects under parallel-decode pressure (~48 at once)
+  even with good bytes — retry + keep-if-complete + sequential fill
+  pass fixed frames 62/63 never appearing; Seedance job metadata
+  reports 1280×720 while in_progress but the finished video followed
+  the start image's 3:4 (834×1112) — don't trust params.width/height;
+  preview_resize preset "desktop" resets to the native panel, pass
+  explicit width/height to emulate 1280
+- Verified (computed styles at 1280 emulated + 398 native, not
+  screenshots): build fully static; scrub 0→63 exact quarter mapping;
+  hover +7/ease-back; magnet clamps at 5px, identity on leave; tilt
+  --mx/--my track pointer; reduced-motion matchMedia patch → no scrub,
+  no magnet, img visible; SSR HTML carries img+alt, no data-motion;
+  1 request at page top, sequence loads one viewport out; publications
+  filter still works; console clean; zero tabbables in the section
+- `npm run lint` has ONE pre-existing error (split-flap.tsx setState-
+  in-effect) — flagged as a separate task chip, not from this work
 
 ### 2026-07-06 (later) — site-wide 3D scroll depth ("signage has depth")
 - Brainstormed with Reet (21st.dev inspiration → quieted to fit Wayfinding):

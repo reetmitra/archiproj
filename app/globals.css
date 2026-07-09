@@ -91,15 +91,37 @@ body {
 }
 
 /* Depth-tilt panels: the shadow deepens under a fine pointer (JS adds
-   the tilt itself). Pure CSS so the affordance survives without JS. */
+   the tilt itself). Pure CSS so the affordance survives without JS.
+   The ::after is a pool of warm light tracking the pointer — --mx/--my
+   are written by the tilt handler in scroll-depth.tsx; their 50%
+   defaults keep a centered highlight when JS never runs. Accent used
+   graphically (light on signage), never as text. */
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
   [data-tilt] {
+    position: relative;
     transition: box-shadow 250ms ease;
+  }
+  [data-tilt]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      240px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--color-accent) 9%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 250ms ease;
+  }
+  [data-tilt]:hover::after {
+    opacity: 1;
   }
   [data-tilt]:hover {
     box-shadow:
-      0 12px 28px -14px color-mix(in srgb, var(--color-ink) 22%, transparent),
-      0 3px 8px -4px color-mix(in srgb, var(--color-ink) 12%, transparent);
+      0 12px 28px -14px color-mix(in srgb, var(--color-ink) 28%, transparent),
+      0 3px 8px -4px color-mix(in srgb, var(--color-ink) 14%, transparent);
   }
 }
 
@@ -121,4 +143,50 @@ body {
   .link-draw {
     transition: none;
   }
+}
+
+/* ————————————————————————————————
+   Totem turntable (homepage hero)
+———————————————————————————————— */
+
+/* Frame edges melt into the paper ground — absorbs the background
+   drift AI-generated turntable video always has at its borders. */
+.totem-media {
+  mask-image: radial-gradient(
+    ellipse 70% 65% at 50% 48%,
+    black 60%,
+    transparent 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 65% at 50% 48%,
+    black 60%,
+    transparent 92%
+  );
+}
+
+/* img is the server-painted baseline; the aria-hidden canvas crossfades
+   in once frames are decoded (data-ready). The img keeps its layout box
+   and its place in the accessibility tree — only its paint fades. */
+.totem-media img,
+.totem-media canvas {
+  transition: opacity 400ms ease;
+}
+.totem-media canvas {
+  opacity: 0;
+}
+.totem-scrub[data-ready] .totem-media img {
+  opacity: 0;
+}
+.totem-scrub[data-ready] .totem-media canvas {
+  opacity: 1;
+}
+
+/* The scroll hint is only true while the canvas scrub is live — no-JS,
+   reduced-motion, and mobile visitors never see it. */
+.totem-hint {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.totem-scrub[data-ready] .totem-hint {
+  opacity: 1;
 }
