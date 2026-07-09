@@ -34,6 +34,12 @@
 .DS_Store
 *.pem
 
+# project docs kept local-only, not in the repo (README.md stays tracked)
+/AGENTS.md
+/CLAUDE.md
+/HANDOFF.md
+/docs/*.md
+
 # debug
 npm-debug.log*
 yarn-debug.log*
