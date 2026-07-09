@@ -1,8 +1,11 @@
-# Ageing Mobility Lab — research lab website
+# Xiang Li — personal academic website
 
-Prototype website for Prof Li's lab (age-friendly planning & transportation
-equity, NUS). Built as a static Next.js site designed to be handed over to a
-non-technical owner: all content will live in Sanity, all design lives in code.
+Prototype personal website for Prof Li (age-friendly planning & transportation
+equity, NUS), with his lab folded inside (People page, lab-voice news). Built
+as a static Next.js site designed to be handed over to a non-technical owner:
+all content will live in Sanity, all design lives in code. Modeled on a blend
+of urbantransitionslab.com (lab-site anatomy) and xiaofanliang.com (profile
+hero, work-with-me tiers).
 
 **All names, papers, grants, and people in the current content are placeholders**
 pending discovery with the prof. Replace via `lib/content/data.ts` for now.

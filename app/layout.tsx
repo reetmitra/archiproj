@@ -4,7 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ScrollDepth } from "@/components/motion/scroll-depth";
-import { getSiteSettings } from "@/lib/content";
+import { getProfile } from "@/lib/content";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -22,21 +22,23 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
 });
 
-const site = getSiteSettings();
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  return {
+    title: {
+      default: `${profile.name} — ${profile.title}, ${profile.affiliation}`,
+      template: `%s — ${profile.name}`,
+    },
+    description: profile.bio,
+  };
+}
 
-export const metadata: Metadata = {
-  title: {
-    default: `${site.labName} — ${site.tagline}`,
-    template: `%s — ${site.labName}`,
-  },
-  description: site.mission,
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const profile = await getProfile();
   return (
     <html
       lang="en"
@@ -60,7 +62,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Header />
+        <Header wordmark={profile.name} />
         <main id="main" className="flex-1">
           {children}
         </main>

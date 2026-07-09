@@ -6,24 +6,53 @@
 
 import type {
   SiteSettings,
+  Profile,
   ResearchTheme,
   Project,
   Publication,
   Person,
   NewsPost,
   Course,
-  JoinUsContent,
+  WorkWithMeContent,
 } from "./types";
 
 export const siteSettings: SiteSettings = {
   labName: "Ageing Mobility Lab",
-  tagline: "Cities that work at every age",
   mission:
     "We study how neighbourhoods, streets, and transport systems can support people as they grow older — and how to plan them more fairly.",
   institution: "National University of Singapore",
   department: "Department of Architecture, College of Design and Engineering",
   address: "4 Architecture Drive, Singapore 117566",
   email: "lab@nus.edu.sg",
+};
+
+export const profile: Profile = {
+  name: "Xiang Li",
+  title: "Associate Professor",
+  affiliation: "Department of Architecture, National University of Singapore",
+  bio: "I study how neighbourhoods, streets, and transport systems can support people as they grow older — and how to plan them more fairly. My group pairs street-level fieldwork with open data, and our work always ends in something a city can build.",
+  education: [
+    {
+      degree: "PhD, City & Regional Planning",
+      institution: "University of California, Berkeley",
+      year: "2014",
+    },
+    {
+      degree: "MSc, Urban Planning",
+      institution: "Tongji University",
+      year: "2009",
+    },
+    {
+      degree: "BEng, Civil Engineering",
+      institution: "Tsinghua University",
+      year: "2007",
+    },
+  ],
+  links: [
+    { label: "Google Scholar", url: "https://scholar.google.com" },
+    { label: "ORCID", url: "https://orcid.org" },
+  ],
+  email: "xiang.li@nus.edu.sg",
 };
 
 export const researchThemes: ResearchTheme[] = [
@@ -182,9 +211,9 @@ export const people: Person[] = [
     slug: "prof-li",
     name: "Prof Xiang Li",
     role: "faculty",
-    title: "Principal Investigator · Assistant Professor",
+    title: "Principal Investigator · Associate Professor",
     bio: "Xiang studies the intersection of population ageing and urban mobility. Before joining NUS he worked in transport planning practice, which is why the lab's work always ends in something a city can build.",
-    email: "lab@nus.edu.sg",
+    email: "xiang.li@nus.edu.sg",
     links: [
       { label: "Google Scholar", url: "https://scholar.google.com" },
       { label: "ORCID", url: "https://orcid.org" },
@@ -286,10 +315,24 @@ export const courses: Course[] = [
   },
 ];
 
-export const joinUs: JoinUsContent = {
-  heading: "Join the lab",
+export const workWithMe: WorkWithMeContent = {
+  heading: "How to join the work",
   intro:
-    "We look for people who care that research changes what gets built. Backgrounds in planning, geography, data science, public health, and design all fit — the common thread is fieldwork-grounded, publicly useful work.",
+    "I look for people who care that research changes what gets built. Backgrounds in planning, geography, data science, public health, and design all fit — the common thread is fieldwork-grounded, publicly useful work.",
+  sections: [
+    {
+      title: "Current NUS students",
+      body: "Paid research assistant roles open most semesters, mainly on the street audit — no experience needed, training provided. If you want course credit instead, propose an independent study; the strongest proposals connect to one of the research themes and name the piece of fieldwork or analysis you would own.",
+    },
+    {
+      title: "Prospective PhD students",
+      body: "Write to me before you apply to the programme. Tell me which of the research themes you want to push on and what you would bring to it — a method, a fieldwork instinct, a dataset, a question I haven't asked. Admitted students are funded for four years through NUS research scholarships.",
+    },
+    {
+      title: "Visiting researchers & collaborations",
+      body: "I host a small number of visiting researchers and welcome collaborations with agencies, city governments, and community organisations — especially where the output is something a city can act on. Timing depends on space and fit, so write early.",
+    },
+  ],
   openings: [
     {
       title: "Funded PhD position — transport equity",
@@ -305,5 +348,5 @@ export const joinUs: JoinUsContent = {
     },
   ],
   howToApply:
-    "Email us with a short note about what you want to work on, a CV, and one piece of work you're proud of — a paper, a map, a project, anything. We reply to every serious application.",
+    "Email me a short note about what you want to work on, a CV, and one piece of work you're proud of — a paper, a map, a project, anything. I reply to every serious application.",
 };

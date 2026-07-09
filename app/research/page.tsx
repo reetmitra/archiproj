@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getProjectsByTheme, getResearchThemes } from "@/lib/content";
+import { getProjects, getResearchThemes } from "@/lib/content";
 import { PageIntro } from "@/components/primitives";
 
 export const metadata: Metadata = {
   title: "Research",
 };
 
-export default function ResearchPage() {
-  const themes = getResearchThemes();
+export default async function ResearchPage() {
+  const themes = await getResearchThemes();
+  const allProjects = await getProjects();
 
   return (
     <>
@@ -20,7 +21,9 @@ export default function ResearchPage() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8 pb-8 space-y-20">
         {themes.map((theme) => {
-          const projects = getProjectsByTheme(theme.slug);
+          const projects = allProjects.filter(
+            (p) => p.themeSlug === theme.slug,
+          );
           return (
             <section
               key={theme.slug}

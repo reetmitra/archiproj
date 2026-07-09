@@ -76,7 +76,14 @@ function Group({ heading, members }: { heading: string; members: Person[] }) {
   );
 }
 
-export default function PeoplePage() {
+export default async function PeoplePage() {
+  const [faculty, phd, masters, alumni] = await Promise.all([
+    getPeopleByRole("faculty"),
+    getPeopleByRole("phd"),
+    getPeopleByRole("masters"),
+    getPeopleByRole("alumni"),
+  ]);
+
   return (
     <>
       <PageIntro
@@ -85,10 +92,10 @@ export default function PeoplePage() {
         lede="A small group with mixed backgrounds — planning, data science, geography, design — held together by fieldwork."
       />
       <div className="mx-auto max-w-6xl px-5 sm:px-8 pb-8 space-y-16">
-        <Group heading="Principal Investigator" members={getPeopleByRole("faculty")} />
-        <Group heading="PhD researchers" members={getPeopleByRole("phd")} />
-        <Group heading="Masters students" members={getPeopleByRole("masters")} />
-        <Group heading="Alumni" members={getPeopleByRole("alumni")} />
+        <Group heading="Principal Investigator" members={faculty} />
+        <Group heading="PhD researchers" members={phd} />
+        <Group heading="Masters students" members={masters} />
+        <Group heading="Alumni" members={alumni} />
       </div>
     </>
   );

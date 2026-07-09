@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { getSiteSettings } from "@/lib/content";
+import { getProfile, getSiteSettings } from "@/lib/content";
 
-export function Footer() {
-  const site = getSiteSettings();
+export async function Footer() {
+  const site = await getSiteSettings();
+  const profile = await getProfile();
 
   return (
     <footer className="mt-24">
@@ -16,21 +17,22 @@ export function Footer() {
           className="mx-auto max-w-6xl px-5 sm:px-8 py-14 grid gap-10 sm:grid-cols-3"
         >
           <div>
-            <p className="font-display font-bold text-xl">{site.labName}</p>
+            <p className="font-display font-bold text-xl">{profile.name}</p>
             <p className="mt-3 text-paper/70 leading-relaxed max-w-xs">
-              {site.department}
+              {profile.title}
               <br />
-              {site.institution}
+              {profile.affiliation}
             </p>
+            <p className="mt-3 text-paper/70">{site.labName}</p>
           </div>
           <div className="font-mono text-sm">
             <p className="text-paper/50 uppercase tracking-widest mb-4">Visit</p>
             <p className="text-paper/80 leading-relaxed">{site.address}</p>
             <a
-              href={`mailto:${site.email}`}
+              href={`mailto:${profile.email}`}
               className="mt-3 inline-block underline decoration-accent underline-offset-4 hover:text-accent"
             >
-              {site.email}
+              {profile.email}
             </a>
           </div>
           <div className="font-mono text-sm">
@@ -40,7 +42,7 @@ export function Footer() {
                 ["Research", "/research"],
                 ["Publications", "/publications"],
                 ["News", "/news"],
-                ["Join us", "/join"],
+                ["Work with me", "/work-with-me"],
               ].map(([label, href]) => (
                 <li key={href}>
                   <Link
@@ -56,8 +58,8 @@ export function Footer() {
         </div>
         <div className="border-t border-paper/15">
           <p className="mx-auto max-w-6xl px-5 sm:px-8 py-5 font-mono text-xs text-paper/50">
-            © {new Date().getFullYear()} {site.labName}. Placeholder content —
-            pending content from the lab.
+            © {new Date().getFullYear()} {profile.name}. Placeholder content —
+            pending content from the professor.
           </p>
         </div>
       </div>

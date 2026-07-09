@@ -1,11 +1,15 @@
 @AGENTS.md
 
-# Project: research lab website for Prof Li
+# Project: personal academic website for Prof Li
 
-Static Next.js site for a professor's research lab (age-friendly planning &
-transportation equity, NUS). Full project plan and decisions:
-`~/.claude/plans/i-have-to-work-zippy-summit.md`. Meeting checklist:
-`docs/prof-meeting-checklist.md`.
+Static Next.js **personal site for Prof Li** (age-friendly planning &
+transportation equity, NUS) with his lab folded inside — person-branded
+wordmark/metadata, profile hero, first-person voice; lab voice only in
+lab-context sections (news, People). Modeled on urbantransitionslab.com +
+xiaofanliang.com. Full project plan and decisions:
+`~/.claude/plans/i-have-to-work-zippy-summit.md` (original) and
+`~/.claude/plans/what-happened-effervescent-diffie.md` (personal-site pivot +
+Sanity). Meeting checklist: `docs/prof-meeting-checklist.md`.
 
 **Session start: read `HANDOFF.md`** for current state, session log, and next
 steps. **Session end: update it** (current state + dated log entry + prune
@@ -68,8 +72,9 @@ defined once in `app/globals.css`; never hardcode hex values in components.
 ## Copy voice
 
 Plain, active, concrete; sentence case; no academic pomp and no marketing
-filler. The existing headings ("What we've written", "Who does the work",
-"Lab notebook") set the register — match it.
+filler. The existing headings ("What I've written", "Who does the work",
+"Lab notebook") set the register — match it. First-person ("I") on the
+hero and Work with me; lab voice ("we") only in news and People contexts.
 
 ## Workflow
 
@@ -79,8 +84,18 @@ filler. The existing headings ("What we've written", "Who does the work",
   check the affected pages in the preview at desktop **and** mobile widths
 - Commit style: short imperative subject, body explains why
 
+## CMS (Sanity) — decided 2026-07-09
+
+Sanity runs NOW on **Reet's dev account** (decision supersedes the earlier
+"never Reet's accounts" rule for the CMS only): schemas live in `studio/`,
+content seeds from `lib/content/data.ts`, and the accessors fall back to
+local data when `SANITY_PROJECT_ID` is unset — a clean clone always builds.
+At handover the project is recreated/transferred under **the prof's own
+account** (schemas are code; content moves via `sanity dataset export` /
+`import`) — nothing may depend on Reet's account after that.
+
 ## Pending (needs the prof, not code)
 
-Sanity project + GROQ swap, Vercel deploy + publish webhook, domain — all on
-**accounts the prof owns, never Reet's**. Real content replaces
+Vercel deploy + publish webhook, domain, Sanity project transfer — final
+accounts must be **ones the prof owns**. Real content replaces
 `lib/content/data.ts` after the discovery meeting.

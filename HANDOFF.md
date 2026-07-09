@@ -16,11 +16,27 @@ entry to the **Session log** (what changed, why, anything surprising), and
 prune **Next up**. Keep entries short — this file is read at the start of
 every session and must stay cheap.
 
-## Current state (2026-07-09)
+## Current state (2026-07-09, evening)
 
-**Phase:** prototype complete + site-wide motion + totem showcase,
-pre-discovery. Waiting on the meeting with Prof Li before any real
-content or infrastructure work.
+**Phase:** personal-site pivot (Phase A of the plan in
+`~/.claude/plans/what-happened-effervescent-diffie.md`) done on local data;
+Sanity (Phases B–C) next. Still all placeholder content.
+
+- Site is now **person-branded**: wordmark/metadata/footer = "Xiang Li"
+  (placeholder), profile hero (name headline via the same hero-word spans,
+  title · affiliation meta, first-person bio, email/Scholar/ORCID links,
+  3 education lines) with the totem kept as the hero visual. New `Profile`
+  type/singleton; `JoinUs` → `WorkWithMe` (3 tiered sections + optional
+  openings); `/join` → `/work-with-me`; CTA band reworded "Work with me."
+  SiteSettings lost `tagline` (nothing rendered it)
+- **All content accessors are now async** (the Sanity seam): pages await
+  them; `app/layout.tsx` uses `generateMetadata()` (the old module-scope
+  accessor call is gone) and passes `wordmark` prop to the client Header
+- Decided with Reet: Sanity NOW on Reet's dev account, transfer/recreate
+  under the prof's account at handover (CLAUDE.md updated — don't "correct"
+  this back); hosted studio (`studio/` folder, `sanity deploy`), no
+  next-sanity, no tokens (public dataset + CLI-auth seeding), local-data
+  fallback when `SANITY_PROJECT_ID` is unset
 
 - Scroll-scrubbed 3D totem turntable (64 WebP frames in `public/totem/`,
   512 KB) lives in the HERO only: right column at lg+, rotating with
@@ -65,6 +81,28 @@ content or infrastructure work.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-09 (evening) — personal-site pivot, Phase A
+- Reet: rebuild as a personal site for Prof Li, replicating a blend of
+  urbantransitionslab.com + xiaofanliang.com, keeping Wayfinding; News/
+  Publications/Research must become prof-editable. Brainstormed + planned
+  (plan file above); decisions: person-branded w/ lab inside, profile hero
+  keeping totem, Join → Work with me (tiered), Sanity now on dev account
+- Implemented Phase A (identity restructure on local data + async accessor
+  flip). Verified: build fully static (`/work-with-me` in, `/join` gone),
+  lint = only the pre-existing split-flap error, desktop 1280 via Chrome +
+  mobile 390 via Playwright (profile hero stacks, poster under bio,
+  vertical route line), publications filter works post-hydration, research
+  page refactor (one getProjects + in-page filter) renders all 4 projects,
+  reduced-motion safe (pre-hide CSS is inside the no-preference media
+  query; new hero elements reuse existing `hero-mission`/`hero-word` attrs
+  so home-motion needed zero changes)
+- Gotchas (new): `.hero-word` is inline-block+overflow-hidden — the space
+  between name words must stay OUTSIDE the span (Fragment wrapper);
+  claude-in-chrome `resize_window` reported success but screenshots stayed
+  at desktop width — used Playwright `setViewportSize` for mobile checks;
+  Playwright MCP writes screenshots/snapshots into the repo root
+  (`.playwright-mcp/`) — delete before committing
 
 ### 2026-07-09 — totem work pushed; main synced with origin
 - The 9 local commits (totem assets → hero totem → section removal) had
@@ -239,18 +277,21 @@ content or infrastructure work.
 
 ## Next up (in order)
 
-1. **Discovery meeting with Prof Li** — bring `docs/prof-meeting-checklist.md`;
+1. **Phase B (Sanity studio)**: Reet creates account + `npx sanity login` +
+   project; Claude scaffolds `studio/` (9 schemas mirroring types.ts,
+   News-first desk, locked singletons, plain-English descriptions), seeds
+   from data.ts via ndjson + `sanity dataset import`, `sanity deploy`
+2. **Phase C (GROQ wiring)**: `@sanity/client` fetchers behind the accessors,
+   env-gated w/ local fallback; verify parity + fully static + editor loop
+   (Reet edits bio in studio → rebuild → change appears)
+3. **Discovery meeting with Prof Li** — bring `docs/prof-meeting-checklist.md`;
    send him the content section a few days ahead so files arrive at the meeting
-2. Replace `lib/content/data.ts` placeholders with real content; rename lab
-   if needed (name appears in: `data.ts` siteSettings, `components/header.tsx`
-   wordmark, `README.md`)
-3. Sanity project **on the prof's account**: schemas from
-   `lib/content/types.ts`, plain-English field descriptions, validation,
-   locked singletons, News-first desk structure; then swap `lib/content/index.ts`
-   accessors to GROQ (pages must not change)
-4. GitHub + Vercel on prof's accounts, auto-deploy, Sanity publish webhook →
-   revalidation; domain per meeting decision
-5. Handover package: illustrated 5-task editing guide, short screen
+4. Replace `lib/content/data.ts` placeholders with real content (name appears
+   in `data.ts` profile + siteSettings, `README.md`); re-seed Sanity
+5. GitHub + Vercel on prof's accounts, auto-deploy, Sanity publish webhook →
+   rebuild; transfer/recreate the Sanity project under the prof's account;
+   domain per meeting decision
+6. Handover package: illustrated 5-task editing guide, short screen
    recordings, break-glass sheet, weekly Sanity export GitHub Action, uptime
    monitor → acceptance test: prof publishes a news post unaided
 

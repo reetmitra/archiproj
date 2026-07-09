@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   title: "News",
 };
 
-export default function NewsPage() {
-  const posts = getNews();
+export default async function NewsPage() {
+  const posts = await getNews();
 
   return (
     <>

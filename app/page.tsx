@@ -1,7 +1,9 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import {
   getFeaturedPublications,
   getNews,
+  getProfile,
   getResearchThemes,
   getSiteSettings,
 } from "@/lib/content";
@@ -15,11 +17,17 @@ import { HomeMotion } from "@/components/motion/home-motion";
 import { SplitFlap } from "@/components/motion/split-flap";
 import { TotemScrub } from "@/components/motion/totem-scrub";
 
-export default function HomePage() {
-  const site = getSiteSettings();
-  const themes = getResearchThemes();
-  const news = getNews(3);
-  const featured = getFeaturedPublications().slice(0, 3);
+export default async function HomePage() {
+  const site = await getSiteSettings();
+  const profile = await getProfile();
+  const themes = await getResearchThemes();
+  const news = await getNews(3);
+  const featured = (await getFeaturedPublications()).slice(0, 3);
+
+  // The animated headline is the professor's name, one word per flap.
+  const nameWords = profile.name.split(" ");
+  const lastWord = nameWords[nameWords.length - 1];
+  const leadWords = nameWords.slice(0, -1);
 
   return (
     <>
@@ -45,24 +53,16 @@ export default function HomePage() {
           data-parallax="0.14"
           className="mt-5 font-display font-extrabold tracking-tight text-5xl sm:text-7xl lg:text-[5.25rem] leading-[1.02] max-w-4xl"
         >
-          <span className="hero-word">
-            <span data-anim="hero-word">Cities</span>
-          </span>{" "}
-          <span className="hero-word">
-            <span data-anim="hero-word">that</span>
-          </span>{" "}
-          <span className="hero-word">
-            <span data-anim="hero-word">work</span>
-          </span>{" "}
-          <span className="hero-word">
-            <span data-anim="hero-word">at</span>
-          </span>{" "}
+          {leadWords.map((word) => (
+            <Fragment key={word}>
+              <span className="hero-word">
+                <span data-anim="hero-word">{word}</span>
+              </span>{" "}
+            </Fragment>
+          ))}
           <span className="whitespace-nowrap">
             <span className="hero-word">
-              <span data-anim="hero-word">every</span>
-            </span>{" "}
-            <span className="hero-word">
-              <span data-anim="hero-word">age</span>
+              <span data-anim="hero-word">{lastWord}</span>
             </span>
             <span
               aria-hidden
@@ -75,10 +75,47 @@ export default function HomePage() {
         </h1>
         <p
           data-anim="hero-mission"
-          className="mt-7 text-xl sm:text-2xl text-stone leading-relaxed max-w-2xl"
+          className="mt-5 font-mono text-sm sm:text-base text-stone"
         >
-          {site.mission}
+          {profile.title} · {profile.affiliation}
         </p>
+        <p
+          data-anim="hero-mission"
+          className="mt-6 text-lg sm:text-xl text-stone leading-relaxed max-w-2xl"
+        >
+          {profile.bio}
+        </p>
+        <p
+          data-anim="hero-mission"
+          className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm"
+        >
+          <a
+            href={`mailto:${profile.email}`}
+            className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
+          >
+            Email
+          </a>
+          {profile.links.map((link) => (
+            <a
+              key={link.url}
+              href={link.url}
+              className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
+            >
+              {link.label}
+            </a>
+          ))}
+        </p>
+        <ul
+          aria-label="Education"
+          data-anim="hero-mission"
+          className="mt-8 space-y-1.5 font-mono text-sm text-stone"
+        >
+          {profile.education.map((entry) => (
+            <li key={entry.degree}>
+              {entry.year} — {entry.degree}, {entry.institution}
+            </li>
+          ))}
+        </ul>
         </div>
         <div className="mt-12 lg:mt-0 w-full max-w-[240px] lg:max-w-none mx-auto">
           <TotemScrub />
@@ -240,9 +277,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Join CTA — signage band. The yellow band is never hidden; empty
-          signage before the text arrives is intended. */}
-      <section aria-labelledby="join-heading" className="bg-accent">
+      {/* Work-with-me CTA — signage band. The yellow band is never hidden;
+          empty signage before the text arrives is intended. */}
+      <section aria-labelledby="work-heading" className="bg-accent">
         <div
           data-motion-section="cta"
           data-parallax="0.08"
@@ -250,26 +287,26 @@ export default function HomePage() {
         >
           <div data-anim="cta-copy">
             <h2
-              id="join-heading"
+              id="work-heading"
               className="font-display font-extrabold tracking-tight text-4xl sm:text-5xl"
             >
-              We&rsquo;re recruiting.
+              Work with me.
             </h2>
             <p className="mt-4 text-lg max-w-xl leading-relaxed">
-              Funded PhD positions and paid fieldwork roles for students who
-              want research to change what gets built.
+              Funded PhD positions, paid fieldwork roles, and collaborations
+              for people who want research to change what gets built.
             </p>
           </div>
           {/* data-magnet edge, accepted: the cta-btn entrance timeline also
               animates transforms, but it fires once on scroll-in and ends
               before a pointer can settle on the button. */}
           <Link
-            href="/join"
+            href="/work-with-me"
             data-anim="cta-btn"
             data-magnet
             className="inline-block shrink-0 bg-ink text-paper font-display font-bold text-lg px-8 py-4 rounded-sm hover:bg-ink/85 transition-colors"
           >
-            Join the lab
+            How to work with me
           </Link>
         </div>
       </section>

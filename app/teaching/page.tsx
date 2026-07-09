@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   title: "Teaching",
 };
 
-export default function TeachingPage() {
-  const courses = getCourses();
+export default async function TeachingPage() {
+  const courses = await getCourses();
 
   return (
     <>

@@ -4,32 +4,34 @@ import { notFound } from "next/navigation";
 import {
   getProject,
   getProjects,
-  getPublication,
+  getPublications,
   getTheme,
 } from "@/lib/content";
 import { PublicationItem } from "@/components/primitives";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getProjects().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const projects = await getProjects();
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   return { title: project?.title ?? "Project" };
 }
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) notFound();
 
-  const theme = getTheme(project.themeSlug);
+  const theme = await getTheme(project.themeSlug);
+  const allPubs = await getPublications();
   const pubs =
     project.publicationIds
-      ?.map(getPublication)
+      ?.map((id) => allPubs.find((p) => p.id === id))
       .filter((p) => p !== undefined) ?? [];
 
   return (

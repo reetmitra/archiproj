@@ -7,11 +7,29 @@
 
 export type SiteSettings = {
   labName: string;
-  tagline: string;
   mission: string;
   institution: string;
   department: string;
   address: string;
+  email: string;
+};
+
+export type EducationEntry = {
+  degree: string;
+  institution: string;
+  /** Year completed, e.g. "2014" */
+  year: string;
+};
+
+/** The professor. Singleton — the site is his; the lab lives inside it. */
+export type Profile = {
+  name: string;
+  title: string;
+  affiliation: string;
+  /** First-person, 2–4 sentences */
+  bio: string;
+  education: EducationEntry[];
+  links: { label: string; url: string }[];
   email: string;
 };
 
@@ -85,9 +103,16 @@ export type Course = {
   description: string;
 };
 
-export type JoinUsContent = {
+export type WorkWithMeSection = {
+  /** e.g. "Current NUS students", "Prospective PhD students" */
+  title: string;
+  body: string;
+};
+
+export type WorkWithMeContent = {
   heading: string;
   intro: string;
-  openings: { title: string; description: string; open: boolean }[];
+  sections: WorkWithMeSection[];
+  openings?: { title: string; description: string; open: boolean }[];
   howToApply: string;
 };

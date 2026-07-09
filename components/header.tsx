@@ -10,10 +10,12 @@ const nav = [
   { href: "/people", label: "People" },
   { href: "/news", label: "News" },
   { href: "/teaching", label: "Teaching" },
-  { href: "/join", label: "Join us" },
+  { href: "/work-with-me", label: "Work with me" },
 ];
 
-export function Header() {
+/** Client component — the wordmark comes in as a prop from the layout;
+ *  never call content accessors here. */
+export function Header({ wordmark }: { wordmark: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -26,7 +28,7 @@ export function Header() {
           onClick={() => setOpen(false)}
         >
           <span aria-hidden className="size-3 rounded-full bg-accent ring-2 ring-ink" />
-          Ageing Mobility Lab
+          {wordmark}
         </Link>
 
         <nav aria-label="Main" className="hidden md:flex items-center gap-1">
