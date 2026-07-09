@@ -16,7 +16,7 @@ entry to the **Session log** (what changed, why, anything surprising), and
 prune **Next up**. Keep entries short — this file is read at the start of
 every session and must stay cheap.
 
-## Current state (2026-07-08)
+## Current state (2026-07-09)
 
 **Phase:** prototype complete + site-wide motion + totem showcase,
 pre-discovery. Waiting on the meeting with Prof Li before any real
@@ -57,11 +57,23 @@ content or infrastructure work.
   created under the prof's email, decided at the meeting)
 - Code is backed up to github.com/reetmitra/archiproj (public, Reet's
   account) as a dev-time remote — this is NOT the handover repo; step 4
-  still means creating/transferring to the prof's account post-meeting
+  still means creating/transferring to the prof's account post-meeting.
+  All work through the totem showcase is on origin/main (PR #1, merged
+  2026-07-09); keep local main synced with origin — don't let commits
+  accumulate unpushed again
 - Dev: `npm run dev` → localhost:3000; preview config `.claude/launch.json`
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-09 — totem work pushed; main synced with origin
+- The 9 local commits (totem assets → hero totem → section removal) had
+  never been pushed. Moved them to a `hero-totem` branch, opened and
+  merged PR #1 (merge commit 4d73125), reset local main to origin/main,
+  deleted the branch on both ends. No code changes this session
+- Workflow gotcha: `gh pr merge --delete-branch` run from a different
+  checked-out branch left the local branch and stale remote ref behind —
+  `git fetch --prune` + `git branch -d` finished the cleanup
 
 ### 2026-07-08 — Field object section removed; totem at all widths
 - Reet: "hero is enough" — the pinned section was a second telling of
