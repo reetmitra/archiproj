@@ -2,6 +2,13 @@
 
 # dependencies
 /node_modules
+/studio/node_modules
+
+# sanity studio build + generated seed + runtime
+/studio/dist
+/studio/.sanity
+/studio/seed.ndjson
+/.playwright-mcp/
 /.pnp
 .pnp.*
 .yarn/*

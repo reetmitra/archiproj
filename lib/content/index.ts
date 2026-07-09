@@ -1,7 +1,9 @@
 /**
- * Content accessors. Pages import only from here — the functions are
- * async so that swapping the local placeholder data for Sanity GROQ
- * queries changes nothing outside this directory.
+ * Content accessors. Pages import only from here.
+ *
+ * With SANITY_PROJECT_ID set (.env.local), content comes from Sanity at
+ * build time. Without it, the local placeholder data in data.ts is used —
+ * a clean clone with no env vars always builds and runs.
  */
 
 import {
@@ -15,6 +17,7 @@ import {
   courses,
   workWithMe,
 } from "./data";
+import * as sanity from "./sanity";
 import type {
   Course,
   NewsPost,
@@ -30,46 +33,58 @@ import type {
 
 export type * from "./types";
 
+const useSanity = Boolean(process.env.SANITY_PROJECT_ID);
+
 export async function getSiteSettings(): Promise<SiteSettings> {
-  return siteSettings;
+  return useSanity ? sanity.fetchSiteSettings() : siteSettings;
 }
 
 export async function getProfile(): Promise<Profile> {
-  return profile;
+  return useSanity ? sanity.fetchProfile() : profile;
 }
 
 export async function getResearchThemes(): Promise<ResearchTheme[]> {
-  return researchThemes;
+  return useSanity ? sanity.fetchResearchThemes() : researchThemes;
 }
 
 export async function getTheme(
   slug: string,
 ): Promise<ResearchTheme | undefined> {
-  return researchThemes.find((t) => t.slug === slug);
+  return useSanity
+    ? sanity.fetchTheme(slug)
+    : researchThemes.find((t) => t.slug === slug);
 }
 
 export async function getProjects(): Promise<Project[]> {
-  return projects;
+  return useSanity ? sanity.fetchProjects() : projects;
 }
 
 export async function getProject(slug: string): Promise<Project | undefined> {
-  return projects.find((p) => p.slug === slug);
+  return useSanity
+    ? sanity.fetchProject(slug)
+    : projects.find((p) => p.slug === slug);
 }
 
 export async function getProjectsByTheme(
   themeSlug: string,
 ): Promise<Project[]> {
-  return projects.filter((p) => p.themeSlug === themeSlug);
+  return useSanity
+    ? sanity.fetchProjectsByTheme(themeSlug)
+    : projects.filter((p) => p.themeSlug === themeSlug);
 }
 
 export async function getPublications(): Promise<Publication[]> {
-  return [...publications].sort((a, b) => b.year - a.year);
+  return useSanity
+    ? sanity.fetchPublications()
+    : [...publications].sort((a, b) => b.year - a.year);
 }
 
 export async function getPublication(
   id: string,
 ): Promise<Publication | undefined> {
-  return publications.find((p) => p.id === id);
+  return useSanity
+    ? sanity.fetchPublication(id)
+    : publications.find((p) => p.id === id);
 }
 
 export async function getFeaturedPublications(): Promise<Publication[]> {
@@ -77,18 +92,22 @@ export async function getFeaturedPublications(): Promise<Publication[]> {
 }
 
 export async function getPeopleByRole(role: PersonRole): Promise<Person[]> {
-  return people.filter((p) => p.role === role);
+  return useSanity
+    ? sanity.fetchPeopleByRole(role)
+    : people.filter((p) => p.role === role);
 }
 
 export async function getNews(limit?: number): Promise<NewsPost[]> {
-  const sorted = [...news].sort((a, b) => b.date.localeCompare(a.date));
+  const sorted = useSanity
+    ? await sanity.fetchNews()
+    : [...news].sort((a, b) => b.date.localeCompare(a.date));
   return limit ? sorted.slice(0, limit) : sorted;
 }
 
 export async function getCourses(): Promise<Course[]> {
-  return courses;
+  return useSanity ? sanity.fetchCourses() : courses;
 }
 
 export async function getWorkWithMe(): Promise<WorkWithMeContent> {
-  return workWithMe;
+  return useSanity ? sanity.fetchWorkWithMe() : workWithMe;
 }

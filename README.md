@@ -1,4 +1,4 @@
-# Xiang Li — personal academic website
+# Shengxiao (Alex) Li — personal academic website
 
 Prototype personal website for Prof Li (age-friendly planning & transportation
 equity, NUS), with his lab folded inside (People page, lab-voice news). Built
@@ -38,26 +38,50 @@ a style one. Signature element: the route line with stops on the homepage
 
 ## Structure
 
-- `lib/content/types.ts` — content model; mirrors the planned Sanity schemas 1:1
-- `lib/content/data.ts` — placeholder content (the only file to edit for content)
-- `lib/content/index.ts` — accessors; pages import only from here. **Sanity
-  migration = replace these functions with GROQ queries; no page changes.**
+- `lib/content/types.ts` — content model; mirrors the Sanity schemas 1:1
+- `lib/content/data.ts` — placeholder content; the local fallback and the
+  seed source for Sanity
+- `lib/content/index.ts` — accessors; pages import only from here. With
+  `SANITY_PROJECT_ID` set they fetch from Sanity at build time; without it
+  they serve `data.ts` (a clean clone always builds)
+- `lib/content/sanity.ts` — build-time GROQ fetchers. Deliberately uses
+  `node:https`, not `fetch`: Next's patched fetch persists responses in
+  `.next/cache` across builds (stale content after a Sanity publish), and
+  opting out with `cache: "no-store"` flips routes to dynamic
+- `studio/` — Sanity Studio (own package.json). Hosted at
+  https://alex-li-site.sanity.studio · project `37x9ig4j`, dataset
+  `production` (public read — that's why the site needs no token)
 - `components/` — header, footer, shared primitives
 - `app/` — 7 routes: home, research (+ project detail), publications, people,
-  news, teaching, join
+  news, teaching, work-with-me
 
 ## Run
 
 ```
 npm run dev    # http://localhost:3000
-npm run build  # static export check — all routes prerender
+npm run build  # static check — all routes must prerender (○/●)
+npm run studio # Sanity Studio locally (or use the hosted URL above)
+npm run seed   # regenerate studio/seed.ndjson from lib/content/data.ts
 ```
+
+Content env vars live in `.env.local` (gitignored, not secret — the dataset
+is public-read):
+
+```
+SANITY_PROJECT_ID=37x9ig4j
+SANITY_DATASET=production
+```
+
+To import the seed: `cd studio && npx sanity dataset import seed.ndjson
+production --replace` (needs `npx sanity login` first).
 
 ## Handover roadmap (from the project plan)
 
 1. Discovery with the prof: real content, lab name, domain, NUS branding
-2. Sanity project + schemas (one per type in `lib/content/types.ts`),
-   swap accessors to GROQ
-3. Deploy to Vercel, publish webhook → `revalidate`
-4. Illustrated "how to update your site" guide + training session;
-   transfer Sanity/Vercel/domain ownership
+2. Real content replaces the placeholder documents in Sanity (and
+   `lib/content/data.ts` for the fallback)
+3. Deploy to Vercel, Sanity publish webhook → rebuild
+4. Recreate/transfer the Sanity project + Vercel + domain under accounts
+   the prof owns (schemas are code; content moves via `sanity dataset
+   export` / `import`); illustrated "how to update your site" guide +
+   training session

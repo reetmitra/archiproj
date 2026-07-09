@@ -27,8 +27,10 @@ export const siteSettings: SiteSettings = {
 };
 
 export const profile: Profile = {
-  name: "Xiang Li",
-  title: "Associate Professor",
+  // The name is real (from Reet); title, bio, education, and links are
+  // still invented placeholders pending the discovery meeting.
+  name: "Shengxiao (Alex) Li",
+  title: "Assistant Professor",
   affiliation: "Department of Architecture, National University of Singapore",
   bio: "I study how neighbourhoods, streets, and transport systems can support people as they grow older — and how to plan them more fairly. My group pairs street-level fieldwork with open data, and our work always ends in something a city can build.",
   education: [
@@ -52,7 +54,7 @@ export const profile: Profile = {
     { label: "Google Scholar", url: "https://scholar.google.com" },
     { label: "ORCID", url: "https://orcid.org" },
   ],
-  email: "xiang.li@nus.edu.sg",
+  email: "alex.li@nus.edu.sg",
 };
 
 export const researchThemes: ResearchTheme[] = [
@@ -150,7 +152,7 @@ export const publications: Publication[] = [
     id: "pub-2025-benches",
     title:
       "A bench every 200 metres: rest infrastructure and older adults' walking range",
-    authors: ["Li, X.", "Tan, W. K.", "Nurhaliza, S."],
+    authors: ["Li, S.", "Tan, W. K.", "Nurhaliza, S."],
     venue: "Journal of Transport & Health",
     year: 2025,
     type: "journal",
@@ -161,7 +163,7 @@ export const publications: Publication[] = [
     id: "pub-2025-paratransit",
     title:
       "Who gets the ride? Equity outcomes of allocation rules in demand-responsive transport",
-    authors: ["Li, X.", "Krishnan, D."],
+    authors: ["Li, S.", "Krishnan, D."],
     venue: "Transportation Research Part A",
     year: 2025,
     type: "journal",
@@ -172,7 +174,7 @@ export const publications: Publication[] = [
     id: "pub-2024-audit",
     title:
       "Auditing the last 400 metres: a street-level protocol for age-friendly transit access",
-    authors: ["Tan, W. K.", "Li, X."],
+    authors: ["Tan, W. K.", "Li, S."],
     venue: "Proceedings of the Transportation Research Board",
     year: 2024,
     type: "conference",
@@ -180,7 +182,7 @@ export const publications: Publication[] = [
   {
     id: "pub-2024-voiddeck",
     title: "The void deck as ageing commons: an observational study",
-    authors: ["Li, X.", "Goh, M.", "Chen, Y."],
+    authors: ["Li, S.", "Goh, M.", "Chen, Y."],
     venue: "Urban Studies",
     year: 2024,
     type: "journal",
@@ -190,7 +192,7 @@ export const publications: Publication[] = [
   {
     id: "pub-2023-index",
     title: "A walkable ageing index for tropical high-density cities",
-    authors: ["Li, X."],
+    authors: ["Li, S."],
     venue: "Cities",
     year: 2023,
     type: "journal",
@@ -199,7 +201,7 @@ export const publications: Publication[] = [
   {
     id: "pub-2023-report",
     title: "Age-friendly streets: design guidance for local implementation",
-    authors: ["Li, X.", "Tan, W. K."],
+    authors: ["Li, S.", "Tan, W. K."],
     venue: "Report to the Ministry of National Development",
     year: 2023,
     type: "report",
@@ -209,11 +211,11 @@ export const publications: Publication[] = [
 export const people: Person[] = [
   {
     slug: "prof-li",
-    name: "Prof Xiang Li",
+    name: "Prof Shengxiao (Alex) Li",
     role: "faculty",
-    title: "Principal Investigator · Associate Professor",
-    bio: "Xiang studies the intersection of population ageing and urban mobility. Before joining NUS he worked in transport planning practice, which is why the lab's work always ends in something a city can build.",
-    email: "xiang.li@nus.edu.sg",
+    title: "Principal Investigator · Assistant Professor",
+    bio: "Alex studies the intersection of population ageing and urban mobility. Before joining NUS he worked in transport planning practice, which is why the lab's work always ends in something a city can build.",
+    email: "alex.li@nus.edu.sg",
     links: [
       { label: "Google Scholar", url: "https://scholar.google.com" },
       { label: "ORCID", url: "https://orcid.org" },

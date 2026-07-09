@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The studio is its own project with its own tooling; its dist/
+    // bundles are megabytes of minified JS that OOM ESLint.
+    "studio/**",
   ]),
 ]);
 

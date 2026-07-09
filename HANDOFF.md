@@ -18,12 +18,28 @@ every session and must stay cheap.
 
 ## Current state (2026-07-09, evening)
 
-**Phase:** personal-site pivot (Phase A of the plan in
-`~/.claude/plans/what-happened-effervescent-diffie.md`) done on local data;
-Sanity (Phases B–C) next. Still all placeholder content.
+**Phase:** personal-site pivot COMPLETE (all phases of the plan in
+`~/.claude/plans/what-happened-effervescent-diffie.md`): identity
+restructure + Sanity CMS live end-to-end. Content still placeholder
+except the prof's real name.
 
-- Site is now **person-branded**: wordmark/metadata/footer = "Xiang Li"
-  (placeholder), profile hero (name headline via the same hero-word spans,
+- **Sanity is live**: project `37x9ig4j` ("Archi Proj", Reet's account,
+  30-day Growth trial → auto-downgrades to Free, nothing to cancel),
+  dataset `production` (public read, NO tokens anywhere). Studio:
+  https://alex-li-site.sanity.studio (source `studio/`, deploy with
+  `cd studio && ./node_modules/.bin/sanity deploy`). Desk is News-first;
+  Profile/Work with me/Site settings are locked singletons. 29 seed
+  docs imported from `data.ts` (`npm run seed` regenerates)
+- **Editor loop verified**: edit in Sanity → `npm run build` → change is
+  in the static HTML. `lib/content/sanity.ts` uses node:https on purpose
+  — see gotchas in the 2026-07-09 (late) log entry before "fixing" it
+- Sanity CLI: use `sanity@4` via npx or studio-local binary — latest CLI
+  needs Node ≥22.12, machine has 20.19.5
+
+- Site is now **person-branded**: wordmark/metadata/footer = "Shengxiao
+  (Alex) Li" (the prof's REAL name, from Reet 2026-07-09 — title/bio/
+  education/papers still invented), profile hero (name headline via the
+  same hero-word spans,
   title · affiliation meta, first-person bio, email/Scholar/ORCID links,
   3 education lines) with the totem kept as the hero visual. New `Profile`
   type/singleton; `JoinUs` → `WorkWithMe` (3 tiered sections + optional
@@ -81,6 +97,34 @@ Sanity (Phases B–C) next. Still all placeholder content.
   (server name `lab-site`)
 
 ## Session log
+
+### 2026-07-09 (late) — Sanity live (Phases B+C); prof's real name
+- Reet: prof's real name is **Shengxiao (Alex) Li** — now in data.ts
+  (profile, people, "Li, S." authors), metadata, README. Title
+  "Assistant Professor" + bio/education/papers REMAIN INVENTED until
+  discovery; footer placeholder notice stays
+- Phase B: `studio/` scaffolded (9 schemas, plain-English field help,
+  News-first desk, singleton locks via template filter + action strip),
+  seeded via `scripts/build-seed.ts` → ndjson → `dataset import
+  --replace` (idempotent, deterministic _ids). Deployed; host renamed
+  xiang-li-site → alex-li-site after the name arrived (undeploy → new
+  deploy, new appId in sanity.cli.ts)
+- Phase C: accessors fetch Sanity when SANITY_PROJECT_ID is set
+  (.env.local), fall back to data.ts otherwise. Verified: both builds
+  fully static; content parity; zero sanity code in client chunks;
+  editor loop (CLI-mutated bio marker appeared after plain rebuild)
+- **Gotcha (the big one)**: Next's patched fetch persists responses in
+  `.next/cache/fetch-cache` ACROSS builds — first rebuild after a
+  Sanity edit served stale content. `cache: "no-store"` is NOT the fix:
+  it flips every route to ƒ dynamic. Fix: `lib/content/sanity.ts` talks
+  to the Sanity HTTP API over **node:https** — invisible to Next's
+  fetch layer, routes stay ○/●, every build reads fresh. @sanity/client
+  was removed from the root app (studio keeps its own)
+- Gotcha: ESLint OOM'd after the studio deploy — it was crawling
+  `studio/dist` minified bundles; `studio/**` added to eslint ignores
+- Gotcha: latest sanity CLI refuses Node <22.12 — pin `npx sanity@4`
+  (4.22.0 works on Node 20); undeploy/deploy must run from `studio/`
+  (global npx errors when cwd is the repo root)
 
 ### 2026-07-09 (evening) — personal-site pivot, Phase A
 - Reet: rebuild as a personal site for Prof Li, replicating a blend of
@@ -277,21 +321,19 @@ Sanity (Phases B–C) next. Still all placeholder content.
 
 ## Next up (in order)
 
-1. **Phase B (Sanity studio)**: Reet creates account + `npx sanity login` +
-   project; Claude scaffolds `studio/` (9 schemas mirroring types.ts,
-   News-first desk, locked singletons, plain-English descriptions), seeds
-   from data.ts via ndjson + `sanity dataset import`, `sanity deploy`
-2. **Phase C (GROQ wiring)**: `@sanity/client` fetchers behind the accessors,
-   env-gated w/ local fallback; verify parity + fully static + editor loop
-   (Reet edits bio in studio → rebuild → change appears)
-3. **Discovery meeting with Prof Li** — bring `docs/prof-meeting-checklist.md`;
+1. **Reet walks the studio** (https://alex-li-site.sanity.studio): edit the
+   profile bio, publish, `npm run build`, confirm the change — the demo to
+   show the prof
+2. **Discovery meeting with Prof Li** — bring `docs/prof-meeting-checklist.md`;
    send him the content section a few days ahead so files arrive at the meeting
-4. Replace `lib/content/data.ts` placeholders with real content (name appears
-   in `data.ts` profile + siteSettings, `README.md`); re-seed Sanity
-5. GitHub + Vercel on prof's accounts, auto-deploy, Sanity publish webhook →
-   rebuild; transfer/recreate the Sanity project under the prof's account;
-   domain per meeting decision
-6. Handover package: illustrated 5-task editing guide, short screen
+3. Replace placeholder content with real content — in Sanity (primary) AND
+   `lib/content/data.ts` (fallback/seed); confirm real title (Assistant
+   Professor is a guess), bio, education, links, emails
+4. GitHub + Vercel on prof's accounts, auto-deploy, Sanity publish webhook →
+   rebuild; recreate/transfer the Sanity project under the prof's account
+   (new projectId in `studio/project.ts` + `.env.local`, re-deploy studio,
+   `sanity dataset export`/`import` for content); domain per meeting decision
+5. Handover package: illustrated 5-task editing guide, short screen
    recordings, break-glass sheet, weekly Sanity export GitHub Action, uptime
    monitor → acceptance test: prof publishes a news post unaided
 
