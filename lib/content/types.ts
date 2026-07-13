@@ -21,6 +21,17 @@ export type EducationEntry = {
   year: string;
 };
 
+/**
+ * A content image. `src` is a plain string either way the site is built:
+ * a `/images/...` path (local fallback data) or a cdn.sanity.io URL
+ * (Sanity image asset).
+ */
+export type SiteImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
 /** The professor. Singleton — the site is his; the lab lives inside it. */
 export type Profile = {
   name: string;
@@ -28,17 +39,28 @@ export type Profile = {
   affiliation: string;
   /** First-person, 2–4 sentences */
   bio: string;
+  /** The About page, one paragraph per entry */
+  about: string[];
+  photo?: SiteImage;
   education: EducationEntry[];
   links: { label: string; url: string }[];
   email: string;
 };
 
+/** A research pillar — a section on the research page. */
 export type ResearchTheme = {
   slug: string;
-  /** Route-style code shown on theme markers, e.g. "R1" */
+  /** Route-style code shown on theme markers, e.g. "P1" */
   code: string;
   title: string;
+  /** Short handle for tight spots like the homepage ticker */
+  shortTitle?: string;
   summary: string;
+  /** Pillar essay, one paragraph per entry */
+  body: string[];
+  figure?: SiteImage;
+  /** ids into publications — the pillar's selected publications, in order */
+  publicationIds?: string[];
 };
 
 export type ProjectStatus = "active" | "completed";
@@ -66,6 +88,10 @@ export type Publication = {
   venue: string;
   year: number;
   type: PublicationType;
+  /** Volume / issue / pages, e.g. "88 (1): 15–29" */
+  citation?: string;
+  /** Short label shown with the type, e.g. "Commentary" */
+  note?: string;
   doi?: string;
   pdf?: string;
   featured?: boolean;
@@ -101,6 +127,13 @@ export type Course = {
   term: string;
   level: "undergraduate" | "graduate";
   description: string;
+};
+
+/** The research page intro. Singleton. */
+export type ResearchPageContent = {
+  title: string;
+  /** Research vision, one paragraph per entry */
+  overview: string[];
 };
 
 export type WorkWithMeSection = {

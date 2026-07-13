@@ -16,6 +16,7 @@ import type {
   Profile,
   Project,
   Publication,
+  ResearchPageContent,
   ResearchTheme,
   SiteSettings,
   WorkWithMeContent,
@@ -114,9 +115,31 @@ const publicationFields = `
   venue,
   year,
   type,
+  citation,
+  note,
   doi,
   pdf,
   featured
+`;
+
+/**
+ * Image fields flatten to { src, alt, caption }. The URL params ask
+ * Sanity's image CDN for a web-sized rendition of whatever original
+ * the professor uploads; fit=max never upscales small figures.
+ */
+const themeFields = `
+  "slug": slug.current,
+  code,
+  title,
+  shortTitle,
+  summary,
+  body,
+  "figure": figure{
+    "src": asset->url + "?w=1600&fit=max&auto=format",
+    alt,
+    caption
+  },
+  "publicationIds": publications[]._ref
 `;
 
 export function fetchSiteSettings(): Promise<SiteSettings> {
@@ -129,6 +152,12 @@ export function fetchProfile(): Promise<Profile> {
   return fetchClean(
     `*[_id == "profile"][0]{
       name, title, affiliation, bio,
+      about,
+      "photo": photo{
+        "src": asset->url + "?w=1200&fit=max&auto=format",
+        alt,
+        caption
+      },
       education[]{ degree, institution, year },
       links[]{ label, url },
       email
@@ -136,19 +165,19 @@ export function fetchProfile(): Promise<Profile> {
   );
 }
 
+export function fetchResearchPage(): Promise<ResearchPageContent> {
+  return fetchClean(`*[_id == "researchPage"][0]{ title, overview }`);
+}
+
 export function fetchResearchThemes(): Promise<ResearchTheme[]> {
   return fetchClean(
-    `*[_type == "researchTheme"] | order(code asc) {
-      "slug": slug.current, code, title, summary
-    }`,
+    `*[_type == "researchTheme"] | order(code asc) { ${themeFields} }`,
   );
 }
 
 export function fetchTheme(slug: string): Promise<ResearchTheme | undefined> {
   return fetchClean<ResearchTheme | undefined>(
-    `*[_type == "researchTheme" && slug.current == $slug][0]{
-      "slug": slug.current, code, title, summary
-    }`,
+    `*[_type == "researchTheme" && slug.current == $slug][0]{ ${themeFields} }`,
     { slug },
   ).then((theme) => theme ?? undefined);
 }

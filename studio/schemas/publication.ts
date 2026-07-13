@@ -53,11 +53,25 @@ export const publication = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "citation",
+      title: "Volume / pages (optional)",
+      type: "string",
+      description:
+        "What follows the journal name in the citation, e.g. “88 (1): 15–29” or “140 (March), 104616”.",
+    }),
+    defineField({
+      name: "note",
+      title: "Label (optional)",
+      type: "string",
+      description:
+        "A short label shown alongside the type, e.g. “Commentary” or “Editorial”.",
+    }),
+    defineField({
       name: "doi",
       title: "DOI (optional)",
       type: "string",
       description:
-        "Just the DOI itself, e.g. “10.1016/j.jth.2025.101234” — not the full web address.",
+        "Just the DOI itself, e.g. “10.1016/j.jth.2025.101234” — not the full web address. The article title on the site links here.",
     }),
     defineField({
       name: "pdf",

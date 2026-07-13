@@ -39,6 +39,7 @@ export async function Footer() {
             <p className="text-paper/50 uppercase tracking-widest mb-4">Go to</p>
             <ul className="space-y-2">
               {[
+                ["About", "/about"],
                 ["Research", "/research"],
                 ["Publications", "/publications"],
                 ["News", "/news"],

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const nav = [
+  { href: "/about", label: "About" },
   { href: "/research", label: "Research" },
   { href: "/publications", label: "Publications" },
   { href: "/people", label: "People" },
@@ -31,7 +32,9 @@ export function Header({ wordmark }: { wordmark: string }) {
           {wordmark}
         </Link>
 
-        <nav aria-label="Main" className="hidden md:flex items-center gap-1">
+        {/* 7 items no longer fit beside the wordmark at md (18px base) —
+            the desktop nav starts at lg; tablets use the menu button */}
+        <nav aria-label="Main" className="hidden lg:flex items-center gap-1">
           {nav.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
@@ -40,7 +43,7 @@ export function Header({ wordmark }: { wordmark: string }) {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 data-magnet
-                className={`px-3 py-2 text-[0.95rem] rounded-sm transition-colors ${
+                className={`px-3 py-2 text-[0.95rem] whitespace-nowrap rounded-sm transition-colors ${
                   active
                     ? "font-semibold text-ink underline decoration-accent decoration-[3px] underline-offset-8"
                     : "text-stone hover:text-ink"
@@ -54,7 +57,7 @@ export function Header({ wordmark }: { wordmark: string }) {
 
         <button
           type="button"
-          className="md:hidden px-3 py-2 font-mono text-sm border border-line rounded-sm"
+          className="lg:hidden px-3 py-2 font-mono text-sm border border-line rounded-sm"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
@@ -67,7 +70,7 @@ export function Header({ wordmark }: { wordmark: string }) {
         <nav
           id="mobile-nav"
           aria-label="Main"
-          className="md:hidden border-t border-line bg-paper"
+          className="lg:hidden border-t border-line bg-paper"
         >
           {nav.map((item) => (
             <Link

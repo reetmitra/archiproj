@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { NewsCategory, Publication } from "@/lib/content";
 
 /** Mono uppercase kicker above headings — the timetable voice */
@@ -16,7 +17,7 @@ export function PageIntro({
 }: {
   eyebrow: string;
   title: string;
-  lede?: string;
+  lede?: React.ReactNode;
 }) {
   return (
     <div
@@ -68,6 +69,41 @@ export function formatDate(iso: string) {
   });
 }
 
+/**
+ * The professor's own name, in any of the forms it takes in author
+ * lists ("Li, Shengxiao (Alex)", "Shengxiao (Alex) Li", "Shengxiao Li").
+ * Bolding happens here at render time so he never marks up author
+ * lines in the Studio.
+ */
+function isProfAuthor(author: string) {
+  return /shengxiao/i.test(author) && /\bli\b/i.test(author);
+}
+
+/** Citation-style author list: "A, B, and C", professor's name bold. */
+function AuthorList({ authors }: { authors: string[] }) {
+  return (
+    <>
+      {authors.map((author, i) => (
+        <Fragment key={`${i}-${author}`}>
+          {i > 0 && (i === authors.length - 1 ? ", and " : ", ")}
+          {isProfAuthor(author) ? (
+            <strong className="font-semibold text-ink">{author}</strong>
+          ) : (
+            author
+          )}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/** The `*` convention in author lists, shown once above each pub list */
+export function CoauthorLegend() {
+  return (
+    <p className="font-mono text-xs text-stone">* student co-author</p>
+  );
+}
+
 /** Citation-style publication entry */
 export function PublicationItem({ pub }: { pub: Publication }) {
   return (
@@ -75,21 +111,29 @@ export function PublicationItem({ pub }: { pub: Publication }) {
       <p className="font-mono text-sm text-stone pt-1">{pub.year}</p>
       <div>
         <h3 className="font-display font-semibold text-lg leading-snug">
-          {pub.title}
+          {/* The title IS the link — no raw DOI on the page (prof's rule) */}
+          {pub.doi ? (
+            <a
+              href={`https://doi.org/${pub.doi}`}
+              className="underline underline-offset-4 decoration-line hover:decoration-moss hover:text-moss transition-colors"
+            >
+              {pub.title}
+            </a>
+          ) : (
+            pub.title
+          )}
         </h3>
         <p className="mt-1.5 text-stone">
-          {pub.authors.join(", ")} ·{" "}
+          <AuthorList authors={pub.authors} /> ·{" "}
           <span className="italic">{pub.venue}</span>
+          {pub.citation && ` ${pub.citation}`}
         </p>
         <p className="mt-2 flex gap-4 font-mono text-sm">
           <span className="uppercase tracking-widest text-stone">{pub.type}</span>
-          {pub.doi && (
-            <a
-              href={`https://doi.org/${pub.doi}`}
-              className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
-            >
-              DOI
-            </a>
+          {pub.note && (
+            <span className="uppercase tracking-widest text-stone">
+              {pub.note}
+            </span>
           )}
           {pub.pdf && (
             <a

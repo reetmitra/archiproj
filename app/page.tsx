@@ -9,6 +9,7 @@ import {
 } from "@/lib/content";
 import {
   CategoryTag,
+  CoauthorLegend,
   Eyebrow,
   PublicationItem,
   formatDate,
@@ -43,8 +44,13 @@ export default async function HomePage() {
         <div>
         <Eyebrow>
           <span className="hidden sm:inline">{site.department} · </span>
+          {/* shortTitle keeps the flap narrow — full pillar titles would
+              pad every phrase to ~70 chars */}
           <SplitFlap
-            phrases={[site.institution, ...themes.map((t) => t.title)]}
+            phrases={[
+              site.institution,
+              ...themes.map((t) => t.shortTitle ?? t.title),
+            ]}
             loop
             holdMs={7000}
           />
@@ -268,6 +274,7 @@ export default async function HomePage() {
             className="mt-4 block h-px bg-line origin-left"
           />
           <div className="mt-4">
+            <CoauthorLegend />
             {featured.map((pub) => (
               <div key={pub.id} data-anim="row">
                 <PublicationItem pub={pub} />

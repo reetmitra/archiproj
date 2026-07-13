@@ -55,3 +55,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prof source material (25MB originals; web derivatives live in public/images)
+Lab Page/

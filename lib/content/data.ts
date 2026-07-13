@@ -1,12 +1,20 @@
 /**
- * PLACEHOLDER CONTENT — everything here is illustrative and will be
- * replaced with the professor's real content during discovery, then
- * moved into Sanity. Names, papers, and grants are invented.
+ * Local content — the fallback when SANITY_PROJECT_ID is unset, and the
+ * source for `npm run seed`.
+ *
+ * REAL (from the professor, 2026-07): profile, researchPage,
+ * researchThemes, publications, siteSettings.email, and the prof's own
+ * entry in people.
+ *
+ * STILL PLACEHOLDER (invented): people other than the prof, news,
+ * courses, workWithMe, siteSettings.labName/mission. The footer notice
+ * stays until these are real too.
  */
 
 import type {
   SiteSettings,
   Profile,
+  ResearchPageContent,
   ResearchTheme,
   Project,
   Publication,
@@ -23,202 +31,450 @@ export const siteSettings: SiteSettings = {
   institution: "National University of Singapore",
   department: "Department of Architecture, College of Design and Engineering",
   address: "4 Architecture Drive, Singapore 117566",
-  email: "lab@nus.edu.sg",
+  email: "alexli@nus.edu.sg",
 };
 
 export const profile: Profile = {
-  // The name is real (from Reet); title, bio, education, and links are
-  // still invented placeholders pending the discovery meeting.
+  // Chrome (title · affiliation, footer, metadata) stays NUS until the
+  // prof confirms the Texas A&M switch — his About text below already
+  // says TAMU. Swapping is one field here + in the Studio.
   name: "Shengxiao (Alex) Li",
   title: "Assistant Professor",
   affiliation: "Department of Architecture, National University of Singapore",
-  bio: "I study how neighbourhoods, streets, and transport systems can support people as they grow older — and how to plan them more fairly. My group pairs street-level fieldwork with open data, and our work always ends in something a city can build.",
+  // First person, in his own words (from the research overview; one verb
+  // adapted "My research examines" → "I examine").
+  bio: "My research investigates how cities can transition beyond car dependence toward equitable and sustainable mobility futures. I examine the social consequences of car-dependent development, identify the institutional and governance factors that reinforce it, and explore planning and policy pathways toward more inclusive, low-carbon transportation systems.",
+  // Verbatim from About.docx (2026-07).
+  about: [
+    "Shengxiao (Alex) Li is an Assistant Professor in the Department of Landscape Architecture and Urban Planning at Texas A&M University. His research lies at the intersection of travel behavior and transportation governance, with the goal of understanding how planning policies can guide transportation systems toward equitable and sustainable mobility transitions. Under this broader vision, his research examines the social consequences of car dependence and explores planning and governance pathways toward more equitable and sustainable mobility futures. His work contributes to understanding older adults’ travel and residential choices in car-dependent societies, governments’ responses to population aging through transportation and housing policies, the institutional drivers and social impacts of persistent car dependence, and the governance of transportation decarbonization, particularly vehicle electrification. Alex has published in leading urban planning and transportation journals, including the Journal of the American Planning Association, Journal of Planning Education and Research, Transportation Research Part A: Policy and Practice, Transportation Research Part D: Transport and Environment, and Journal of Urban Affairs.",
+    "Alex received his PhD in City and Regional Planning from the University of Pennsylvania in 2022. He also holds a Master of Urban and Regional Planning (2018) and a bachelor’s degree in Urban Management and Economics (2015) from Peking University. Prior to joining Texas A&M University, he served as an Assistant Professor in the Department of Architecture at the National University of Singapore (2024–2026), a Visiting Assistant Professor at the University of Oregon (2023–2024), and a Postdoctoral Researcher and Adjunct Lecturer at the University of California, Riverside (2022–2023).",
+  ],
+  photo: {
+    src: "/images/alex-li-bangkok.webp",
+    alt: "Shengxiao (Alex) Li smiling on a busy street in Chinatown, Bangkok, surrounded by shop signs and traffic",
+    caption: "Chinatown, Bangkok, Thailand, December 2025",
+  },
   education: [
     {
-      degree: "PhD, City & Regional Planning",
-      institution: "University of California, Berkeley",
-      year: "2014",
+      degree: "PhD, City and Regional Planning",
+      institution: "University of Pennsylvania",
+      year: "2022",
     },
     {
-      degree: "MSc, Urban Planning",
-      institution: "Tongji University",
-      year: "2009",
+      degree: "Master of Urban and Regional Planning",
+      institution: "Peking University",
+      year: "2018",
     },
     {
-      degree: "BEng, Civil Engineering",
-      institution: "Tsinghua University",
-      year: "2007",
+      degree: "BA, Urban Management and Economics",
+      institution: "Peking University",
+      year: "2015",
     },
   ],
   links: [
-    { label: "Google Scholar", url: "https://scholar.google.com" },
-    { label: "ORCID", url: "https://orcid.org" },
+    {
+      label: "CV",
+      url: "https://docs.google.com/document/d/1atST-50qigic4_Zp0u13iGDLjWWu2VkS/edit?usp=sharing&ouid=107309874306572492328&rtpof=true&sd=true",
+    },
+    {
+      label: "Google Scholar",
+      url: "https://scholar.google.com/citations?user=_zb8mMYAAAAJ&hl=en&oi=ao",
+    },
+    {
+      label: "LinkedIn",
+      url: "https://www.linkedin.com/in/shengxiao-alex-li-15b0a68a/",
+    },
+    { label: "ORCID", url: "https://orcid.org/0000-0002-0698-3509" },
   ],
-  email: "alex.li@nus.edu.sg",
+  email: "alexli@nus.edu.sg",
 };
 
+// Verbatim from Research overview.docx; the title is the prof's phrase.
+export const researchPage: ResearchPageContent = {
+  title: "Three interrelated pillars",
+  overview: [
+    "Dependence on private vehicles is neither environmentally sustainable nor socially equitable. Car-oriented urban development excludes many people—including those who cannot drive or cannot afford to own and maintain a vehicle—from full participation in everyday life. Meanwhile, although vehicle electrification is an important step toward reducing transportation emissions, replacing gasoline-powered vehicles with electric vehicles alone cannot overcome the broader environmental and social costs of car-dependent urban development, including high energy consumption, inefficient land use, and unequal access to opportunities.",
+    "These challenges call for an equitable mobility transition—a transformation toward transportation systems that are not only low-carbon but also inclusive. Such a transition is becoming increasingly urgent as cities respond to population aging, climate change, and rapid technological innovation. Addressing these interconnected challenges requires more integrated and collaborative approaches to transportation planning and governance.",
+    "My research investigates how cities can transition beyond car dependence toward equitable and sustainable mobility futures. My research examines the social consequences of car-dependent development, identifies the institutional and governance factors that reinforce it, and explores planning and policy pathways toward more inclusive, low-carbon transportation systems. I aim to generate actionable evidence that supports governments, planners, and communities in creating diverse mobility options that enable people of all ages, abilities, incomes, and backgrounds to participate fully in society.",
+    "As an interdisciplinary scholar with an international research agenda, my long-term vision is to build a research and education hub that advances equitable mobility transitions through comparative research across North America, Europe, and Asia. By integrating transportation planning, governance, and travel behavior research, I seek to bridge research and practice across different institutional contexts and contribute to the development of transportation systems that are environmentally sustainable, socially equitable, and resilient to future societal challenges.",
+    "My current and future research focuses on three interrelated pillars.",
+  ],
+};
+
+// The prof's three research pillars. Bodies are verbatim from the
+// pillar docx files; summaries are short site copy distilled from them
+// (the homepage route line needs one or two sentences, not an essay).
 export const researchThemes: ResearchTheme[] = [
   {
-    slug: "ageing-in-place",
-    code: "R1",
-    title: "Ageing in place",
+    slug: "accessibility-aging",
+    code: "P1",
+    title: "Planning for Accessibility Capability in an Aging Society",
+    shortTitle: "Aging & accessibility",
     summary:
-      "How housing, amenities, and everyday destinations shape whether older adults can stay rooted in the neighbourhoods they know.",
+      "How older adults make travel and residential decisions in car-dependent societies — and how planning, governance, and policy can expand their opportunities to age in the communities they choose.",
+    body: [
+      "Car-dependent communities are often not designed to support older adults in aging healthily and independently in the places they call home. As populations age, cities need transportation planning and governance that accommodate the diverse needs, preferences, and aspirations of older adults.",
+      "Building on the Accessibility Capability framework that I developed, my research examines how older adults make travel and residential decisions in increasingly car-dependent societies, and how planning institutions, governance arrangements, and public policies shape these choices. Through this line of research, I seek to generate evidence that helps governments and communities create transportation and housing systems that expand older adults' opportunities to age in the communities they choose. Ultimately, I aim to support local policies and planning practices that enable older adults to live healthier and more independent lives in their preferred communities.",
+    ],
+    figure: {
+      src: "/images/pillar-aging-figure.webp",
+      alt: "Charts showing the transportation mismatch experienced by zero-vehicle older people in the United States",
+      caption:
+        "Transportation mismatch among zero-vehicle older people. Figure 1 from “Characteristics of Zero-Vehicle Households among Older Americans” (Journal of the American Planning Association, 2025).",
+    },
+    publicationIds: [
+      "pub-2026-bridging-the-gap",
+      "pub-2025-aging-wrong-place",
+      "pub-2025-zero-vehicle-households",
+      "pub-2025-boomers-silent-generation",
+      "pub-2024-older-americans-policy",
+      "pub-2024-accessibility-capability",
+      "pub-2024-vehicle-ownership-life-course",
+      "pub-2023-ict-travel-older-americans",
+      "pub-2022-relocation-older-adults",
+      "pub-2021-senior-centers-transit",
+      "pub-2020-living-environment-wellbeing",
+    ],
   },
   {
-    slug: "mobility-equity",
-    code: "R2",
-    title: "Mobility & transport equity",
+    slug: "car-dependence",
+    code: "P2",
+    title: "Understanding the Persistence of Car Dependence and Its Social Impacts",
+    shortTitle: "Car dependence",
     summary:
-      "Who gets to move easily through the city — and who doesn't. Measuring and closing gaps in access to transit, walking, and paratransit.",
+      "Why car dependence persists, and how it reinforces social inequalities — from employment outcomes to policing justice — especially where local governments have limited capacity to change course.",
+    body: [
+      "Viewing car dependence as a socially and institutionally constructed phenomenon, I examine why it persists and how it shapes social outcomes. In addition to my research on aging and transportation, I investigate the mechanisms through which car-dependent development reinforces social inequalities and limits opportunities for different populations. This line of research examines topics such as the relationship between car dependence and employment outcomes, as well as the implications of car-dependent environments for policing justice. I also investigate how local governments balance economic development, climate action, and mobility goals, and how political institutions and local economic structures can reinforce car-dependent development and constrain transportation transitions.",
+      "Taken together, this line of research provides empirical evidence on why many cities, communities, and social groups remain highly dependent on private vehicles, and why transitioning away from car dependence is particularly challenging for many local governments, especially those with limited institutional and financial capacity.",
+    ],
+    figure: {
+      src: "/images/pillar-car-dependence-figure.webp",
+      alt: "Chart of the marginal effects of zero-vehicle household share on census-tract unemployment rates",
+      caption:
+        "Marginal effects of zero-vehicle household percentage on census-tract unemployment, from “Racial Segregation, Transportation, and Employment Outcomes in the United States” (Transport Policy, 2026).",
+    },
+    publicationIds: [
+      "pub-2026-racial-segregation",
+      "pub-2025-police-stops",
+      "pub-2022-new-towns-commuting",
+      "pub-2022-ride-hailing-austin",
+      "pub-2022-constrained-car-ownership",
+      "pub-2022-low-income-commuters",
+    ],
   },
   {
-    slug: "public-life",
-    code: "R3",
-    title: "Public space & social life",
+    slug: "beyond-electrification",
+    code: "P3",
+    title: "Planning for Transportation Transitions Beyond Vehicle Electrification",
+    shortTitle: "Beyond electrification",
     summary:
-      "Designing streets, parks, and void decks that invite older adults into public life rather than designing them out of it.",
+      "How vehicle electrification policies are made and governed, and how cities can decarbonize transportation while expanding mobility choices for diverse populations.",
+    body: [
+      "Vehicle electrification has become a central strategy for transportation decarbonization worldwide. While electrification is essential for reducing greenhouse gas emissions, it alone cannot create transportation systems that are equitable, accessible, and sustainable. Building on this premise, my research provides empirical evidence on how vehicle electrification policies are formulated, implemented, and governed, and how they influence car dependence and travel behavior across different social groups.",
+      "More broadly, I examine transportation transitions beyond vehicle electrification, asking how cities can reduce car dependence while expanding people's mobility choices. My research investigates how transportation transitions are governed across multiple institutional scales, examining the interactions among regional and local planning agencies, higher levels of government, transit agencies, environmental organizations, and other stakeholders in implementing decarbonization strategies. Given the political and institutional challenges of achieving sustainable transitions, I also examine how local political institutions and planning processes shape transportation policies—including street redesign, transit-oriented development, public transit investment, and fare policies—and how these interventions influence travel behavior, residential choices, and access to opportunities.",
+      "Through this line of research, I seek to identify governance and planning pathways that advance equitable mobility transitions by enabling transportation decarbonization while expanding mobility choices for diverse populations.",
+    ],
+    // Figure described in the prof's doc (spatial variation in commitment
+    // to vehicle electrification, from the 2026 JPER paper) but the image
+    // file wasn't included — ask him for it.
+    publicationIds: ["pub-2026-boon-or-bane", "pub-2026-vision-to-reality"],
   },
 ];
 
-export const projects: Project[] = [
-  {
-    slug: "last-400-metres",
-    title: "The last 400 metres",
-    themeSlug: "mobility-equity",
-    summary:
-      "Auditing the walk between MRT stations and home for adults over 65 — kerbs, crossings, shade, and seating — across twelve Singapore towns.",
-    body: [
-      "Transit access is usually measured to the station gate. For many older adults, the decisive part of the journey is the final stretch on foot: the slip road without a crossing, the overhead bridge with no lift, the 400 metres without a single bench.",
-      "This project pairs street-level audits with GPS traces volunteered by older residents to map where the pedestrian environment quietly excludes them, and works with agencies on low-cost retrofits.",
-    ],
-    years: "2024–present",
-    status: "active",
-    collaborators: ["Land Transport Authority", "Council for Third Age"],
-    funding: "MOE Academic Research Fund Tier 2",
-    publicationIds: ["pub-2025-benches", "pub-2024-audit"],
-  },
-  {
-    slug: "paratransit-fairness",
-    title: "Fair rides: paratransit allocation",
-    themeSlug: "mobility-equity",
-    summary:
-      "Modelling how demand-responsive transport can be allocated fairly when demand outstrips supply.",
-    body: [
-      "Demand-responsive and paratransit services promise door-to-door mobility for people who cannot use fixed routes — but when trips are scarce, allocation rules decide who moves.",
-      "We simulate allocation policies against real trip data to show the equity consequences of design choices that usually pass unexamined.",
-    ],
-    years: "2023–present",
-    status: "active",
-    collaborators: ["SMART Future Urban Mobility"],
-    funding: "NUS Early Career Award",
-    publicationIds: ["pub-2025-paratransit"],
-  },
-  {
-    slug: "void-deck-commons",
-    title: "Void deck commons",
-    themeSlug: "public-life",
-    summary:
-      "Documenting how older residents actually use the ground floors of public housing — and what design changes would help.",
-    body: [
-      "The void deck is Singapore's accidental commons. This project observed 40 void decks over a year to record how older residents claim, furnish, and negotiate these spaces.",
-      "Findings feed into design guidance for upgrading programmes, arguing for fewer rules and more chairs.",
-    ],
-    years: "2022–2025",
-    status: "completed",
-    collaborators: ["Housing & Development Board"],
-    funding: "Social Science Research Council",
-    publicationIds: ["pub-2024-voiddeck"],
-  },
-  {
-    slug: "walkable-ageing-index",
-    title: "Walkable ageing index",
-    themeSlug: "ageing-in-place",
-    summary:
-      "A composite, open-data index of how well neighbourhoods support ageing in place, published for every planning area in Singapore.",
-    body: [
-      "Existing walkability indices are calibrated on able-bodied commuters. This index reweights them around the destinations, distances, and hazards that matter after 65 — clinics, markets, shade, rest points, crossing times.",
-      "The index and its code are open, so planners and researchers elsewhere can recalibrate it for their own cities.",
-    ],
-    years: "2023–present",
-    status: "active",
-    funding: "MOE Academic Research Fund Tier 1",
-    publicationIds: ["pub-2023-index"],
-  },
-];
+// No real projects yet — the pillar essays carry the research page. The
+// project machinery (type, schema, detail route) stays for when the prof
+// wants per-project pages.
+export const projects: Project[] = [];
 
+// All 22 real publications from "Publications since 2020.docx".
+// `*` marks student co-authors (the prof's convention, kept verbatim).
+// ids double as Sanity _ids — renaming one breaks pillar publicationIds.
 export const publications: Publication[] = [
   {
-    id: "pub-2025-benches",
+    id: "pub-2026-boon-or-bane",
     title:
-      "A bench every 200 metres: rest infrastructure and older adults' walking range",
-    authors: ["Li, S.", "Tan, W. K.", "Nurhaliza, S."],
-    venue: "Journal of Transport & Health",
-    year: 2025,
+      "Boon or Bane? Regional Transportation Planning in the Vehicle Electrification Era",
+    authors: ["Li, Shengxiao (Alex)", "Yufei Wang*"],
+    venue: "Journal of Planning Education and Research",
+    year: 2026,
     type: "journal",
-    doi: "10.0000/placeholder.2025.001",
+    doi: "10.1177/0739456X261452146",
     featured: true,
   },
   {
-    id: "pub-2025-paratransit",
-    title:
-      "Who gets the ride? Equity outcomes of allocation rules in demand-responsive transport",
-    authors: ["Li, S.", "Krishnan, D."],
-    venue: "Transportation Research Part A",
-    year: 2025,
+    id: "pub-2026-bridging-the-gap",
+    title: "Bridging the Gap: Accessibility for Aging and Disability in Planning",
+    authors: [
+      "Hong, Andy",
+      "Mahtot Gebresselassie",
+      "Jongwoong Kim",
+      "Shengxiao (Alex) Li",
+      "Abigail Cochran",
+      "Bhavya Bogra",
+      "Samantha Biglieri",
+    ],
+    venue: "Journal of the American Planning Association",
+    year: 2026,
     type: "journal",
-    doi: "10.0000/placeholder.2025.002",
+    note: "Commentary",
+    doi: "10.1080/01944363.2026.2660653",
+  },
+  {
+    id: "pub-2026-vision-to-reality",
+    title:
+      "From Vision to Reality: Affordable Housing in Transit-Oriented Development in the District Noho Project, California",
+    authors: ["Li, Shengxiao (Alex)", "Yufei Wang*", "Anthony Roman*"],
+    venue: "Journal of Planning Education and Research",
+    year: 2026,
+    type: "journal",
+    doi: "10.1177/0739456X261416036",
     featured: true,
   },
   {
-    id: "pub-2024-audit",
+    id: "pub-2026-racial-segregation",
     title:
-      "Auditing the last 400 metres: a street-level protocol for age-friendly transit access",
-    authors: ["Tan, W. K.", "Li, S."],
-    venue: "Proceedings of the Transportation Research Board",
+      "Racial Segregation, Transportation, and Employment Outcomes in the United States",
+    authors: ["Li, Shengxiao (Alex)", "Richard Patti", "Yuxi Xiong*"],
+    venue: "Transport Policy",
+    year: 2026,
+    type: "journal",
+    citation: "176 (February), 103920",
+    doi: "10.1016/j.tranpol.2025.103920",
+    featured: true,
+  },
+  {
+    id: "pub-2025-police-stops",
+    title:
+      "Understanding the Role of the Built and Social Environments in Outcomes of Stops by Police in San Diego, California",
+    authors: [
+      "Li, Shengxiao (Alex)",
+      "Ran Wei",
+      "Danielle Wallace",
+      "Tony Grubesic",
+      "Xiaoyue Cathy Liu",
+    ],
+    venue: "Journal of Urban Affairs",
+    year: 2025,
+    type: "journal",
+    doi: "10.1080/07352166.2025.2548828",
+  },
+  {
+    id: "pub-2025-aging-wrong-place",
+    title: "Who Is Aging in the Wrong Place? Evidence from Older Americans",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Transportation Research Part D: Transport and Environment",
+    year: 2025,
+    type: "journal",
+    citation: "140 (March), 104616",
+    doi: "10.1016/j.trd.2025.104616",
+  },
+  {
+    id: "pub-2025-zero-vehicle-households",
+    title:
+      "Characteristics of Zero-Vehicle Households among Older Americans and Their Travel Implications",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Journal of the American Planning Association",
+    year: 2025,
+    type: "journal",
+    citation: "91 (3): 430–444",
+    doi: "10.1080/01944363.2024.2428918",
+  },
+  {
+    id: "pub-2025-boomers-silent-generation",
+    title: "How Do Baby Boomers Travel Differently from the Silent Generation?",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Transportation",
+    year: 2025,
+    type: "journal",
+    citation: "52: 1–28",
+    doi: "10.1007/s11116-023-10410-3",
+  },
+  {
+    id: "pub-2024-older-americans-policy",
+    title:
+      "Transportation Planning for Older Americans: Challenges, Federal Policies, and Next Steps",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Journal of Aging & Social Policy",
     year: 2024,
-    type: "conference",
+    type: "journal",
+    citation: "36 (5): 929–47",
+    doi: "10.1080/08959420.2023.2238539",
   },
   {
-    id: "pub-2024-voiddeck",
-    title: "The void deck as ageing commons: an observational study",
-    authors: ["Li, S.", "Goh, M.", "Chen, Y."],
+    id: "pub-2024-accessibility-capability",
+    title:
+      "From Transportation Equity to Accessibility Capability: A New Framework to Guide Transportation Planning for Older People",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Journal of Planning Literature",
+    year: 2024,
+    type: "journal",
+    citation: "39 (2): 241–53",
+    doi: "10.1177/08854122231223802",
+  },
+  {
+    id: "pub-2024-vehicle-ownership-life-course",
+    title:
+      "Vehicle Ownership over the Life Course among Older Americans: A Longitudinal Analysis",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Transportation",
+    year: 2024,
+    type: "journal",
+    citation: "51 (1): 247–70",
+    doi: "10.1007/s11116-022-10326-4",
+  },
+  {
+    id: "pub-2023-ict-travel-older-americans",
+    title:
+      "Revisiting the Relationship between Information and Communication Technologies and Travel Behavior: An Investigation of Older Americans",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Transportation Research Part A: Policy and Practice",
+    year: 2023,
+    type: "journal",
+    citation: "172 (June): 103689",
+    doi: "10.1016/j.tra.2023.103689",
+  },
+  {
+    id: "pub-2022-grandparenting-wellbeing",
+    title:
+      "Grandparenting and Subjective Well-Being in China: The Moderating Effects of Residential Location, Gender, Age, and Income",
+    authors: ["Wang, Shuhong*", "Shengxiao (Alex) Li", "Wanyang Hu"],
+    venue: "Social Science & Medicine",
+    year: 2022,
+    type: "journal",
+    citation: "315 (December): 115528",
+    doi: "10.1016/j.socscimed.2022.115528",
+  },
+  {
+    id: "pub-2022-relocation-older-adults",
+    title: "Recent Relocation Patterns Among Older Adults in the United States",
+    authors: ["Li, Shengxiao (Alex)", "Wanyang Hu", "Fuyu Guo*"],
+    venue: "Journal of the American Planning Association",
+    year: 2022,
+    type: "journal",
+    citation: "88 (1): 15–29",
+    doi: "10.1080/01944363.2021.1902842",
+  },
+  {
+    id: "pub-2022-new-towns-commuting",
+    title:
+      "Examining Commuting Disparities across Different Types of New Towns and Different Income Groups: Evidence from Beijing, China",
+    authors: ["Li, Shengxiao (Alex)", "Pengjun Zhao"],
+    venue: "Habitat International",
+    year: 2022,
+    type: "journal",
+    citation: "124 (June): 102558",
+    doi: "10.1016/j.habitatint.2022.102558",
+  },
+  {
+    id: "pub-2022-ride-hailing-austin",
+    title:
+      "Who Loses and Who Wins in the Ride-Hailing Era? A Case Study of Austin, Texas",
+    authors: [
+      "Li, Shengxiao (Alex)",
+      "Wei Zhai",
+      "Junfeng Jiao",
+      "Chao (Kenneth) Wang*",
+    ],
+    venue: "Transport Policy",
+    year: 2022,
+    type: "journal",
+    citation: "120 (May): 130–38",
+    doi: "10.1016/j.tranpol.2022.03.009",
+  },
+  {
+    id: "pub-2022-constrained-car-ownership",
+    title:
+      "How Do Constrained Car Ownership and Car Use Influence Travel and Life Satisfaction?",
+    authors: ["Li, Shengxiao (Alex)", "Xiaodong Guan", "Donggen Wang"],
+    venue: "Transportation Research Part A: Policy and Practice",
+    year: 2022,
+    type: "journal",
+    citation: "155 (January): 202–18",
+    doi: "10.1016/j.tra.2021.11.014",
+  },
+  {
+    id: "pub-2022-low-income-commuters",
+    title:
+      "How Do Low-Income Commuters Get to Work in US and Mexican Cities? A Comparative Empirical Assessment",
+    authors: ["Guerra, Erick", "Shengxiao Li", "Ariadna Reyes"],
     venue: "Urban Studies",
-    year: 2024,
+    year: 2022,
     type: "journal",
-    doi: "10.0000/placeholder.2024.003",
-    featured: true,
+    citation: "59 (1): 75–96",
+    doi: "10.1177/0042098020965442",
   },
   {
-    id: "pub-2023-index",
-    title: "A walkable ageing index for tropical high-density cities",
-    authors: ["Li, S."],
-    venue: "Cities",
-    year: 2023,
+    id: "pub-2021-senior-centers-transit",
+    title:
+      "Time-Varying Accessibility to Senior Centers by Public Transit in Philadelphia",
+    authors: [
+      "Li, Shengxiao (Alex)",
+      "Hongyu (Anna) Duan*",
+      "Tony E. Smith",
+      "Haoyu Hu",
+    ],
+    venue: "Transportation Research Part A: Policy and Practice",
+    year: 2021,
     type: "journal",
-    doi: "10.0000/placeholder.2023.004",
+    citation: "151 (September): 245–58",
+    doi: "10.1016/j.tra.2021.06.020",
   },
   {
-    id: "pub-2023-report",
-    title: "Age-friendly streets: design guidance for local implementation",
-    authors: ["Li, S.", "Tan, W. K."],
-    venue: "Report to the Ministry of National Development",
-    year: 2023,
-    type: "report",
+    id: "pub-2020-living-environment-wellbeing",
+    title:
+      "Living Environment, Mobility, and Wellbeing among Seniors in the United States: A New Interdisciplinary Dialogue",
+    authors: ["Li, Shengxiao (Alex)"],
+    venue: "Journal of Planning Literature",
+    year: 2020,
+    type: "journal",
+    citation: "35 (3): 298–314",
+    doi: "10.1177/0885412220914993",
+  },
+  {
+    id: "pub-2020-primary-care-china",
+    title:
+      "The Role of Transportation in Older Adults’ Use of and Satisfaction with Primary Care in China",
+    authors: [
+      "Li, Shengxiao (Alex)",
+      "Yixue Zhang",
+      "Hangqing Ruan",
+      "Erick Guerra",
+      "Denise Burnette",
+    ],
+    venue: "Journal of Transport & Health",
+    year: 2020,
+    type: "journal",
+    citation: "18 (September): 100898",
+    doi: "10.1016/j.jth.2020.100898",
+  },
+  {
+    id: "pub-2020-hospital-accessibility-beijing",
+    title:
+      "Unequable Spatial Accessibility to Hospitals in Developing Megacities: New Evidence from Beijing",
+    authors: ["Zhao, Pengjun", "Shengxiao Li", "Di Liu"],
+    venue: "Health & Place",
+    year: 2020,
+    type: "journal",
+    citation: "65 (September): 102406",
+    doi: "10.1016/j.healthplace.2020.102406",
   },
 ];
 
 export const people: Person[] = [
   {
+    // Real (from the prof's About + CV); the rest of this list is invented.
     slug: "prof-li",
     name: "Prof Shengxiao (Alex) Li",
     role: "faculty",
     title: "Principal Investigator · Assistant Professor",
-    bio: "Alex studies the intersection of population ageing and urban mobility. Before joining NUS he worked in transport planning practice, which is why the lab's work always ends in something a city can build.",
-    email: "alex.li@nus.edu.sg",
+    bio: "Alex's research lies at the intersection of travel behavior and transportation governance — understanding how planning policies can guide transportation systems toward equitable and sustainable mobility transitions.",
+    email: "alexli@nus.edu.sg",
     links: [
-      { label: "Google Scholar", url: "https://scholar.google.com" },
-      { label: "ORCID", url: "https://orcid.org" },
+      {
+        label: "Google Scholar",
+        url: "https://scholar.google.com/citations?user=_zb8mMYAAAAJ&hl=en&oi=ao",
+      },
+      { label: "ORCID", url: "https://orcid.org/0000-0002-0698-3509" },
     ],
   },
   {

@@ -9,6 +9,7 @@
 import {
   siteSettings,
   profile,
+  researchPage,
   researchThemes,
   projects,
   publications,
@@ -26,6 +27,7 @@ import type {
   Profile,
   Project,
   Publication,
+  ResearchPageContent,
   ResearchTheme,
   SiteSettings,
   WorkWithMeContent,
@@ -41,6 +43,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
 export async function getProfile(): Promise<Profile> {
   return useSanity ? sanity.fetchProfile() : profile;
+}
+
+export async function getResearchPage(): Promise<ResearchPageContent> {
+  return useSanity ? sanity.fetchResearchPage() : researchPage;
 }
 
 export async function getResearchThemes(): Promise<ResearchTheme[]> {
@@ -76,7 +82,10 @@ export async function getProjectsByTheme(
 export async function getPublications(): Promise<Publication[]> {
   return useSanity
     ? sanity.fetchPublications()
-    : [...publications].sort((a, b) => b.year - a.year);
+    : // Same ordering as the GROQ query: year desc, then title asc
+      [...publications].sort(
+        (a, b) => b.year - a.year || a.title.localeCompare(b.title),
+      );
 }
 
 export async function getPublication(

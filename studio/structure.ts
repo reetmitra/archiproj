@@ -6,7 +6,12 @@ import type { StructureResolver } from "sanity/structure";
  * menu (sanity.config.ts filters templates), and stripped of the
  * delete/duplicate actions.
  */
-export const singletonTypes = new Set(["profile", "workWithMe", "siteSettings"]);
+export const singletonTypes = new Set([
+  "profile",
+  "researchPage",
+  "workWithMe",
+  "siteSettings",
+]);
 
 /** News first — the thing the professor edits most often. */
 export const structure: StructureResolver = (S) =>
@@ -21,8 +26,15 @@ export const structure: StructureResolver = (S) =>
           S.list()
             .title("Research")
             .items([
+              S.documentTypeListItem("researchTheme").title("Pillars"),
               S.documentTypeListItem("project").title("Projects"),
-              S.documentTypeListItem("researchTheme").title("Themes"),
+              S.listItem()
+                .title("Research page intro")
+                .child(
+                  S.document()
+                    .schemaType("researchPage")
+                    .documentId("researchPage"),
+                ),
             ]),
         ),
       S.documentTypeListItem("person").title("People"),

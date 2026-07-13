@@ -39,6 +39,38 @@ export const profile = defineType({
       validation: (rule) => rule.required().max(600),
     }),
     defineField({
+      name: "about",
+      title: "About page",
+      type: "array",
+      description:
+        "The full bio shown on the About page. One box per paragraph.",
+      of: [{ type: "text", rows: 6 }],
+      validation: (rule) => rule.required().min(1),
+    }),
+    defineField({
+      name: "photo",
+      title: "Photo (optional)",
+      type: "image",
+      description: "Your photo on the About page.",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Image description",
+          type: "string",
+          description:
+            "A short description of the photo, for screen readers.",
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: "caption",
+          title: "Caption (optional)",
+          type: "string",
+          description:
+            "Shown under the photo, e.g. where and when it was taken.",
+        }),
+      ],
+    }),
+    defineField({
       name: "education",
       title: "Education",
       type: "array",

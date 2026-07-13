@@ -1,29 +1,47 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { getProjects, getResearchThemes } from "@/lib/content";
-import { PageIntro } from "@/components/primitives";
+import {
+  getPublications,
+  getResearchPage,
+  getResearchThemes,
+} from "@/lib/content";
+import {
+  CoauthorLegend,
+  PageIntro,
+  PublicationItem,
+} from "@/components/primitives";
 
 export const metadata: Metadata = {
   title: "Research",
 };
 
 export default async function ResearchPage() {
+  const page = await getResearchPage();
   const themes = await getResearchThemes();
-  const allProjects = await getProjects();
+  const allPubs = await getPublications();
 
   return (
     <>
-      <PageIntro
-        eyebrow="Research"
-        title="Three lines of work"
-        lede="Every project starts in the field and ends in something a city can act on — a design guide, an index, a policy brief, a retrofit."
-      />
+      <PageIntro eyebrow="Research" title={page.title} />
+
+      {/* Research vision — the prof's overview, verbatim */}
+      <div
+        data-depth
+        className="mx-auto max-w-6xl px-5 sm:px-8 -mt-2 pb-16"
+      >
+        <div className="max-w-2xl space-y-6 text-lg leading-relaxed">
+          {page.overview.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </div>
+      </div>
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8 pb-8 space-y-20">
         {themes.map((theme) => {
-          const projects = allProjects.filter(
-            (p) => p.themeSlug === theme.slug,
-          );
+          // publicationIds order is the on-page order; a dangling id
+          // (e.g. a pub deleted in the Studio) just drops out
+          const selected = (theme.publicationIds ?? [])
+            .map((id) => allPubs.find((p) => p.id === id))
+            .filter((p) => p !== undefined);
           return (
             <section
               key={theme.slug}
@@ -38,7 +56,7 @@ export default async function ResearchPage() {
                 <span
                   aria-hidden
                   data-depth="pop"
-                  className="size-4 rounded-full bg-accent border-[3px] border-ink"
+                  className="size-4 shrink-0 rounded-full bg-accent border-[3px] border-ink"
                 />
                 <p className="font-mono text-sm text-stone">{theme.code}</p>
                 <h2
@@ -48,35 +66,51 @@ export default async function ResearchPage() {
                   {theme.title}
                 </h2>
               </div>
-              <p data-depth className="mt-5 text-lg text-stone leading-relaxed max-w-2xl">
-                {theme.summary}
-              </p>
 
-              <div data-depth-group className="mt-8 grid gap-6 sm:grid-cols-2">
-                {projects.map((project) => (
-                  <Link
-                    key={project.slug}
-                    href={`/research/${project.slug}`}
-                    data-tilt
-                    className="group block border border-line rounded-sm p-6 hover:border-ink transition-colors"
-                  >
-                    <p className="font-mono text-sm text-stone flex items-center gap-3">
-                      {project.years}
-                      {project.status === "active" && (
-                        <span className="inline-block bg-accent text-ink px-2 py-0.5 text-xs uppercase tracking-widest rounded-sm">
-                          Active
-                        </span>
-                      )}
-                    </p>
-                    <h3 className="mt-3 font-display font-bold text-xl tracking-tight group-hover:text-moss transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="mt-3 text-stone leading-relaxed">
-                      {project.summary}
-                    </p>
-                  </Link>
-                ))}
+              <div
+                data-depth
+                className="mt-6 max-w-2xl space-y-6 text-lg leading-relaxed"
+              >
+                {theme.body?.map((paragraph, i) => <p key={i}>{paragraph}</p>)}
               </div>
+
+              {theme.figure && (
+                <figure
+                  data-depth
+                  // never stretch a small original (the P2 chart is 379px)
+                  className="mt-8 max-w-3xl"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element -- next/image
+                      is unused site-wide; src may be a Sanity CDN URL */}
+                  <img
+                    src={theme.figure.src}
+                    alt={theme.figure.alt}
+                    loading="lazy"
+                    className="h-auto max-w-full border border-line rounded-sm bg-white"
+                  />
+                  {theme.figure.caption && (
+                    <figcaption className="mt-2 max-w-2xl font-mono text-xs text-stone leading-relaxed">
+                      {theme.figure.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              )}
+
+              {selected.length > 0 && (
+                <div data-depth className="mt-10 max-w-4xl">
+                  <h3 className="font-display font-semibold text-xl tracking-tight">
+                    Selected publications
+                  </h3>
+                  <div className="mt-3">
+                    <CoauthorLegend />
+                  </div>
+                  <div className="mt-1">
+                    {selected.map((pub) => (
+                      <PublicationItem key={pub.id} pub={pub} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </section>
           );
         })}

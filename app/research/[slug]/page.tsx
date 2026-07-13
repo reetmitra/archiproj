@@ -11,6 +11,10 @@ import { PublicationItem } from "@/components/primitives";
 
 type Props = { params: Promise<{ slug: string }> };
 
+// No projects exist yet (the pillar essays carry /research); with zero
+// params this route generates nothing and unknown slugs 404 statically.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const projects = await getProjects();
   return projects.map((p) => ({ slug: p.slug }));

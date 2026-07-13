@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Publication, PublicationType } from "@/lib/content/types";
-import { PublicationItem } from "@/components/primitives";
+import { CoauthorLegend, PublicationItem } from "@/components/primitives";
 
 const typeLabels: Record<PublicationType, string> = {
   journal: "Journal articles",
@@ -31,32 +31,38 @@ export function PublicationList({
 
   return (
     <div>
-      <div
-        role="group"
-        aria-label="Filter by type"
-        className="flex flex-wrap gap-2"
-      >
-        {(["all", ...presentTypes] as const).map((t) => {
-          const active = filter === t;
-          return (
-            <button
-              key={t}
-              type="button"
-              aria-pressed={active}
-              onClick={() => setFilter(t)}
-              className={`font-mono text-sm px-3.5 py-2 rounded-sm border transition-colors ${
-                active
-                  ? "bg-ink text-paper border-ink"
-                  : "border-line text-stone hover:border-ink hover:text-ink"
-              }`}
-            >
-              {t === "all" ? "All" : typeLabels[t]}
-            </button>
-          );
-        })}
-      </div>
+      {/* With one type present, "All" vs that type is the same list —
+          skip the buttons until a second type exists */}
+      {presentTypes.length > 1 && (
+        <div
+          role="group"
+          aria-label="Filter by type"
+          className="mb-6 flex flex-wrap gap-2"
+        >
+          {(["all", ...presentTypes] as const).map((t) => {
+            const active = filter === t;
+            return (
+              <button
+                key={t}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setFilter(t)}
+                className={`font-mono text-sm px-3.5 py-2 rounded-sm border transition-colors ${
+                  active
+                    ? "bg-ink text-paper border-ink"
+                    : "border-line text-stone hover:border-ink hover:text-ink"
+                }`}
+              >
+                {t === "all" ? "All" : typeLabels[t]}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
-      <div className="mt-6">
+      <CoauthorLegend />
+
+      <div className="mt-2">
         {years.map((year) => (
           <section key={year} aria-label={`Publications from ${year}`}>
             {visible
