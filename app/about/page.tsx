@@ -34,7 +34,7 @@ export default async function AboutPage() {
               href={`mailto:${profile.email}`}
               className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
             >
-              Email
+              {profile.email}
             </a>
             {profile.links.map((link) => (
               <a

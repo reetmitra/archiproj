@@ -95,11 +95,13 @@ export default async function HomePage() {
           data-anim="hero-mission"
           className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm"
         >
+          {/* the address itself is the label: mailto still works where a
+              mail client exists, and everyone else can read/copy it */}
           <a
             href={`mailto:${profile.email}`}
             className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
           >
-            Email
+            {profile.email}
           </a>
           {profile.links.map((link) => (
             <a
