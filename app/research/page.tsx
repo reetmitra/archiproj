@@ -6,6 +6,7 @@ import {
 } from "@/lib/content";
 import {
   CoauthorLegend,
+  ContentFigure,
   PageIntro,
   PublicationItem,
 } from "@/components/primitives";
@@ -77,25 +78,7 @@ export default async function ResearchPage() {
               </div>
 
               {theme.figure && (
-                <figure
-                  data-depth
-                  // never stretch a small original (the P2 chart is 379px)
-                  className="mt-8 max-w-3xl"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element -- next/image
-                      is unused site-wide; src may be a Sanity CDN URL */}
-                  <img
-                    src={theme.figure.src}
-                    alt={theme.figure.alt}
-                    loading="lazy"
-                    className="h-auto max-w-full border border-line rounded-sm bg-white"
-                  />
-                  {theme.figure.caption && (
-                    <figcaption className="mt-2 max-w-2xl font-mono text-xs text-stone leading-relaxed">
-                      {theme.figure.caption}
-                    </figcaption>
-                  )}
-                </figure>
+                <ContentFigure image={theme.figure} className="mt-8" />
               )}
 
               {selected.length > 0 && (

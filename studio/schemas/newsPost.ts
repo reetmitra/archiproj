@@ -22,10 +22,33 @@ export const newsPost = defineType({
     defineField({
       name: "body",
       title: "Text",
-      type: "text",
-      rows: 4,
-      description: "A short paragraph — two or three sentences is plenty.",
-      validation: (rule) => rule.required(),
+      type: "array",
+      description:
+        "The post, one box per paragraph. Only the first paragraph appears on the homepage, so put the news itself there.",
+      of: [{ type: "text", rows: 4 }],
+      validation: (rule) => rule.required().min(1),
+    }),
+    defineField({
+      name: "image",
+      title: "Photo (optional)",
+      type: "image",
+      description:
+        "Shown under the post text — a photo from the event, a conference logo.",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Image description",
+          type: "string",
+          description: "What the image shows, for screen readers.",
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: "caption",
+          title: "Caption (optional)",
+          type: "string",
+          description: "Shown under the image.",
+        }),
+      ],
     }),
     defineField({
       name: "category",

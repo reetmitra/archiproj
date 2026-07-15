@@ -18,19 +18,32 @@ function initials(name: string) {
 function PersonCard({ person }: { person: Person }) {
   return (
     <article className="flex gap-5">
-      {/* Photo placeholder — real headshots come from the lab via the CMS */}
-      <span
-        aria-hidden
-        className="size-16 shrink-0 rounded-full bg-ink text-paper font-display font-bold text-xl flex items-center justify-center"
-      >
-        {initials(person.name)}
-      </span>
+      {person.photo ? (
+        /* eslint-disable-next-line @next/next/no-img-element -- next/image
+           is unused site-wide; src may be a Sanity CDN URL */
+        <img
+          src={person.photo.src}
+          alt={person.photo.alt}
+          loading="lazy"
+          className="size-16 shrink-0 rounded-full object-cover border border-line"
+        />
+      ) : (
+        // No headshot yet — initials keep the layout honest
+        <span
+          aria-hidden
+          className="size-16 shrink-0 rounded-full bg-ink text-paper font-display font-bold text-xl flex items-center justify-center"
+        >
+          {initials(person.name)}
+        </span>
+      )}
       <div>
         <h3 className="font-display font-bold text-xl tracking-tight">
           {person.name}
         </h3>
         <p className="mt-0.5 font-mono text-sm text-stone">{person.title}</p>
-        <p className="mt-3 text-stone leading-relaxed">{person.bio}</p>
+        {person.bio && (
+          <p className="mt-3 text-stone leading-relaxed">{person.bio}</p>
+        )}
         {(person.email || person.links) && (
           <p className="mt-3 flex flex-wrap gap-4 font-mono text-sm">
             {person.email && (
@@ -86,13 +99,10 @@ export default async function PeoplePage() {
 
   return (
     <>
-      <PageIntro
-        title="Who does the work"
-        lede="A small group with mixed backgrounds — planning, data science, geography, design — held together by fieldwork."
-      />
+      <PageIntro title="People" />
       <div className="mx-auto max-w-6xl px-5 sm:px-8 pb-8 space-y-16">
         <Group heading="Principal Investigator" members={faculty} />
-        <Group heading="PhD researchers" members={phd} />
+        <Group heading="PhD students" members={phd} />
         <Group heading="Masters students" members={masters} />
         <Group heading="Alumni" members={alumni} />
       </div>

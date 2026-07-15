@@ -6,8 +6,6 @@
  */
 
 export type SiteSettings = {
-  labName: string;
-  mission: string;
   institution: string;
   department: string;
   address: string;
@@ -104,7 +102,9 @@ export type Person = {
   name: string;
   role: PersonRole;
   title: string;
-  bio: string;
+  bio?: string;
+  /** Headshot; the People page falls back to initials without one */
+  photo?: SiteImage;
   email?: string;
   links?: { label: string; url: string }[];
 };
@@ -116,17 +116,38 @@ export type NewsPost = {
   /** ISO date, e.g. "2026-06-12" */
   date: string;
   title: string;
-  body: string;
+  /** One paragraph per entry; the homepage shows only the first */
+  body: string[];
   category: NewsCategory;
+  image?: SiteImage;
   link?: { label: string; url: string };
 };
 
+/** One taught course; the Teaching page groups these by institution. */
 export type Course = {
-  code: string;
+  institution: string;
   title: string;
-  term: string;
-  level: "undergraduate" | "graduate";
-  description: string;
+  /** The prof's parenthetical, e.g. "Master's required, Fall 2024 and 2025" */
+  meta: string;
+  /** Lower numbers first; also drives the institution group order */
+  sortOrder?: number;
+};
+
+export type TeachingSection = {
+  title: string;
+  /** One paragraph per entry */
+  body: string[];
+  photo?: SiteImage;
+};
+
+/** The teaching page intro + philosophy essay. Singleton. */
+export type TeachingPageContent = {
+  title: string;
+  /** Opening paragraph(s) shown under the title */
+  intro: string[];
+  sections: TeachingSection[];
+  /** Paragraph introducing the grouped course list */
+  coursesIntro?: string;
 };
 
 /** The research page intro. Singleton. */
@@ -137,9 +158,14 @@ export type ResearchPageContent = {
 };
 
 export type WorkWithMeSection = {
-  /** e.g. "Current NUS students", "Prospective PhD students" */
+  /** e.g. "Current Availability", "PhD Recruitment (Fall 2027)" */
   title: string;
-  body: string;
+  /** Paragraphs before the bullet list, one per entry */
+  body: string[];
+  /** Optional bullet list */
+  bullets?: string[];
+  /** Paragraphs after the bullet list */
+  after?: string[];
 };
 
 export type WorkWithMeContent = {
@@ -148,4 +174,6 @@ export type WorkWithMeContent = {
   sections: WorkWithMeSection[];
   openings?: { title: string; description: string; open: boolean }[];
   howToApply: string;
+  /** Where the contact button points; falls back to profile.email */
+  contactEmail?: string;
 };

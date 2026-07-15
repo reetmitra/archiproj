@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import type { NewsCategory, Publication } from "@/lib/content";
+import type { NewsCategory, Publication, SiteImage } from "@/lib/content";
 
 /** Mono uppercase kicker above headings — the timetable voice */
 export function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -41,6 +41,38 @@ export function PageIntro({
         </p>
       )}
     </div>
+  );
+}
+
+/**
+ * A content image with optional caption — research figures, news
+ * photos, teaching photos. Renders at natural size up to the container
+ * width, never stretched (some originals are small logos or low-res
+ * charts). `src` may be a local /images path or a Sanity CDN URL.
+ */
+export function ContentFigure({
+  image,
+  className = "",
+}: {
+  image: SiteImage;
+  className?: string;
+}) {
+  return (
+    <figure data-depth className={`max-w-3xl ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- next/image
+          is unused site-wide; src may be a Sanity CDN URL */}
+      <img
+        src={image.src}
+        alt={image.alt}
+        loading="lazy"
+        className="h-auto max-w-full border border-line rounded-sm bg-white"
+      />
+      {image.caption && (
+        <figcaption className="mt-2 max-w-2xl font-mono text-xs text-stone leading-relaxed">
+          {image.caption}
+        </figcaption>
+      )}
+    </figure>
   );
 }
 

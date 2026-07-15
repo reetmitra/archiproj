@@ -6,6 +6,7 @@ import { person } from "./person";
 import { course } from "./course";
 import { profile } from "./profile";
 import { researchPage } from "./researchPage";
+import { teachingPage } from "./teachingPage";
 import { siteSettings } from "./siteSettings";
 import { workWithMe } from "./workWithMe";
 
@@ -20,6 +21,7 @@ export const schemaTypes = [
   // Singletons
   profile,
   researchPage,
+  teachingPage,
   workWithMe,
   siteSettings,
 ];

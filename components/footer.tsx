@@ -23,7 +23,6 @@ export async function Footer() {
               <br />
               {profile.affiliation}
             </p>
-            <p className="mt-3 text-paper/70">{site.labName}</p>
           </div>
           <div className="font-mono text-sm">
             <p className="text-paper/50 uppercase tracking-widest mb-4">Visit</p>
@@ -59,8 +58,7 @@ export async function Footer() {
         </div>
         <div className="border-t border-paper/15">
           <p className="mx-auto max-w-6xl px-5 sm:px-8 py-5 font-mono text-xs text-paper/50">
-            © {new Date().getFullYear()} {profile.name}. Placeholder content —
-            pending content from the professor.
+            © {new Date().getFullYear()} {profile.name}
           </p>
         </div>
       </div>

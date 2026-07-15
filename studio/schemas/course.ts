@@ -4,60 +4,48 @@ export const course = defineType({
   name: "course",
   title: "Course",
   type: "document",
+  description:
+    "One taught course. The Teaching page groups courses by institution.",
   fields: [
     defineField({
-      name: "code",
-      title: "Course code",
-      type: "string",
-      description: "e.g. “AR4102”.",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: "title",
-      title: "Title",
+      title: "Course title",
       type: "string",
+      description: "e.g. “Planning Policy and Process”.",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "term",
-      title: "Term",
+      name: "institution",
+      title: "Institution",
       type: "string",
-      description: "e.g. “Semester 1”.",
+      description:
+        "Where you taught it, e.g. “National University of Singapore”. Spell it exactly the same for every course there — the page groups by this.",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "level",
-      title: "Level",
+      name: "meta",
+      title: "Details",
       type: "string",
-      options: {
-        list: [
-          { title: "Undergraduate", value: "undergraduate" },
-          { title: "Graduate", value: "graduate" },
-        ],
-        layout: "radio",
-      },
+      description:
+        "Level and term, shown after the title — e.g. “Master's required, Fall 2024 and 2025”.",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "description",
-      title: "Description",
-      type: "text",
-      rows: 4,
-      description: "Two or three sentences on what the course covers.",
-      validation: (rule) => rule.required(),
+      name: "sortOrder",
+      title: "Sort position (optional)",
+      type: "number",
+      description:
+        "Lower numbers appear first. Institutions appear in the order of their first course.",
     }),
   ],
   orderings: [
     {
-      title: "Course code",
-      name: "codeAsc",
-      by: [{ field: "code", direction: "asc" }],
+      title: "Sort position",
+      name: "sortOrderAsc",
+      by: [{ field: "sortOrder", direction: "asc" }],
     },
   ],
   preview: {
-    select: { title: "title", code: "code" },
-    prepare({ title, code }) {
-      return { title: [code, title].filter(Boolean).join(" — ") };
-    },
+    select: { title: "title", subtitle: "institution" },
   },
 });

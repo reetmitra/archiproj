@@ -2,13 +2,10 @@
  * Local content — the fallback when SANITY_PROJECT_ID is unset, and the
  * source for `npm run seed`.
  *
- * REAL (from the professor, 2026-07): profile, researchPage,
- * researchThemes, publications, siteSettings.email, and the prof's own
- * entry in people.
- *
- * STILL PLACEHOLDER (invented): people other than the prof, news,
- * courses, workWithMe, siteSettings.labName/mission. The footer notice
- * stays until these are real too.
+ * ALL REAL (from the professor's `Lab Page/` folder, 2026-07): profile,
+ * researchPage, researchThemes, publications, people, news, teaching,
+ * workWithMe. Prose is verbatim from his docx files except the small
+ * normalizations flagged to him via Reet (see HANDOFF session log).
  */
 
 import type {
@@ -21,13 +18,11 @@ import type {
   Person,
   NewsPost,
   Course,
+  TeachingPageContent,
   WorkWithMeContent,
 } from "./types";
 
 export const siteSettings: SiteSettings = {
-  labName: "Ageing Mobility Lab",
-  mission:
-    "We study how neighbourhoods, streets, and transport systems can support people as they grow older — and how to plan them more fairly.",
   institution: "National University of Singapore",
   department: "Department of Architecture, College of Design and Engineering",
   address: "4 Architecture Drive, Singapore 117566",
@@ -175,9 +170,12 @@ export const researchThemes: ResearchTheme[] = [
       "More broadly, I examine transportation transitions beyond vehicle electrification, asking how cities can reduce car dependence while expanding people's mobility choices. My research investigates how transportation transitions are governed across multiple institutional scales, examining the interactions among regional and local planning agencies, higher levels of government, transit agencies, environmental organizations, and other stakeholders in implementing decarbonization strategies. Given the political and institutional challenges of achieving sustainable transitions, I also examine how local political institutions and planning processes shape transportation policies—including street redesign, transit-oriented development, public transit investment, and fare policies—and how these interventions influence travel behavior, residential choices, and access to opportunities.",
       "Through this line of research, I seek to identify governance and planning pathways that advance equitable mobility transitions by enabling transportation decarbonization while expanding mobility choices for diverse populations.",
     ],
-    // Figure described in the prof's doc (spatial variation in commitment
-    // to vehicle electrification, from the 2026 JPER paper) but the image
-    // file wasn't included — ask him for it.
+    figure: {
+      src: "/images/pillar-electrification-figure.webp",
+      alt: "Map of the United States with labelled metropolitan planning organizations shaded by their electric-vehicle strategy score, from low (red) to high (blue)",
+      caption:
+        "Spatial variation in commitment to vehicle electrification across U.S. metropolitan regions. Figure from a 2026 publication in the Journal of Planning Education and Research.",
+    },
     publicationIds: ["pub-2026-boon-or-bane", "pub-2026-vision-to-reality"],
   },
 ];
@@ -478,134 +476,299 @@ export const people: Person[] = [
       { label: "ORCID", url: "https://orcid.org/0000-0002-0698-3509" },
     ],
   },
+  // From People.docx (2026-07). Role lines verbatim; no bios or
+  // headshots were provided (his photo folders were empty) — the page
+  // shows initials until headshots arrive. Array order = his doc order.
   {
-    slug: "wei-keat-tan",
-    name: "Tan Wei Keat",
+    slug: "yufei-wang",
+    name: "Yufei Wang",
     role: "phd",
-    title: "PhD Candidate",
-    bio: "Wei Keat leads the street audit fieldwork for The Last 400 Metres and is writing a dissertation on rest infrastructure and pedestrian range.",
+    title: "PhD Candidate in Architecture, National University of Singapore",
   },
   {
-    slug: "deepa-krishnan",
-    name: "Deepa Krishnan",
-    role: "phd",
-    title: "PhD Student",
-    bio: "Deepa models fairness in demand-responsive transport allocation, combining optimisation with lived-experience interviews.",
-  },
-  {
-    slug: "siti-nurhaliza",
-    name: "Siti Nurhaliza",
-    role: "masters",
-    title: "MUP Student",
-    bio: "Siti maps shade and seating along transit corridors for the Walkable Ageing Index.",
-  },
-  {
-    slug: "mabel-goh",
-    name: "Mabel Goh",
+    slug: "wenyu-lyu",
+    name: "Wenyu Lyu",
     role: "alumni",
-    title: "MUP 2024 · now at Urban Redevelopment Authority",
-    bio: "Mabel's thesis on void deck use won the department's best dissertation award.",
+    title:
+      "Former student, now a PhD student in Real Estate, National University of Singapore",
+  },
+  {
+    slug: "xinyi-he",
+    name: "Xinyi He",
+    role: "alumni",
+    title:
+      "Research assistant (2024–2026), incoming PhD student in Architecture, National University of Singapore",
+  },
+  {
+    slug: "tianle-luo",
+    name: "Tianle Luo",
+    role: "alumni",
+    title: "Research assistant (2024–2026)",
+  },
+  {
+    slug: "jooeun-kim",
+    name: "Jooeun Kim",
+    role: "alumni",
+    title: "Research assistant (2025–2026)",
+  },
+  {
+    slug: "justin-eng",
+    name: "Justin Eng",
+    role: "alumni",
+    title: "Research assistant (2026)",
   },
 ];
 
+// From News.docx (2026-07), verbatim except: the GSA presentation
+// details are reformatted from his label-per-line list into one
+// sentence per paper (no facts dropped), and photos get alt text.
 export const news: NewsPost[] = [
   {
-    id: "news-2026-06",
-    date: "2026-06-12",
-    title: "Paper on rest infrastructure accepted at Journal of Transport & Health",
-    body: "Our study of how bench spacing shapes older adults' walking range — with evidence from 2,100 GPS-traced journeys — is now in press.",
+    id: "news-2026-07-09-gsa",
+    date: "2026-07-09",
+    title:
+      "Shengxiao (Alex) Li's two papers with co-authors have been accepted by Gerontological Society of America Annual Conference!",
+    body: [
+      "Excited to share that two papers co-authored with wonderful collaborators have been accepted for presentation at the Gerontological Society of America (GSA) Annual Scientific Meeting. Looking forward to seeing everyone in Maryland this November!",
+      "“Aging in Place or in Motion? National Migration Patterns of Suburban and Downtown Older Americans”, with Peng Huang (University of Georgia) and Xinyi He (National University of Singapore) — session “Housing, Neighborhoods, and Aging in Place”, Friday November 6, 2026, 8:00–9:30 AM, Maryland Ballroom Breakout 5.",
+      "“Smaller Homes, More Friends: Ageing in Singapore's Kampung Admiralty”, a poster with Shin Bin Tan (National University of Singapore) — session “Housing, Neighborhoods, and Aging in Place (Posters)”, Saturday November 7, 2026, 1:45–3:00 PM, Exhibit Hall B–D.",
+    ],
     category: "paper",
+    image: {
+      src: "/images/news-gsa-2026.webp",
+      alt: "Logo of the Gerontological Society of America 2026 Annual Scientific Meeting",
+    },
   },
   {
-    id: "news-2026-05",
-    date: "2026-05-28",
-    title: "Invited talk at the World Urban Forum session on ageing cities",
-    body: "Prof Li presented the Walkable Ageing Index and its open-data methodology to an audience of city planners from 14 countries.",
+    id: "news-2026-07-03-acsp",
+    date: "2026-07-03",
+    title:
+      "See you at Association of Collegiate Schools of Planning conference at Pittsburgh!",
+    body: [
+      "Shengxiao (Alex) Li will present paper titled “Governance for transportation decarbonization planning in U.S. metropolitan areas: Evidence from state- and regional-level climate action plans” led by Yufei Wang and our amazing co-author Lauren Fischer at ACSP in Pittsburgh. See you in Pittsburgh in the fall!",
+    ],
     category: "talk",
+    image: {
+      src: "/images/news-acsp-2026.webp",
+      alt: "Banner of the Association of Collegiate Schools of Planning 2026 conference in Pittsburgh",
+    },
   },
   {
-    id: "news-2026-04",
-    date: "2026-04-15",
-    title: "New Tier 2 grant to extend the street audit to three more towns",
-    body: "The Last 400 Metres will grow to cover fifteen towns, adding night-time conditions to the audit protocol.",
-    category: "grant",
-  },
-  {
-    id: "news-2026-03",
-    date: "2026-03-02",
-    title: "The Straits Times covers our void deck research",
-    body: "The feature looks at what forty void decks taught us about designing for older residents.",
-    category: "media",
-    link: { label: "Read the article", url: "https://www.straitstimes.com" },
-  },
-  {
-    id: "news-2026-01",
-    date: "2026-01-20",
-    title: "Welcome to our new PhD student, Deepa Krishnan",
-    body: "Deepa joins the lab from IIT Madras to work on fairness in demand-responsive transport.",
+    id: "news-2026-06-16-yufei-qe",
+    date: "2026-06-16",
+    title:
+      "Congratulations to Yufei Wang on Passing Her PhD Qualifying Examination",
+    body: [
+      "Congratulations to Yufei Wang on successfully passing her PhD qualifying examination in the Department of Architecture at the National University of Singapore.",
+      "Yufei's dissertation, “Street Transformation in London, San Francisco, and Singapore: History, Implementation, and Governance Pathways,” examines how streets have been transformed and evolved over time across different institutional contexts. Using comparative case study methods and Qualitative Comparative Analysis (QCA), her research investigates the historical trajectories, implementation processes, and governance pathways of street transformation. The project aims to advance scholarship at the intersection of active travel and transportation governance from a comparative perspective.",
+      "We are also excited that Yufei will present her research on the comparative history of street transformation in San Francisco, London, and Singapore at the joint conference of the Research Committee 21 (RC21) of the International Sociological Association, the International Journal of Urban and Regional Research (IJURR), and the IJURR Foundation.",
+      "Congratulations, Yufei, on this important milestone, and we look forward to seeing your continued success!",
+    ],
     category: "lab",
+    image: {
+      src: "/images/news-yufei-qualifying.webp",
+      alt: "Two students smiling on an atrium walkway at the National University of Singapore, greenery behind them",
+    },
   },
 ];
 
-export const courses: Course[] = [
-  {
-    code: "AR4102",
-    title: "Planning the Age-Friendly City",
-    term: "Semester 1",
-    level: "undergraduate",
-    description:
-      "How demographic change reshapes what cities must provide. Students audit a real neighbourhood and propose retrofits, ending the semester with a public review.",
-  },
-  {
-    code: "AR5661",
-    title: "Transport Justice",
-    term: "Semester 2",
-    level: "graduate",
-    description:
-      "Theories of distributive justice applied to transport planning, with methods for measuring accessibility gaps and evaluating interventions.",
-  },
-  {
-    code: "AR5880",
-    title: "Urban Data for Planners",
-    term: "Semester 2",
-    level: "graduate",
-    description:
-      "A hands-on methods course: open data, spatial analysis, and honest visualisation for planning arguments.",
-  },
-];
-
-export const workWithMe: WorkWithMeContent = {
-  heading: "How to join the work",
-  intro:
-    "I look for people who care that research changes what gets built. Backgrounds in planning, geography, data science, public health, and design all fit — the common thread is fieldwork-grounded, publicly useful work.",
+// From Teaching.docx (2026-07): the teaching-philosophy essay plus the
+// course list. His one caption typo is fixed ("letf" → "left").
+export const teachingPage: TeachingPageContent = {
+  title: "Teaching",
+  intro: [
+    "My teaching approach has been shaped by my experiences as a learner, instructor, and collaborator working across disciplines and with planning practitioners internationally. I believe that planning education should be experiential, interdisciplinary, and inclusive. As an educator, I pursue two primary goals: (1) bridging the classroom with planning and policy practice through applied and collaborative learning, and (2) creating learning environments that support students from diverse socioeconomic, cultural, and disciplinary backgrounds.",
+  ],
   sections: [
     {
-      title: "Current NUS students",
-      body: "Paid research assistant roles open most semesters, mainly on the street audit — no experience needed, training provided. If you want course credit instead, propose an independent study; the strongest proposals connect to one of the research themes and name the piece of fieldwork or analysis you would own.",
+      title: "Bridging Classroom Learning with Planning Practice",
+      body: [
+        "To connect coursework with real-world practice, I design assignments that encourage students to apply what they learn in class to contemporary planning challenges. My teaching materials integrate professional planning documents, long-range transportation plans, government reports, planning cases, and academic literature. Through case studies, plan reviews, and project-based learning, students develop professional skills while learning to identify context-sensitive planning solutions.",
+        "Recently, three students from my Planning Policy and Process course (Xinyi He, Sofia Rita, and Huixin Fu) received the Best Student Case Study Award from the Global Planning Educator Interest Group (GPEIG) of the Association of Collegiate Schools of Planning (ACSP) for a case study on informal housing governance in India that they developed in my class. Seeing students grow into independent researchers and planning professionals through these practice-based assignments has been one of the most rewarding aspects of my teaching.",
+      ],
+      photo: {
+        src: "/images/teaching-acsp-award.webp",
+        alt: "Five people standing on stage at a conference session, three award-winning students with the two co-chairs of the case study selection committee",
+        caption:
+          "Xinyi, Sofia, and Huixin at the ACSP Annual Conference in Minneapolis, Minnesota (2025). From left to right: Huixin, Andrea Restrepo-Mieth (Rutgers University) and Anton Rozhkov (New York University), co-chairs of case study selection committee, Xinyi, and Sofia.",
+      },
     },
     {
-      title: "Prospective PhD students",
-      body: "Write to me before you apply to the programme. Tell me which of the research themes you want to push on and what you would bring to it — a method, a fieldwork instinct, a dataset, a question I haven't asked. Admitted students are funded for four years through NUS research scholarships.",
+      title: "Preparing Students for the Future of Planning",
+      body: [
+        "Planning education should evolve alongside the profession itself. As emerging technologies continue to reshape planning practice, I continually update my courses to reflect new tools, methods, and professional frontiers.",
+        "For example, I recently redesigned a plan evaluation assignment by incorporating generative AI into the learning process. Rather than treating AI as a replacement for human judgment, students compared AI-generated evaluations with human-coded assessments and critically reflected on both the opportunities and limitations of large language models in planning practice. This assignment helped students develop both technical skills and critical perspectives on the role of AI in planning and design. The course redesign was later supported by a Teaching Transformation Grant from the College of Design and Engineering at the National University of Singapore.",
+      ],
     },
     {
-      title: "Visiting researchers & collaborations",
-      body: "I host a small number of visiting researchers and welcome collaborations with agencies, city governments, and community organisations — especially where the output is something a city can act on. Timing depends on space and fit, so write early.",
+      title: "Supporting Student Success",
+      body: [
+        "Creating an inclusive classroom where students feel comfortable sharing diverse perspectives is central to my teaching philosophy. As a first-generation college student, I understand the transformative role that higher education can play in expanding opportunities and promoting social mobility. This experience has shaped my commitment to supporting students from diverse backgrounds and creating classrooms where everyone feels respected, supported, and empowered to succeed.",
+        "To foster an inclusive and engaging learning environment, I intentionally assign readings written by scholars from diverse academic and demographic backgrounds and encourage participation through multiple formats, including reading reflections, mini-presentations, and end-of-class takeaways. I also make myself available through additional office hours and informal conversations so that I can better understand each student's learning style, academic goals, and individual needs.",
+        "Ultimately, my goal is to create classrooms where students feel intellectually challenged, personally supported, and confident in developing their professional identities as planners, scholars, and future leaders.",
+      ],
     },
   ],
-  openings: [
+  coursesIntro:
+    "I have taught undergraduate and graduate courses in urban planning and public policy at four universities in the United States and Singapore. My teaching spans planning history and theory, transportation planning and policy, land use planning, planning methods, and planning for an aging society.",
+};
+
+// Titles + parentheticals verbatim from Teaching.docx, in his order
+// (sortOrder mirrors the array for the Sanity path). The Penn entry's
+// "Co-Instructor," prefix moved into the meta line.
+export const courses: Course[] = [
+  {
+    institution: "National University of Singapore",
+    title: "Planning Policy and Process",
+    meta: "Master's required, Fall 2024 and 2025",
+    sortOrder: 1,
+  },
+  {
+    institution: "National University of Singapore",
+    title: "Urban Planning History and Theory",
+    meta: "Master's required, Spring 2025 and 2026",
+    sortOrder: 2,
+  },
+  {
+    institution: "National University of Singapore",
+    title: "Urban Infrastructure and Mobility Systems",
+    meta: "Master's required, Fall 2025",
+    sortOrder: 3,
+  },
+  {
+    institution: "National University of Singapore",
+    title: "Dissertation",
+    meta: "Master's elective, Spring 2025",
+    sortOrder: 4,
+  },
+  {
+    institution: "University of Oregon",
+    title: "Planning Analysis",
+    meta: "Master's required, Fall 2023",
+    sortOrder: 5,
+  },
+  {
+    institution: "University of Oregon",
+    title: "Urban Transportation",
+    meta: "Undergraduate elective, Fall 2023",
+    sortOrder: 6,
+  },
+  {
+    institution: "University of Oregon",
+    title: "Introduction to City Planning",
+    meta: "Undergraduate required, Winter 2024",
+    sortOrder: 7,
+  },
+  {
+    institution: "University of Oregon",
+    title: "Transportation Policy",
+    meta: "Undergraduate elective, Winter 2024",
+    sortOrder: 8,
+  },
+  {
+    institution: "University of Oregon",
+    title: "Land Use Policy",
+    meta: "Master's elective, Spring 2024",
+    sortOrder: 9,
+  },
+  {
+    institution: "University of Oregon",
+    title: "Planning for All Ages",
+    meta: "Newly developed undergraduate elective, Spring 2024",
+    sortOrder: 10,
+  },
+  {
+    institution: "University of California, Riverside",
+    title: "Transportation Policy",
+    meta: "Newly developed undergraduate elective, Spring 2023",
+    sortOrder: 11,
+  },
+  {
+    institution: "University of California, Riverside",
+    title: "Special Topics in Public Policy: Post-Pandemic Cities",
+    meta: "Newly developed undergraduate elective, Winter 2023",
+    sortOrder: 12,
+  },
+  {
+    institution: "University of Pennsylvania",
+    title: "Urban Research Colloquium",
+    meta: "Co-instructor, undergraduate elective, Spring 2022",
+    sortOrder: 13,
+  },
+];
+
+// From Join Us.docx (2026-07), verbatim. His TAMU email appears here
+// (and only here) while the site chrome stays NUS — Reet's decision,
+// 2026-07-15. No openings are listed; the page hides that section.
+export const workWithMe: WorkWithMeContent = {
+  heading: "Opportunities to Work with Me",
+  intro: "Thank you for your interest in my research.",
+  sections: [
     {
-      title: "Funded PhD position — transport equity",
-      description:
-        "Four-year funded position on the Fair Rides project, starting August 2027. Strong quantitative skills; lived curiosity about cities required.",
-      open: true,
+      title: "Current Availability",
+      body: [
+        "Due to my transition to Texas A&M University, I am not currently hosting visiting professors, visiting scholars, or exchange students.",
+        "For Texas A&M students, although I do not expect to recruit research assistants during the 2026–2027 academic year, I am always happy to hear from students whose research interests align with mine. If opportunities for collaboration arise, I would be happy to explore them together.",
+      ],
     },
     {
-      title: "Undergraduate research assistants",
-      description:
-        "Paid fieldwork roles on the street audit each semester. No experience needed; training provided.",
-      open: true,
+      title: "PhD Recruitment (Fall 2027)",
+      body: [
+        "I plan to recruit one PhD student to join my research group beginning in Fall 2027.",
+        "Before contacting me, I encourage you to:",
+      ],
+      bullets: [
+        "Learn about the Urban and Regional Sciences PhD Program at Texas A&M and determine whether it is a good fit for your academic goals.",
+        "Explore my research overview, current students, and recent publications on this website.",
+        "Skim one to three of my publications that you find most interesting and be prepared to discuss why they resonate with you.",
+      ],
+      after: [
+        "Because I receive many generic inquiry emails each year, I will prioritize responding to applicants who demonstrate a genuine understanding of my research and explain how their research interests align with mine.",
+        "Please contact me by email (lsx@tamu.edu) after September 1, 2026, once I have completed my transition to Texas A&M.",
+      ],
+    },
+    {
+      title: "Application Materials",
+      body: ["When you contact me, please include:"],
+      bullets: [
+        "Your CV.",
+        "A brief email explaining why you would like to work with me and how working together would support your long-term career goals.",
+        "One to three publications of mine that you found most interesting, together with a few sentences explaining why.",
+      ],
+    },
+    {
+      title: "What I Look For",
+      body: ["Successful applicants typically have:"],
+      bullets: [
+        "A basic foundation in college-level statistics and experience applying quantitative methods in research.",
+        "Strong interests in aging and transportation, transportation governance, mobility transition, or related fields.",
+        "Excellent written and spoken English.",
+        "An interest in qualitative and mixed-methods research.",
+        "A genuine enthusiasm for interdisciplinary research.",
+      ],
+    },
+    {
+      title: "Preferred Qualifications",
+      body: ["The ideal candidate will possess one or more of the following qualities:"],
+      bullets: [
+        "An interdisciplinary educational background (for example, Economics + Urban Analytics, or Urban Planning + Social Work).",
+        "Experience or interest in international comparative research and cross-cultural perspectives.",
+        "Strong self-motivation, independence, and self-discipline.",
+        "A passion for integrating qualitative and quantitative approaches in transportation and urban planning research.",
+        "One or more original research ideas that you would like to develop independently during your PhD. I particularly value students who enjoy formulating their own research questions rather than simply extending existing projects.",
+      ],
+    },
+    {
+      title: "Some notes for potential applicants",
+      body: [
+        "I enjoy working with students from the earliest stages of developing an idea through to publication. Rather than operating a traditional physical lab, I see my role as supporting students in achieving their long-term career goals.",
+        "At the beginning of our collaboration, I work closely with each student to develop a broad research vision for the next five years. Based on that vision, I involve them in projects that align with their long-term interests while also helping them develop their own independent research agenda. I encourage students to pursue dissertation topics that are driven by their own intellectual passions rather than being limited to my existing research projects. Ideally, a dissertation should lay the foundation for the research program they hope to pursue over the next three to five years.",
+        "I believe that publications are an important means of sharing knowledge—not the ultimate goal of research. Consequently, prior publications are not a prerequisite for joining my research group. My current PhD students entered the program without publication records and have gone on to publish successfully during their doctoral studies. What matters most to me are intellectual curiosity, integrity, independence, and a genuine passion for asking meaningful research questions.",
+        "I am particularly excited to mentor students who aspire to become future leaders in transportation planning and governance. Whether or not an applicant already has publications is far less important than their potential to grow into an independent, creative, and impactful researcher.",
+      ],
     },
   ],
   howToApply:
-    "Email me a short note about what you want to work on, a CV, and one piece of work you're proud of — a paper, a map, a project, anything. I reply to every serious application.",
+    "Please contact me by email (lsx@tamu.edu) after September 1, 2026, once I have completed my transition to Texas A&M.",
+  contactEmail: "lsx@tamu.edu",
 };

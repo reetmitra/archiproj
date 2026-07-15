@@ -10,6 +10,7 @@ export default async function WorkWithMePage() {
   const content = await getWorkWithMe();
   const profile = await getProfile();
   const openings = content.openings?.filter((o) => o.open) ?? [];
+  const contactEmail = content.contactEmail ?? profile.email;
 
   return (
     <>
@@ -19,7 +20,7 @@ export default async function WorkWithMePage() {
       />
 
       <div className="mx-auto max-w-4xl px-5 sm:px-8 pb-8">
-        {/* Tiered guidance: who you are decides what to read */}
+        {/* Sectioned guidance: availability, recruitment, what to send */}
         <div className="space-y-16">
           {content.sections.map((section, i) => {
             const headingId = `tier-${i}-heading`;
@@ -32,9 +33,21 @@ export default async function WorkWithMePage() {
                 >
                   {section.title}
                 </h2>
-                <p data-depth className="mt-8 text-lg leading-relaxed max-w-2xl">
-                  {section.body}
-                </p>
+                <div data-depth className="mt-8 space-y-6 text-lg leading-relaxed">
+                  {section.body.map((paragraph, j) => (
+                    <p key={j}>{paragraph}</p>
+                  ))}
+                  {section.bullets && (
+                    <ul className="list-disc pl-6 space-y-3 marker:text-moss">
+                      {section.bullets.map((bullet, j) => (
+                        <li key={j}>{bullet}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {section.after?.map((paragraph, j) => (
+                    <p key={j}>{paragraph}</p>
+                  ))}
+                </div>
               </section>
             );
           })}
@@ -81,16 +94,18 @@ export default async function WorkWithMePage() {
           >
             How to get in touch
           </h2>
-          <p className="mt-8 text-lg leading-relaxed max-w-2xl">
+          <p className="mt-8 text-lg leading-relaxed">
             {content.howToApply}
           </p>
           <a
-            href={`mailto:${profile.email}`}
+            href={`mailto:${contactEmail}`}
             className="mt-8 inline-block bg-ink text-paper font-display font-bold text-lg px-8 py-4 rounded-sm hover:bg-ink/85 transition-colors"
           >
             Write to me
           </a>
-          <p className="mt-4 font-mono text-sm text-stone">{profile.email}</p>
+          {/* the address in plain text: mailto silently no-ops without a
+              mail handler, so make it copyable */}
+          <p className="mt-4 font-mono text-sm text-stone">{contactEmail}</p>
         </section>
       </div>
     </>

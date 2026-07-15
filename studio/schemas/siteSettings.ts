@@ -4,23 +4,8 @@ export const siteSettings = defineType({
   name: "siteSettings",
   title: "Site settings",
   type: "document",
-  description: "Lab-wide details used in the footer and lab-voice sections.",
+  description: "Site-wide details used in the footer and homepage eyebrow.",
   fields: [
-    defineField({
-      name: "labName",
-      title: "Lab name",
-      type: "string",
-      description: "Shown in the footer under your name.",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "mission",
-      title: "Lab mission",
-      type: "text",
-      rows: 3,
-      description: "One or two sentences on what the lab does, written as “We …”.",
-      validation: (rule) => rule.required(),
-    }),
     defineField({
       name: "institution",
       title: "University",

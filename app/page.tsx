@@ -241,7 +241,10 @@ export default async function HomePage() {
                   <h3 className="font-display font-semibold text-lg leading-snug">
                     {post.title}
                   </h3>
-                  <p className="mt-1 text-stone leading-relaxed">{post.body}</p>
+                  {/* first paragraph only — the full post lives on /news */}
+                  <p className="mt-1 text-stone leading-relaxed">
+                    {post.body[0]}
+                  </p>
                 </div>
                 <CategoryTag category={post.category} />
               </article>
@@ -302,8 +305,9 @@ export default async function HomePage() {
               Work with me.
             </h2>
             <p className="mt-4 text-lg max-w-xl leading-relaxed">
-              Funded PhD positions, paid fieldwork roles, and collaborations
-              for people who want research to change what gets built.
+              I plan to recruit one PhD student starting Fall 2027 — and I’m
+              always glad to hear from students and collaborators whose
+              research interests align with mine.
             </p>
           </div>
           {/* data-magnet edge, accepted: the cta-btn entrance timeline also

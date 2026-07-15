@@ -15,6 +15,7 @@ import {
   publications,
   people,
   news,
+  teachingPage,
   courses,
   workWithMe,
 } from "./data";
@@ -30,6 +31,7 @@ import type {
   ResearchPageContent,
   ResearchTheme,
   SiteSettings,
+  TeachingPageContent,
   WorkWithMeContent,
 } from "./types";
 
@@ -113,8 +115,19 @@ export async function getNews(limit?: number): Promise<NewsPost[]> {
   return limit ? sorted.slice(0, limit) : sorted;
 }
 
+export async function getTeachingPage(): Promise<TeachingPageContent> {
+  return useSanity ? sanity.fetchTeachingPage() : teachingPage;
+}
+
 export async function getCourses(): Promise<Course[]> {
-  return useSanity ? sanity.fetchCourses() : courses;
+  return useSanity
+    ? sanity.fetchCourses()
+    : // Same ordering as the GROQ query: sortOrder asc, then title asc
+      [...courses].sort(
+        (a, b) =>
+          (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999) ||
+          a.title.localeCompare(b.title),
+      );
 }
 
 export async function getWorkWithMe(): Promise<WorkWithMeContent> {

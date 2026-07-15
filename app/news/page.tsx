@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { getNews } from "@/lib/content";
-import { CategoryTag, PageIntro, formatDate } from "@/components/primitives";
+import {
+  CategoryTag,
+  ContentFigure,
+  PageIntro,
+  formatDate,
+} from "@/components/primitives";
 
 export const metadata: Metadata = {
   title: "News",
@@ -11,10 +16,7 @@ export default async function NewsPage() {
 
   return (
     <>
-      <PageIntro
-        title="Lab notebook"
-        lede="Papers, talks, grants, coverage, and arrivals — newest first."
-      />
+      <PageIntro title="News" />
       <div className="mx-auto max-w-4xl px-5 sm:px-8 pb-8">
         {posts.map((post) => (
           <article
@@ -32,9 +34,14 @@ export default async function NewsPage() {
               <h2 className="font-display font-bold text-2xl tracking-tight leading-snug">
                 {post.title}
               </h2>
-              <p className="mt-3 text-lg text-stone leading-relaxed">
-                {post.body}
-              </p>
+              <div className="mt-3 space-y-4 text-lg text-stone leading-relaxed">
+                {post.body.map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </div>
+              {post.image && (
+                <ContentFigure image={post.image} className="mt-6" />
+              )}
               {post.link && (
                 <a
                   href={post.link.url}

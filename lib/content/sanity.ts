@@ -19,6 +19,7 @@ import type {
   ResearchPageContent,
   ResearchTheme,
   SiteSettings,
+  TeachingPageContent,
   WorkWithMeContent,
 } from "./types";
 
@@ -142,9 +143,20 @@ const themeFields = `
   "publicationIds": publications[]._ref
 `;
 
+/**
+ * Shared projection for embedded { src, alt, caption } images. fit=max
+ * never upscales small originals (logos, low-res figures).
+ */
+const imageProjection = (field: string) => `
+  "${field}": ${field}{
+    "src": asset->url + "?w=1600&fit=max&auto=format",
+    alt,
+    caption
+  }`;
+
 export function fetchSiteSettings(): Promise<SiteSettings> {
   return fetchClean(
-    `*[_id == "siteSettings"][0]{ labName, mission, institution, department, address, email }`,
+    `*[_id == "siteSettings"][0]{ institution, department, address, email }`,
   );
 }
 
@@ -220,7 +232,9 @@ export function fetchPeopleByRole(role: PersonRole): Promise<Person[]> {
   return fetchClean(
     `*[_type == "person" && role == $role]
       | order(coalesce(sortOrder, 9999) asc, name asc) {
-      "slug": slug.current, name, role, title, bio, email,
+      "slug": slug.current, name, role, title, bio,
+      ${imageProjection("photo")},
+      email,
       links[]{ label, url }
     }`,
     { role },
@@ -230,15 +244,27 @@ export function fetchPeopleByRole(role: PersonRole): Promise<Person[]> {
 export function fetchNews(): Promise<NewsPost[]> {
   return fetchClean(
     `*[_type == "newsPost"] | order(date desc) {
-      "id": _id, date, title, body, category, link{ label, url }
+      "id": _id, date, title, body, category,
+      ${imageProjection("image")},
+      link{ label, url }
+    }`,
+  );
+}
+
+export function fetchTeachingPage(): Promise<TeachingPageContent> {
+  return fetchClean(
+    `*[_id == "teachingPage"][0]{
+      title, intro,
+      sections[]{ title, body, ${imageProjection("photo")} },
+      coursesIntro
     }`,
   );
 }
 
 export function fetchCourses(): Promise<Course[]> {
   return fetchClean(
-    `*[_type == "course"] | order(code asc) {
-      code, title, term, level, description
+    `*[_type == "course"] | order(coalesce(sortOrder, 9999) asc, title asc) {
+      institution, title, meta, sortOrder
     }`,
   );
 }
@@ -247,9 +273,10 @@ export function fetchWorkWithMe(): Promise<WorkWithMeContent> {
   return fetchClean(
     `*[_id == "workWithMe"][0]{
       heading, intro,
-      sections[]{ title, body },
+      sections[]{ title, body, bullets, after },
       openings[]{ title, description, open },
-      howToApply
+      howToApply,
+      contactEmail
     }`,
   );
 }

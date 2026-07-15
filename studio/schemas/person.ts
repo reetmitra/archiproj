@@ -45,11 +45,26 @@ export const person = defineType({
     }),
     defineField({
       name: "bio",
-      title: "Short bio",
+      title: "Short bio (optional)",
       type: "text",
       rows: 3,
       description: "One or two sentences about what they work on.",
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "photo",
+      title: "Photo (optional)",
+      type: "image",
+      description:
+        "A headshot. Without one, the page shows the person's initials in a circle.",
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Image description",
+          type: "string",
+          description: "e.g. “Portrait of Yufei Wang”.",
+          validation: (rule) => rule.required(),
+        }),
+      ],
     }),
     defineField({
       name: "email",

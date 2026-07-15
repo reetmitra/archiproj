@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Public_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ScrollDepth } from "@/components/motion/scroll-depth";
 import { getProfile } from "@/lib/content";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
-  subsets: ["latin"],
-});
-
-const publicSans = Public_Sans({
-  variable: "--font-public",
+// The prof's pick (option 4 of the 2026-07 font comparison): Inter for
+// headings AND body. Only the mono labels keep their own face.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -44,7 +41,7 @@ export default async function RootLayout({
       lang="en"
       // the pre-paint inline script adds data-motion before hydration
       suppressHydrationWarning
-      className={`${bricolage.variable} ${publicSans.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         {/* Set data-motion pre-paint so [data-anim] elements hide before

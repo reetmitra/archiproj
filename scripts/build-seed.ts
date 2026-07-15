@@ -20,6 +20,7 @@ import {
   publications,
   people,
   news,
+  teachingPage,
   courses,
   workWithMe,
 } from "../lib/content/data";
@@ -95,6 +96,26 @@ docs.push({
   sections: workWithMe.sections.map((s) => keyed(s)),
   openings: (workWithMe.openings ?? []).map((o) => keyed(o)),
   howToApply: workWithMe.howToApply,
+  ...(workWithMe.contactEmail
+    ? { contactEmail: workWithMe.contactEmail }
+    : {}),
+});
+
+docs.push({
+  _id: "teachingPage",
+  _type: "teachingPage",
+  title: teachingPage.title,
+  intro: teachingPage.intro,
+  sections: teachingPage.sections.map((s) =>
+    keyed({
+      title: s.title,
+      body: s.body,
+      ...(s.photo ? { photo: imageAsset(s.photo) } : {}),
+    }),
+  ),
+  ...(teachingPage.coursesIntro
+    ? { coursesIntro: teachingPage.coursesIntro }
+    : {}),
 });
 
 for (const theme of researchThemes) {
@@ -150,7 +171,9 @@ for (const pub of publications) {
   });
 }
 
-for (const person of people) {
+// Array order in data.ts is the display order within each role group —
+// encode it as sortOrder so the Sanity path sorts the same way.
+people.forEach((person, i) => {
   docs.push({
     _id: `person-${person.slug}`,
     _type: "person",
@@ -158,11 +181,13 @@ for (const person of people) {
     slug: slug(person.slug),
     role: person.role,
     title: person.title,
-    bio: person.bio,
+    ...(person.bio ? { bio: person.bio } : {}),
+    ...(person.photo ? { photo: imageAsset(person.photo) } : {}),
     ...(person.email ? { email: person.email } : {}),
     ...(person.links ? { links: person.links.map((l) => keyed(l)) } : {}),
+    sortOrder: i + 1,
   });
-}
+});
 
 for (const post of news) {
   docs.push({
@@ -172,13 +197,22 @@ for (const post of news) {
     title: post.title,
     body: post.body,
     category: post.category,
+    ...(post.image ? { image: imageAsset(post.image) } : {}),
     ...(post.link ? { link: post.link } : {}),
   });
 }
 
+// Courses have no natural id; institution + title is unique (the same
+// title can recur at another university, e.g. Transportation Policy).
+const courseId = (c: (typeof courses)[number]) =>
+  `course-${`${c.institution} ${c.title}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}`;
+
 for (const course of courses) {
   docs.push({
-    _id: `course-${course.code}`,
+    _id: courseId(course),
     _type: "course",
     ...course,
   });

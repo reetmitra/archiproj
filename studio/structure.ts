@@ -9,6 +9,7 @@ import type { StructureResolver } from "sanity/structure";
 export const singletonTypes = new Set([
   "profile",
   "researchPage",
+  "teachingPage",
   "workWithMe",
   "siteSettings",
 ]);
@@ -38,7 +39,22 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.documentTypeListItem("person").title("People"),
-      S.documentTypeListItem("course").title("Teaching"),
+      S.listItem()
+        .title("Teaching")
+        .child(
+          S.list()
+            .title("Teaching")
+            .items([
+              S.documentTypeListItem("course").title("Courses"),
+              S.listItem()
+                .title("Teaching page text")
+                .child(
+                  S.document()
+                    .schemaType("teachingPage")
+                    .documentId("teachingPage"),
+                ),
+            ]),
+        ),
       S.divider(),
       S.listItem()
         .title("Profile")
