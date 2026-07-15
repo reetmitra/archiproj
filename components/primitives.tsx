@@ -11,32 +11,31 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 export function PageIntro({
-  eyebrow,
   title,
   lede,
+  centerLede = false,
 }: {
-  eyebrow: string;
   title: string;
   lede?: React.ReactNode;
+  centerLede?: boolean;
 }) {
   return (
     <div
       data-parallax="0.1"
       className="mx-auto max-w-6xl px-5 sm:px-8 pt-16 sm:pt-24 pb-12"
     >
-      <div data-anim="intro">
-        <Eyebrow>{eyebrow}</Eyebrow>
-      </div>
       <h1
         data-anim="intro"
-        className="mt-4 font-display font-bold tracking-tight text-4xl sm:text-6xl max-w-3xl"
+        className="font-display font-bold tracking-tight text-4xl sm:text-6xl max-w-3xl"
       >
         {title}
       </h1>
       {lede && (
         <p
           data-anim="intro"
-          className="mt-6 text-xl text-stone leading-relaxed max-w-2xl"
+          className={`mt-6 text-xl text-stone leading-relaxed max-w-2xl ${
+            centerLede ? "mx-auto text-center" : ""
+          }`}
         >
           {lede}
         </p>
@@ -128,22 +127,25 @@ export function PublicationItem({ pub }: { pub: Publication }) {
           <span className="italic">{pub.venue}</span>
           {pub.citation && ` ${pub.citation}`}
         </p>
-        <p className="mt-2 flex gap-4 font-mono text-sm">
-          <span className="uppercase tracking-widest text-stone">{pub.type}</span>
-          {pub.note && (
-            <span className="uppercase tracking-widest text-stone">
-              {pub.note}
-            </span>
-          )}
-          {pub.pdf && (
-            <a
-              href={pub.pdf}
-              className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
-            >
-              PDF
-            </a>
-          )}
-        </p>
+        {/* Type is deliberately not shown — every entry is a journal
+            article and the prof asked for the label to go (2026-07 feedback) */}
+        {(pub.note || pub.pdf) && (
+          <p className="mt-2 flex gap-4 font-mono text-sm">
+            {pub.note && (
+              <span className="uppercase tracking-widest text-stone">
+                {pub.note}
+              </span>
+            )}
+            {pub.pdf && (
+              <a
+                href={pub.pdf}
+                className="text-moss underline underline-offset-4 decoration-line hover:decoration-moss"
+              >
+                PDF
+              </a>
+            )}
+          </p>
+        )}
       </div>
     </article>
   );

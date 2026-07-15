@@ -21,14 +21,16 @@ export default async function ResearchPage() {
 
   return (
     <>
-      <PageIntro eyebrow="Research" title={page.title} />
+      <PageIntro title={page.title} />
 
       {/* Research vision — the prof's overview, verbatim */}
       <div
         data-depth
         className="mx-auto max-w-6xl px-5 sm:px-8 -mt-2 pb-16"
       >
-        <div className="max-w-2xl space-y-6 text-lg leading-relaxed">
+        {/* Full container width on purpose — the prof asked for the text
+            to span the page, not sit in a half-width column (2026-07) */}
+        <div className="space-y-6 text-lg leading-relaxed">
           {page.overview.map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
@@ -69,7 +71,7 @@ export default async function ResearchPage() {
 
               <div
                 data-depth
-                className="mt-6 max-w-2xl space-y-6 text-lg leading-relaxed"
+                className="mt-6 space-y-6 text-lg leading-relaxed"
               >
                 {theme.body?.map((paragraph, i) => <p key={i}>{paragraph}</p>)}
               </div>

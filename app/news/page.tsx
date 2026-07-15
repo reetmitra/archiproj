@@ -12,7 +12,6 @@ export default async function NewsPage() {
   return (
     <>
       <PageIntro
-        eyebrow="News"
         title="Lab notebook"
         lede="Papers, talks, grants, coverage, and arrivals — newest first."
       />

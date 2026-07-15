@@ -87,7 +87,6 @@ export default async function PeoplePage() {
   return (
     <>
       <PageIntro
-        eyebrow="People"
         title="Who does the work"
         lede="A small group with mixed backgrounds — planning, data science, geography, design — held together by fieldwork."
       />

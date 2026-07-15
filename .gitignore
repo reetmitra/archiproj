@@ -7,6 +7,11 @@
 # generated send-out preview (2MB of embedded screenshots)
 /demo.html
 
+# send-to-prof font comparison (dev-only; must never deploy)
+# root copy = the sendable file; public/ copy = viewable in the dev preview
+/font-options.html
+/public/font-options.html
+
 # sanity studio build + generated seed + runtime
 /studio/dist
 /studio/.sanity

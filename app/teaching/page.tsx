@@ -12,7 +12,6 @@ export default async function TeachingPage() {
   return (
     <>
       <PageIntro
-        eyebrow="Teaching"
         title="Courses"
         lede="Studio-adjacent and methods courses at NUS. Syllabi are shared with enrolled students."
       />

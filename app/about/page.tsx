@@ -11,7 +11,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <PageIntro eyebrow="About" title={profile.name} />
+      <PageIntro title={`About ${profile.name}`} />
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8 pb-8 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-12 lg:items-start">
         <div>

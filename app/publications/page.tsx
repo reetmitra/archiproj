@@ -15,8 +15,8 @@ export default async function PublicationsPage() {
   return (
     <>
       <PageIntro
-        eyebrow="Publications"
-        title="What I've written"
+        title="Peer-reviewed journal publications since 2020"
+        centerLede
         lede={
           <>
             Journal articles since 2020, with students and collaborators.

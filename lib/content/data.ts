@@ -89,9 +89,10 @@ export const profile: Profile = {
   email: "alexli@nus.edu.sg",
 };
 
-// Verbatim from Research overview.docx; the title is the prof's phrase.
+// Verbatim from Research overview.docx; the title is the prof's own
+// suggestion from his 2026-07 feedback (was "Three interrelated pillars").
 export const researchPage: ResearchPageContent = {
-  title: "Three interrelated pillars",
+  title: "Equitable Mobility Transition: Three Research Pillars",
   overview: [
     "Dependence on private vehicles is neither environmentally sustainable nor socially equitable. Car-oriented urban development excludes many people—including those who cannot drive or cannot afford to own and maintain a vehicle—from full participation in everyday life. Meanwhile, although vehicle electrification is an important step toward reducing transportation emissions, replacing gasoline-powered vehicles with electric vehicles alone cannot overcome the broader environmental and social costs of car-dependent urban development, including high energy consumption, inefficient land use, and unequal access to opportunities.",
     "These challenges call for an equitable mobility transition—a transformation toward transportation systems that are not only low-carbon but also inclusive. Such a transition is becoming increasingly urgent as cities respond to population aging, climate change, and rapid technological innovation. Addressing these interconnected challenges requires more integrated and collaborative approaches to transportation planning and governance.",
